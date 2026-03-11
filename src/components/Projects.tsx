@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Github, ArrowUpRight } from "lucide-react";
+import { Github as GithubIcon, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -186,185 +186,247 @@ export const Projects = () => {
         </div>
 
         {/* ── Project list ── */}
-        <div className="space-y-36">
+        <div className="space-y-12">
           {projects.map((project, i) => {
-            const isEven = i % 2 === 0;
             return (
               <div
                 key={project.title}
-                className="project-item group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+                className="project-item group relative overflow-hidden"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.02)",
+                  backdropFilter: "blur(8px)",
+                  transition: "all 0.5s cubic-bezier(0.32, 0, 0.67, 0)",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = "rgba(255,255,255,0.2)";
+                  el.style.background = "rgba(255,255,255,0.05)";
+                  el.style.transform = "translateY(-4px)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = "rgba(255,255,255,0.08)";
+                  el.style.background = "rgba(255,255,255,0.02)";
+                  el.style.transform = "translateY(0)";
+                }}
               >
-                {/* Image — left on even, right on odd */}
-                <div
-                  className={`relative overflow-hidden lg:col-span-7${isEven ? "" : " lg:order-last"}`}
-                  style={{
-                    aspectRatio: "16/10",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="proj-img w-full h-full object-cover"
-                    style={{
-                      filter: "grayscale(25%) brightness(0.6) contrast(1.1)",
-                      transition: "filter 1s ease",
-                      willChange: "transform",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.filter =
-                        "grayscale(0%) brightness(0.8) contrast(1)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.filter =
-                        "grayscale(25%) brightness(0.6) contrast(1.1)";
-                    }}
-                    referrerPolicy="no-referrer"
-                  />
-                  {/* Dark overlay */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
+                  {/* Image Section */}
                   <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-700 group-hover:opacity-0"
-                    style={{ background: "rgba(8,8,8,0.25)" }}
-                  />
-                  {/* Corner index */}
-                  <div
-                    className="proj-index absolute top-5 right-5"
+                    className="relative lg:col-span-6 overflow-hidden"
                     style={{
-                      fontFamily: "'Bebas Neue', Impact, sans-serif",
-                      fontSize: "11px",
-                      letterSpacing: "0.3em",
-                      color: "rgba(255,255,255,0.35)",
+                      aspectRatio: "16/10",
+                      background: "rgba(0,0,0,0.4)",
                     }}
                   >
-                    {project.index}
-                  </div>
-                  {/* Bottom scan line */}
-                  <div
-                    className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                    }}
-                  />
-                </div>
-
-                {/* Content */}
-                <div
-                  className={`lg:col-span-5 flex flex-col justify-center${isEven ? "" : " lg:order-first"}`}
-                >
-                  {/* Category + year */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <span
-                      className="uppercase font-bold tracking-[0.3em]"
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="proj-img w-full h-full object-cover"
                       style={{
-                        fontFamily: "system-ui",
-                        fontSize: "10px",
-                        color: "rgba(255,255,255,0.35)",
+                        filter: "grayscale(40%) brightness(0.5) contrast(1.2)",
+                        transition: "filter 0.7s ease, transform 0.7s ease",
+                        willChange: "transform",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.filter =
+                          "grayscale(0%) brightness(0.75) contrast(1.1)";
+                        (e.currentTarget as HTMLElement).style.transform = "scale(1.05)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.filter =
+                          "grayscale(40%) brightness(0.5) contrast(1.2)";
+                        (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+                      }}
+                      referrerPolicy="no-referrer"
+                    />
+
+                    {/* Gradient overlay */}
+                    <div
+                      className="absolute inset-0 pointer-events-none transition-all duration-700 group-hover:opacity-20"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.4) 100%)",
+                        opacity: 0.35,
+                      }}
+                    />
+
+                    {/* Index badge */}
+                    <div
+                      className="proj-index absolute top-5 left-5"
+                      style={{
+                        fontFamily: "'Bebas Neue', Impact, sans-serif",
+                        fontSize: "28px",
+                        letterSpacing: "0.05em",
+                        color: "rgba(255,255,255,0.15)",
+                        fontWeight: 900,
                       }}
                     >
-                      {project.category}
-                    </span>
-                    <div className="h-px flex-1" style={{ background: "rgba(255,255,255,0.08)" }} />
-                    <span
-                      className="uppercase font-bold tracking-[0.2em]"
-                      style={{
-                        fontFamily: "system-ui",
-                        fontSize: "10px",
-                        color: "rgba(255,255,255,0.2)",
-                      }}
-                    >
-                      {project.year}
-                    </span>
+                      {project.index}
+                    </div>
                   </div>
 
-                  {/* Title */}
-                  <h3
-                    className="uppercase leading-[0.9] mb-6"
-                    style={{
-                      fontFamily: "'Bebas Neue', Impact, sans-serif",
-                      fontSize: "clamp(52px, 6vw, 80px)",
-                      letterSpacing: "-0.01em",
-                      color: "#fff",
-                    }}
+                  {/* Content Section */}
+                  <div
+                    className="lg:col-span-6 p-8 md:p-12 flex flex-col justify-between"
+                    style={{ background: "rgba(8,8,8,0.4)" }}
                   >
-                    {project.title}
-                  </h3>
+                    {/* Top content */}
+                    <div>
+                      {/* Meta Info */}
+                      <div className="flex items-center gap-4 mb-10">
+                        <span
+                          className="uppercase font-bold tracking-[0.3em] px-3 py-1"
+                          style={{
+                            fontFamily: "system-ui",
+                            fontSize: "9px",
+                            color: "#fff",
+                            background: "rgba(255,255,255,0.1)",
+                            borderRadius: "2px",
+                          }}
+                        >
+                          {project.category}
+                        </span>
+                        <span
+                          className="uppercase tracking-[0.2em]"
+                          style={{
+                            fontFamily: "system-ui",
+                            fontSize: "13px",
+                            color: "rgba(255,255,255,0.4)",
+                            fontWeight: 600,
+                            letterSpacing: "0.05em",
+                          }}
+                        >
+                          {project.year}
+                        </span>
+                      </div>
 
-                  {/* Description */}
-                  <p
-                    className="mb-8"
-                    style={{
-                      fontFamily: "'DM Sans', system-ui, sans-serif",
-                      fontSize: "15px",
-                      color: "rgba(255,255,255,0.38)",
-                      lineHeight: 1.75,
-                      maxWidth: "400px",
-                    }}
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-10">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
+                      {/* Title */}
+                      <h3
+                        className="uppercase leading-[0.85] mb-6"
                         style={{
-                          padding: "5px 14px",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          fontFamily: "system-ui",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          letterSpacing: "0.2em",
-                          textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.25)",
+                          fontFamily: "'Bebas Neue', Impact, sans-serif",
+                          fontSize: "clamp(48px, 5vw, 72px)",
+                          letterSpacing: "-0.015em",
+                          color: "#fff",
                         }}
                       >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                        {project.title}
+                      </h3>
 
-                  {/* Links */}
-                  <div className="flex items-center gap-8">
-                    <a
-                      href={project.link}
-                      className="group/link flex items-center gap-2"
-                      style={{
-                        fontFamily: "system-ui",
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        letterSpacing: "0.3em",
-                        textTransform: "uppercase",
-                        color: "rgba(255,255,255,0.6)",
-                        textDecoration: "none",
-                        transition: "color 0.3s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "#fff";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
-                      }}
-                    >
-                      View Case Study
-                      <ArrowUpRight size={14} style={{ transition: "transform 0.3s ease" }} />
-                    </a>
-                    <a
-                      href={project.github}
-                      style={{
-                        color: "rgba(255,255,255,0.2)",
-                        transition: "color 0.3s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "#fff";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.2)";
-                      }}
-                    >
-                      <Github size={18} />
-                    </a>
+                      {/* Description */}
+                      <p
+                        className="mb-8"
+                        style={{
+                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                          fontSize: "14px",
+                          color: "rgba(255,255,255,0.55)",
+                          lineHeight: 1.8,
+                          maxWidth: "450px",
+                        }}
+                      >
+                        {project.description}
+                      </p>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mb-10">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            style={{
+                              padding: "4px 12px",
+                              border: "1px solid rgba(255,255,255,0.15)",
+                              fontFamily: "system-ui",
+                              fontSize: "9px",
+                              fontWeight: 600,
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase",
+                              color: "rgba(255,255,255,0.4)",
+                              borderRadius: "2px",
+                              transition: "all 0.3s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              (e.currentTarget as HTMLElement).style.borderColor =
+                                "rgba(255,255,255,0.4)";
+                              (e.currentTarget as HTMLElement).style.color = "#fff";
+                            }}
+                            onMouseLeave={(e) => {
+                              (e.currentTarget as HTMLElement).style.borderColor =
+                                "rgba(255,255,255,0.15)";
+                              (e.currentTarget as HTMLElement).style.color =
+                                "rgba(255,255,255,0.4)";
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex items-center gap-6">
+                      <a
+                        href={project.link}
+                        className="group/link relative"
+                        style={{
+                          fontFamily: "system-ui",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          letterSpacing: "0.35em",
+                          textTransform: "uppercase",
+                          color: "rgba(255,255,255,0.7)",
+                          textDecoration: "none",
+                          transition: "color 0.3s ease",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.color = "#fff";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.color =
+                            "rgba(255,255,255,0.7)";
+                        }}
+                      >
+                        View Project
+                        <ArrowUpRight
+                          size={14}
+                          style={{
+                            transition: "transform 0.3s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            const parent = (e.target as HTMLElement).closest("a");
+                            if (parent) {
+                              (e.target as HTMLElement).style.transform =
+                                "translate(4px, -4px)";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.target as HTMLElement).style.transform = "translate(0)";
+                          }}
+                        />
+                      </a>
+                      <a
+                        href={project.github}
+                        style={{
+                          color: "rgba(255,255,255,0.4)",
+                          transition: "color 0.3s ease",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.color = "#fff";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.color =
+                            "rgba(255,255,255,0.4)";
+                        }}
+                      >
+                        <GithubIcon size={18} />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

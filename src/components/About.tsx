@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PHOTO_SRC = "/images/photo-profil/defaaryawar-landscape.png";
+const PHOTO_SRC = "/images/photo-profil/defaaryawar.png";
 
 export const About = () => {
   const container = useRef<HTMLDivElement>(null);
@@ -171,12 +171,12 @@ export const About = () => {
               }}
             >
               <p>
-                I'm a technical architect specialising in the frontend layer. My work is rooted in
-                the belief that digital products should be as performant as they are beautiful.
+                I'm a frontend-focused technical architect who enjoys
+                turning complex systems into fast, intuitive interfaces.
               </p>
               <p>
-                With a focus on React ecosystems and modern motion libraries, I build interfaces
-                that feel alive — bridging complex backend logic with intuitive user experience.
+                Working mostly in the React ecosystem, I build modern web experiences 
+                that balance performance, scalability, and thoughtful motion.
               </p>
             </div>
 

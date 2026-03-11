@@ -156,7 +156,7 @@ export const Hero = () => {
         >
           <span
             style={{
-              fontSize: "22vw",
+              fontSize: "16vw",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               color: "rgba(255,255,255,0.04)",
@@ -176,7 +176,7 @@ export const Hero = () => {
         >
           <span
             style={{
-              fontSize: "22vw",
+              fontSize: "16vw",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               color: "rgba(255,255,255,0.04)",
@@ -413,7 +413,6 @@ export const Hero = () => {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
         @keyframes scrollLine {
           0% { transform: translateY(-100%); }
           100% { transform: translateY(300%); }
