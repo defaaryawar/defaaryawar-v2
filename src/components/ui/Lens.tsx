@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useSpring, useMotionValue } from 'motion/react';
-import { cn } from '@/src/lib/utils';
+import React, { useState, useRef } from 'react';
+import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface LensProps {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ interface LensProps {
   zoom?: number;
 }
 
-export const Lens: React.FC<LensProps> = ({ children, className, zoom = 1.2 }) => {
+export const Lens: React.FC<LensProps> = ({ children, className }) => {
   const [isHovered, setIsHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -51,12 +51,12 @@ export const Lens: React.FC<LensProps> = ({ children, className, zoom = 1.2 }) =
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10" />
+        <div className="absolute inset-0 rounded-full bg-linear-to-br from-brand-primary/10 to-brand-secondary/10" />
       </motion.div>
 
       {/* Custom Cursor Dot */}
       <motion.div
-        className="absolute pointer-events-none z-[60] w-2 h-2 bg-brand-primary rounded-full"
+        className="absolute pointer-events-none z-60 w-2 h-2 bg-brand-primary rounded-full"
         style={{
           left: lensX,
           top: lensY,

@@ -3,6 +3,7 @@ import { Code2, Zap } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Highlighter } from "./ui/Highlighter";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -136,14 +137,16 @@ export const About = () => {
 
             <div className="overflow-hidden mb-2">
               <h2
-                className="about-heading-line uppercase leading-[0.9]"
+                className="about-heading-line uppercase leading-[0.9] text-black"
                 style={{
                   fontFamily: "'Bebas Neue', Impact, sans-serif",
                   fontSize: "clamp(52px, 7vw, 96px)",
                   letterSpacing: "-0.01em",
                 }}
               >
-                Merging Design
+                <Highlighter action="highlight" color="#EFEFEF">
+                  Merging Design
+                </Highlighter>
               </h2>
             </div>
             <div className="overflow-hidden mb-12">

@@ -1,12 +1,29 @@
-import { useRef } from "react";
-import { Github as GithubIcon, ArrowUpRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { Github as GithubIcon, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Highlighter } from "./ui/Highlighter";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
+type MediaItem =
+  | { type: "image"; src: string }
+  | { type: "video"; src: string };
+
+interface Project {
+  index: string;
+  title: string;
+  category: string;
+  year: string;
+  description: string;
+  media: MediaItem[];
+  tags: string[];
+  link: string;
+  github: string;
+}
+
+const projects: Project[] = [
   {
     index: "01",
     title: "APMA",
@@ -14,7 +31,11 @@ const projects = [
     year: "2024",
     description:
       "A comprehensive SaaS solution designed specifically for teachers to manage student performance and curriculum efficiently.",
-    image: "https://picsum.photos/seed/apma-pro/1200/800",
+    media: [
+      { type: "image", src: "https://picsum.photos/seed/apma-1/1200/800" },
+      { type: "image", src: "https://picsum.photos/seed/apma-2/1200/800" },
+      { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+    ],
     tags: ["React", "Next.js", "Tailwind", "Supabase"],
     link: "#",
     github: "#",
@@ -26,7 +47,10 @@ const projects = [
     year: "2024",
     description:
       "A modern, high-performance website for a gaming community featuring real-time updates and interactive member profiles.",
-    image: "https://picsum.photos/seed/aaa-pro/1200/800",
+    media: [
+      { type: "image", src: "https://picsum.photos/seed/aaa-1/1200/800" },
+      { type: "image", src: "https://picsum.photos/seed/aaa-2/1200/800" },
+    ],
     tags: ["React", "Framer Motion", "Chakra UI"],
     link: "#",
     github: "#",
@@ -38,19 +62,85 @@ const projects = [
     year: "2023",
     description:
       "A premium admin dashboard with complex data visualisations and real-time monitoring capabilities built for scale.",
-    image: "https://picsum.photos/seed/dash-pro/1200/800",
+    media: [
+      { type: "image", src: "https://picsum.photos/seed/dash-1/1200/800" },
+      { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      { type: "image", src: "https://picsum.photos/seed/dash-2/1200/800" },
+    ],
     tags: ["TypeScript", "Recharts", "Tailwind"],
     link: "#",
     github: "#",
   },
 ];
 
+const MediaSlide = ({ item, active }: { item: MediaItem; active: boolean }) => {
+  if (item.type === "video") {
+    return (
+      <video
+        src={item.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          filter: "grayscale(20%) brightness(0.6) contrast(1.1)",
+          opacity: active ? 1 : 0,
+          transition: "opacity 0.4s ease",
+        }}
+      />
+    );
+  }
+  return (
+    <img
+      src={item.src}
+      alt=""
+      referrerPolicy="no-referrer"
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        filter: "grayscale(20%) brightness(0.6) contrast(1.1)",
+        opacity: active ? 1 : 0,
+        transition: "opacity 0.4s ease",
+      }}
+    />
+  );
+};
+
 export const Projects = () => {
   const container = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [mediaIndex, setMediaIndex] = useState(0);
+
+  const handleProjectEnter = (i: number) => {
+    if (i !== active) {
+      setActive(i);
+      setMediaIndex(0);
+    }
+  };
+
+  const currentMedia = projects[active].media;
+  const total = currentMedia.length;
+
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMediaIndex((v) => (v - 1 + total) % total);
+  };
+
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMediaIndex((v) => (v + 1) % total);
+  };
 
   useGSAP(
     () => {
-      // Heading reveal
       gsap.from(".proj-heading-char", {
         y: 100,
         opacity: 0,
@@ -59,51 +149,17 @@ export const Projects = () => {
         ease: "power4.out",
         scrollTrigger: { trigger: ".proj-header", start: "top 82%" },
       });
-
-      // Each project item
-      gsap.utils.toArray<HTMLElement>(".project-item").forEach((item, i) => {
-        const isEven = i % 2 === 0;
-
-        gsap.fromTo(
-          item,
-          { x: isEven ? -80 : 80, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 1.3,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: item,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-
-        // Image zoom on scroll
-        const img = item.querySelector<HTMLElement>(".proj-img");
-        if (img) {
-          gsap.fromTo(
-            img,
-            { scale: 1.12 },
-            {
-              scale: 1,
-              ease: "none",
-              scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: 1 },
-            },
-          );
-        }
-      });
-
-      // Index numbers fade in
-      gsap.from(".proj-index", {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: { trigger: container.current, start: "top 75%" },
-      });
+      gsap.fromTo(
+        ".proj-panel",
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".proj-panel", start: "top 80%" },
+        },
+      );
     },
     { scope: container },
   );
@@ -115,7 +171,6 @@ export const Projects = () => {
       className="relative py-36 overflow-hidden"
       style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
-      {/* BG number */}
       <div
         className="absolute top-10 right-8 md:right-16 select-none pointer-events-none"
         style={{
@@ -129,8 +184,8 @@ export const Projects = () => {
       </div>
 
       <div className="container mx-auto px-8 md:px-16 relative z-10">
-        {/* ── Header ── */}
-        <div className="proj-header flex flex-col md:flex-row md:items-end justify-between mb-28 gap-10">
+        {/* Header */}
+        <div className="proj-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10">
           <div>
             <div className="flex items-center gap-4 mb-8">
               <div className="h-px w-10" style={{ background: "rgba(255,255,255,0.2)" }} />
@@ -157,19 +212,12 @@ export const Projects = () => {
                 </span>
               ))}
               <br />
-              <span style={{ color: "rgba(255,255,255,0.18)" }}>
+              <Highlighter action="underline" color="#10b981">
                 {"Works".split("").map((c, i) => (
-                  <span key={i} className="proj-heading-char inline-block">
-                    {c}
-                  </span>
+                  <span key={i} className="proj-heading-char inline-block">{c}</span>
                 ))}
-                <span
-                  className="proj-heading-char inline-block"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
-                >
-                  .
-                </span>
-              </span>
+                <span className="proj-heading-char inline-block">.</span>
+              </Highlighter>
             </h2>
           </div>
           <p
@@ -185,253 +233,289 @@ export const Projects = () => {
           </p>
         </div>
 
-        {/* ── Project list ── */}
-        <div className="space-y-12">
-          {projects.map((project, i) => {
-            return (
+        {/* Panel */}
+        <div
+          className="proj-panel flex flex-col lg:flex-row"
+          style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+        >
+          {/* Left: list */}
+          <div
+            className="lg:w-1/2 flex flex-col"
+            style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}
+          >
+            {projects.map((project, i) => (
               <div
                 key={project.title}
-                className="project-item group relative overflow-hidden"
+                onMouseEnter={() => handleProjectEnter(i)}
                 style={{
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.02)",
-                  backdropFilter: "blur(8px)",
-                  transition: "all 0.5s cubic-bezier(0.32, 0, 0.67, 0)",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "rgba(255,255,255,0.2)";
-                  el.style.background = "rgba(255,255,255,0.05)";
-                  el.style.transform = "translateY(-4px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "rgba(255,255,255,0.08)";
-                  el.style.background = "rgba(255,255,255,0.02)";
-                  el.style.transform = "translateY(0)";
+                  padding: "32px 36px",
+                  borderBottom:
+                    i < projects.length - 1
+                      ? "1px solid rgba(255,255,255,0.07)"
+                      : "none",
+                  background: active === i ? "rgba(255,255,255,0.03)" : "transparent",
+                  transition: "background 0.25s ease",
+                  cursor: "default",
                 }}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
-                  {/* Image Section */}
-                  <div
-                    className="relative lg:col-span-6 overflow-hidden"
+                <div className="flex items-baseline gap-4 mb-3">
+                  <span
                     style={{
-                      aspectRatio: "16/10",
-                      background: "rgba(0,0,0,0.4)",
+                      fontFamily: "'Bebas Neue', Impact, sans-serif",
+                      fontSize: "11px",
+                      letterSpacing: "0.1em",
+                      color: "rgba(255,255,255,0.2)",
                     }}
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="proj-img w-full h-full object-cover"
-                      style={{
-                        filter: "grayscale(40%) brightness(0.5) contrast(1.2)",
-                        transition: "filter 0.7s ease, transform 0.7s ease",
-                        willChange: "transform",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.filter =
-                          "grayscale(0%) brightness(0.75) contrast(1.1)";
-                        (e.currentTarget as HTMLElement).style.transform = "scale(1.05)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.filter =
-                          "grayscale(40%) brightness(0.5) contrast(1.2)";
-                        (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-                      }}
-                      referrerPolicy="no-referrer"
-                    />
-
-                    {/* Gradient overlay */}
-                    <div
-                      className="absolute inset-0 pointer-events-none transition-all duration-700 group-hover:opacity-20"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.4) 100%)",
-                        opacity: 0.35,
-                      }}
-                    />
-
-                    {/* Index badge */}
-                    <div
-                      className="proj-index absolute top-5 left-5"
-                      style={{
-                        fontFamily: "'Bebas Neue', Impact, sans-serif",
-                        fontSize: "28px",
-                        letterSpacing: "0.05em",
-                        color: "rgba(255,255,255,0.15)",
-                        fontWeight: 900,
-                      }}
-                    >
-                      {project.index}
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div
-                    className="lg:col-span-6 p-8 md:p-12 flex flex-col justify-between"
-                    style={{ background: "rgba(8,8,8,0.4)" }}
+                    {project.index}
+                  </span>
+                  <span
+                    className="uppercase"
+                    style={{
+                      fontFamily: "'Bebas Neue', Impact, sans-serif",
+                      fontSize: "clamp(36px, 3vw, 52px)",
+                      letterSpacing: "-0.01em",
+                      color: active === i ? "#fff" : "rgba(255,255,255,0.35)",
+                      lineHeight: 1,
+                      transition: "color 0.25s ease",
+                    }}
                   >
-                    {/* Top content */}
-                    <div>
-                      {/* Meta Info */}
-                      <div className="flex items-center gap-4 mb-10">
-                        <span
-                          className="uppercase font-bold tracking-[0.3em] px-3 py-1"
-                          style={{
-                            fontFamily: "system-ui",
-                            fontSize: "9px",
-                            color: "#fff",
-                            background: "rgba(255,255,255,0.1)",
-                            borderRadius: "2px",
-                          }}
-                        >
-                          {project.category}
-                        </span>
-                        <span
-                          className="uppercase tracking-[0.2em]"
-                          style={{
-                            fontFamily: "system-ui",
-                            fontSize: "13px",
-                            color: "rgba(255,255,255,0.4)",
-                            fontWeight: 600,
-                            letterSpacing: "0.05em",
-                          }}
-                        >
-                          {project.year}
-                        </span>
-                      </div>
+                    {project.title}
+                  </span>
+                </div>
 
-                      {/* Title */}
-                      <h3
-                        className="uppercase leading-[0.85] mb-6"
-                        style={{
-                          fontFamily: "'Bebas Neue', Impact, sans-serif",
-                          fontSize: "clamp(48px, 5vw, 72px)",
-                          letterSpacing: "-0.015em",
-                          color: "#fff",
-                        }}
-                      >
-                        {project.title}
-                      </h3>
+                <div className="flex items-center gap-5 mb-3">
+                  <span
+                    style={{
+                      fontFamily: "system-ui",
+                      fontSize: "9px",
+                      fontWeight: 700,
+                      letterSpacing: "0.3em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.25)",
+                    }}
+                  >
+                    {project.category}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "system-ui",
+                      fontSize: "9px",
+                      color: "rgba(255,255,255,0.15)",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    {project.year}
+                  </span>
+                </div>
 
-                      {/* Description */}
-                      <p
-                        className="mb-8"
-                        style={{
-                          fontFamily: "'DM Sans', system-ui, sans-serif",
-                          fontSize: "14px",
-                          color: "rgba(255,255,255,0.55)",
-                          lineHeight: 1.8,
-                          maxWidth: "450px",
-                        }}
-                      >
-                        {project.description}
-                      </p>
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.35)",
+                    lineHeight: 1.7,
+                    maxWidth: "400px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {project.description}
+                </p>
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-10">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            style={{
-                              padding: "4px 12px",
-                              border: "1px solid rgba(255,255,255,0.15)",
-                              fontFamily: "system-ui",
-                              fontSize: "9px",
-                              fontWeight: 600,
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                              color: "rgba(255,255,255,0.4)",
-                              borderRadius: "2px",
-                              transition: "all 0.3s ease",
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.currentTarget as HTMLElement).style.borderColor =
-                                "rgba(255,255,255,0.4)";
-                              (e.currentTarget as HTMLElement).style.color = "#fff";
-                            }}
-                            onMouseLeave={(e) => {
-                              (e.currentTarget as HTMLElement).style.borderColor =
-                                "rgba(255,255,255,0.15)";
-                              (e.currentTarget as HTMLElement).style.color =
-                                "rgba(255,255,255,0.4)";
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Links */}
-                    <div className="flex items-center gap-6">
-                      <a
-                        href={project.link}
-                        className="group/link relative"
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
                         style={{
                           fontFamily: "system-ui",
-                          fontSize: "11px",
+                          fontSize: "8px",
                           fontWeight: 700,
-                          letterSpacing: "0.35em",
+                          letterSpacing: "0.12em",
                           textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.7)",
-                          textDecoration: "none",
-                          transition: "color 0.3s ease",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.color = "#fff";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.color =
-                            "rgba(255,255,255,0.7)";
+                          color: "rgba(255,255,255,0.2)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                          padding: "3px 8px",
+                          borderRadius: "2px",
                         }}
                       >
-                        View Project
-                        <ArrowUpRight
-                          size={14}
-                          style={{
-                            transition: "transform 0.3s ease",
-                          }}
-                          onMouseEnter={(e) => {
-                            const parent = (e.target as HTMLElement).closest("a");
-                            if (parent) {
-                              (e.target as HTMLElement).style.transform =
-                                "translate(4px, -4px)";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            (e.target as HTMLElement).style.transform = "translate(0)";
-                          }}
-                        />
-                      </a>
-                      <a
-                        href={project.github}
-                        style={{
-                          color: "rgba(255,255,255,0.4)",
-                          transition: "color 0.3s ease",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.color = "#fff";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.color =
-                            "rgba(255,255,255,0.4)";
-                        }}
-                      >
-                        <GithubIcon size={18} />
-                      </a>
-                    </div>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div
+                    className="flex items-center gap-3 shrink-0"
+                    style={{
+                      opacity: active === i ? 1 : 0,
+                      transition: "opacity 0.25s ease",
+                    }}
+                  >
+                    <a
+                      href={project.link}
+                      style={{ color: "rgba(255,255,255,0.6)", transition: "color 0.2s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#fff")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)")}
+                    >
+                      <ArrowUpRight size={16} />
+                    </a>
+                    <a
+                      href={project.github}
+                      style={{ color: "rgba(255,255,255,0.35)", transition: "color 0.2s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#fff")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)")}
+                    >
+                      <GithubIcon size={15} />
+                    </a>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Right: media */}
+          <div className="lg:w-1/2 relative" style={{ minHeight: "420px", background: "#0d0d0d" }}>
+            <div className="sticky top-0 w-full" style={{ height: "100%", minHeight: "420px" }}>
+              {/* All media layers for active project */}
+              {currentMedia.map((item, i) => (
+                <MediaSlide key={i} item={item} active={i === mediaIndex} />
+              ))}
+
+              {/* Prev / Next — only show if more than 1 */}
+              {total > 1 && (
+                <>
+                  <button
+                    onClick={prev}
+                    style={{
+                      position: "absolute",
+                      left: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "rgba(0,0,0,0.5)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      color: "rgba(255,255,255,0.7)",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "2px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "background 0.2s, color 0.2s",
+                      zIndex: 10,
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
+                      (e.currentTarget as HTMLElement).style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.5)";
+                      (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
+                    }}
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    onClick={next}
+                    style={{
+                      position: "absolute",
+                      right: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "rgba(0,0,0,0.5)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      color: "rgba(255,255,255,0.7)",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "2px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "background 0.2s, color 0.2s",
+                      zIndex: 10,
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
+                      (e.currentTarget as HTMLElement).style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.5)";
+                      (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
+                    }}
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </>
+              )}
+
+              {/* Bottom bar: label + dots */}
+              <div
+                className="absolute bottom-0 left-0 right-0 px-7 py-5 flex items-center justify-between"
+                style={{
+                  background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)",
+                  pointerEvents: "none",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "system-ui",
+                    fontSize: "9px",
+                    fontWeight: 700,
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.35)",
+                  }}
+                >
+                  {projects[active].category} — {projects[active].year}
+                </span>
+
+                {/* Dots */}
+                {total > 1 && (
+                  <div className="flex items-center gap-2" style={{ pointerEvents: "all" }}>
+                    {currentMedia.map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={(e) => { e.stopPropagation(); setMediaIndex(i); }}
+                        style={{
+                          width: i === mediaIndex ? "20px" : "6px",
+                          height: "6px",
+                          borderRadius: "3px",
+                          background: i === mediaIndex ? "#fff" : "rgba(255,255,255,0.3)",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          transition: "all 0.25s ease",
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Video badge */}
+              {currentMedia[mediaIndex]?.type === "video" && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "16px",
+                    right: "16px",
+                    fontFamily: "system-ui",
+                    fontSize: "8px",
+                    fontWeight: 700,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.5)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    padding: "3px 8px",
+                    borderRadius: "2px",
+                    background: "rgba(0,0,0,0.4)",
+                  }}
+                >
+                  Video
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Bottom CTA */}
@@ -464,12 +548,8 @@ export const Projects = () => {
               textDecoration: "none",
               transition: "color 0.4s ease",
             }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.18)";
-            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.18)"; }}
           >
             View All on GitHub
             <ArrowUpRight size={28} />

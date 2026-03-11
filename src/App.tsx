@@ -69,11 +69,11 @@ export default function App() {
             x: 0,
             y: 0,
             filter: "blur(0px)",
-            duration: 1.2,
+            duration: 1.8,
             ease: "power3.out",
             scrollTrigger: {
               trigger: section,
-              start: "top 80%",
+              start: "top 95%",
               toggleActions: "play none none none",
             },
           },

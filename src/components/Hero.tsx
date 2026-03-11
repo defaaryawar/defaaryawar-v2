@@ -41,14 +41,8 @@ export const Hero = () => {
           { y: 180, opacity: 0, duration: 1.3, stagger: 0.025, ease: "power4.out" },
           "-=2",
         )
-        .from(subtitleRef.current, { y: 30, opacity: 0, duration: 1 }, "-=0.9")
-        .fromTo(
-          ctaRef.current,
-          { y: 24, opacity: 0 },
-          // clearProps:"all" is KEY — removes inline style after anim so it stays visible
-          { y: 0, opacity: 1, duration: 0.9, clearProps: "opacity,transform" },
-          "-=0.7",
-        )
+        .from(".subtitle-char", { y: 30, opacity: 0, duration: 0.8, stagger: 0.015, ease: "power4.out" }, "-=0.9")
+        .from(".cta-char", { y: 24, opacity: 0, duration: 0.8, stagger: 0.01, ease: "power4.out", clearProps: "opacity,transform" }, "-=0.6")
         .from(".side-label", { opacity: 0, duration: 1 }, "-=0.6")
         .from(".scroll-hint", { opacity: 0, y: 10, duration: 0.8 }, "-=0.4");
 
@@ -82,6 +76,12 @@ export const Hero = () => {
           },
         },
       );
+
+      // Cleanup on unmount
+      return () => {
+        tl.kill();
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
     },
     { scope: container },
   );
@@ -321,8 +321,11 @@ export const Hero = () => {
               letterSpacing: "0.01em",
             }}
           >
-            Architecting high-performance digital interfaces with a focus on precision, motion, and
-            technical excellence.
+            {"Architecting high-performance digital interfaces with a focus on precision, motion, and technical excellence.".split("").map((char, i) => (
+              <span key={i} className={`subtitle-char inline-block${char === " " ? " w-[0.25em]" : ""}`}>
+                {char !== " " ? char : ""}
+              </span>
+            ))}
           </p>
 
           {/* CTA — NO initial opacity:0 inline style, let GSAP handle it entirely */}
@@ -345,7 +348,13 @@ export const Hero = () => {
                 textDecoration: "none",
               }}
             >
-              <span style={{ position: "relative", zIndex: 1 }}>Explore Work</span>
+              <span style={{ position: "relative", zIndex: 1, display: "inline-flex", gap: "2px" }}>
+                {"Explore Work".split("").map((char, i) => (
+                  <span key={i} className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}>
+                    {char !== " " ? char : ""}
+                  </span>
+                ))}
+              </span>
               <ArrowRight
                 size={14}
                 style={{ position: "relative", zIndex: 1, transition: "transform 0.3s ease" }}
@@ -378,6 +387,7 @@ export const Hero = () => {
                 alignItems: "center",
                 transition: "border-color 0.3s ease, color 0.3s ease",
                 textDecoration: "none",
+                gap: "2px",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
@@ -388,7 +398,11 @@ export const Hero = () => {
                 e.currentTarget.style.color = "rgba(255,255,255,0.5)";
               }}
             >
-              Get In Touch
+              {"Get In Touch".split("").map((char, i) => (
+                <span key={i} className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}>
+                  {char !== " " ? char : ""}
+                </span>
+              ))}
             </a>
 
             <div className="flex items-center gap-5 sm:ml-4 sm:mt-1">
