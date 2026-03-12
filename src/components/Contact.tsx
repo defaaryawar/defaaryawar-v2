@@ -9,31 +9,31 @@ export const Contact = () => {
   useGSAP(() => {
     // Horizontal sliding reveal
     gsap.fromTo(".contact-left", 
-      { x: -150, opacity: 0 },
+      { x: -50, opacity: 0 },
       {
         x: 0,
         opacity: 1,
-        duration: 1.5,
+        duration: 0.9,
         ease: "power3.out",
         scrollTrigger: {
           trigger: container.current,
           start: "top 85%",
-          toggleActions: "play none none reverse"
+          toggleActions: "play none none none"
         }
       }
     );
 
     gsap.fromTo(".contact-right", 
-      { x: 150, opacity: 0 },
+      { x: 50, opacity: 0 },
       {
         x: 0,
         opacity: 1,
-        duration: 1.5,
+        duration: 0.9,
         ease: "power3.out",
         scrollTrigger: {
           trigger: container.current,
           start: "top 85%",
-          toggleActions: "play none none reverse"
+          toggleActions: "play none none none"
         }
       }
     );
@@ -45,15 +45,15 @@ export const Contact = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
             <div className="contact-left">
-              <div className="flex items-center gap-3 text-white/40 mb-8">
-                <div className="w-8 h-px bg-white/20" />
+              <div className="flex items-center gap-3 text-white/50 mb-8">
+                <div className="w-8 h-px bg-white/30" />
                 <span className="uppercase tracking-[0.4em] text-[10px] font-bold">Inquiry</span>
               </div>
               <h2 className="text-5xl md:text-7xl font-bold mb-10 leading-[1.1] tracking-tighter uppercase">
                 Let's Start a <br />
-                <span className="text-white/20">Conversation.</span>
+                <span className="text-white/35">Conversation.</span>
               </h2>
-              <p className="text-xl text-white/40 font-light mb-16 leading-relaxed tracking-tight max-w-md">
+              <p className="text-xl text-white/55 font-light mb-16 leading-relaxed tracking-tight max-w-md">
                 Currently accepting new projects and technical consultations. Reach out to discuss your vision.
               </p>
 
@@ -66,7 +66,7 @@ export const Contact = () => {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/20 uppercase font-bold tracking-widest mb-1">Direct Email</p>
+                    <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest mb-1">Direct Email</p>
                     <p className="text-xl font-bold tracking-tight">defadefa1313@gmail.com</p>
                   </div>
                 </a>
@@ -80,7 +80,7 @@ export const Contact = () => {
                     <a 
                       key={i}
                       href={social.href}
-                      className="w-16 h-16 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all duration-500"
+                      className="w-16 h-16 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-white/30 transition-all duration-500"
                     >
                       <social.icon size={24} />
                     </a>
@@ -93,15 +93,15 @@ export const Contact = () => {
               <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 ml-1">Full Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 ml-1">Full Name</label>
                     <input 
                       type="text" 
                       placeholder="John Doe"
-                      className="w-full px-8 py-5 bg-white/2 border border-white/10 focus:border-white focus:outline-none transition-all duration-500 placeholder:text-white/10"
+                      className="w-full px-8 py-5 bg-white/2 border border-white/10 focus:border-white focus:outline-none transition-all duration-500 placeholder:text-white/20"
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 ml-1">Email Address</label>
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 ml-1">Email Address</label>
                     <input 
                       type="email" 
                       placeholder="john@example.com"
@@ -110,7 +110,7 @@ export const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 ml-1">Subject</label>
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 ml-1">Subject</label>
                   <input 
                     type="text" 
                     placeholder="Project Inquiry"
@@ -118,7 +118,7 @@ export const Contact = () => {
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 ml-1">Message</label>
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 ml-1">Message</label>
                   <textarea 
                     rows={6}
                     placeholder="Tell me about your project requirements..."

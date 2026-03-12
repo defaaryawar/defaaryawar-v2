@@ -3,6 +3,7 @@ import { Code2, Zap } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Highlighter } from "./ui/Highlighter";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,19 +14,17 @@ export const About = () => {
 
   useGSAP(
     () => {
-      // Left column slides in — play once, no reverse
+      // Simple fade-in for left and right sections
       gsap.fromTo(
         ".about-left",
-        { x: -80, opacity: 0 },
+        { opacity: 0 },
         {
-          x: 0,
           opacity: 1,
-          duration: 1.4,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: container.current,
             start: "top 80%",
-            // once:true equivalent — play only forward
             toggleActions: "play none none none",
           },
         },
@@ -33,12 +32,11 @@ export const About = () => {
 
       gsap.fromTo(
         ".about-right",
-        { x: 80, opacity: 0 },
+        { opacity: 0 },
         {
-          x: 0,
           opacity: 1,
-          duration: 1.4,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: container.current,
             start: "top 80%",
@@ -47,7 +45,7 @@ export const About = () => {
         },
       );
 
-      // Stats count up — play once
+      // Stats count up — keep this as it's nice
       gsap.utils.toArray<HTMLElement>(".stat-num").forEach((el) => {
         const target = parseInt(el.getAttribute("data-val") || "0");
         gsap.fromTo(
@@ -55,12 +53,12 @@ export const About = () => {
           { innerText: 0 },
           {
             innerText: target,
-            duration: 1.8,
+            duration: 1,
             ease: "power2.out",
             snap: { innerText: 1 },
             scrollTrigger: {
               trigger: container.current,
-              start: "top 65%",
+              start: "top 70%",
               toggleActions: "play none none none",
             },
             onUpdate() {
@@ -68,33 +66,6 @@ export const About = () => {
             },
           },
         );
-      });
-
-      // Heading lines reveal
-      gsap.fromTo(
-        ".about-heading-line",
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 82%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
-
-      // Floating card bob
-      gsap.to(".float-card", {
-        y: -8,
-        duration: 2.5,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
       });
     },
     { scope: container },
@@ -104,7 +75,7 @@ export const About = () => {
     <section
       ref={container}
       id="about"
-      className="relative py-36 overflow-hidden"
+      className="relative py-36 overflow-hidden pin-section"
       style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       {/* BG section number */}
@@ -136,14 +107,16 @@ export const About = () => {
 
             <div className="overflow-hidden mb-2">
               <h2
-                className="about-heading-line uppercase leading-[0.9]"
+                className="about-heading-line uppercase leading-[0.9] text-black"
                 style={{
                   fontFamily: "'Bebas Neue', Impact, sans-serif",
                   fontSize: "clamp(52px, 7vw, 96px)",
                   letterSpacing: "-0.01em",
                 }}
               >
-                Merging Design
+                <Highlighter action="highlight" color="#EFEFEF">
+                  Merging Design
+                </Highlighter>
               </h2>
             </div>
             <div className="overflow-hidden mb-12">
@@ -153,7 +126,7 @@ export const About = () => {
                   fontFamily: "'Bebas Neue', Impact, sans-serif",
                   fontSize: "clamp(52px, 7vw, 96px)",
                   letterSpacing: "-0.01em",
-                  color: "rgba(255,255,255,0.18)",
+                  color: "rgba(255,255,255,0.35)",
                 }}
               >
                 with Engineering.
@@ -171,19 +144,19 @@ export const About = () => {
               }}
             >
               <p>
-                I'm a frontend-focused technical architect who enjoys
-                turning complex systems into fast, intuitive interfaces.
+                I'm a frontend-focused technical architect who enjoys turning complex systems into
+                fast, intuitive interfaces.
               </p>
               <p>
-                Working mostly in the React ecosystem, I build modern web experiences 
-                that balance performance, scalability, and thoughtful motion.
+                Working mostly in the React ecosystem, I build modern web experiences that balance
+                performance, scalability, and thoughtful motion.
               </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-0">
               {[
-                { val: 3, label: "Years of Craft" },
+                { val: 2, label: "Years of Craft" },
                 { val: 20, label: "Projects Shipped" },
                 { val: 8, label: "Tech Mastered" },
               ].map(({ val, label }, i) => (

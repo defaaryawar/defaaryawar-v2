@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -14,6 +15,16 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
     { name: 'About', href: '#about' },
     { name: 'Tech', href: '#tech' },
@@ -23,6 +34,7 @@ export const Navbar = () => {
   ];
 
   return (
+    <>
     <nav 
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b",
@@ -63,12 +75,41 @@ export const Navbar = () => {
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+    </nav>
 
-      {/* Mobile Menu Overlay */}
+    {/* Mobile Menu Overlay — rendered via Portal to escape stacking context */}
+    {ReactDOM.createPortal(
       <div className={cn(
-        "fixed inset-0 bg-brand-bg z-100 flex flex-col items-center justify-center transition-all duration-700 md:hidden overflow-hidden",
-        isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
-      )}>
+        "fixed inset-0 bg-brand-bg text-white flex flex-col items-center justify-center transition-all duration-500 md:hidden overflow-hidden",
+        isMobileMenuOpen ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible pointer-events-none"
+      )}
+      style={{ zIndex: 9998 }}
+      >
+        {/* Active state CSS for mobile tap feedback */}
+        <style>{`
+          .mobile-nav-link {
+            -webkit-tap-highlight-color: transparent;
+          }
+          .mobile-nav-link:active {
+            background: rgba(255,255,255,0.05);
+            transform: scale(0.98);
+          }
+          .mobile-nav-link:active .mobile-nav-num {
+            color: #fff;
+          }
+          .mobile-nav-link:active .mobile-nav-name {
+            transform: translateX(12px);
+          }
+          .mobile-nav-link:active .mobile-nav-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+          }
+          .mobile-nav-cta:active {
+            background: #d4d4d8;
+            transform: scale(0.97);
+          }
+        `}</style>
+
         {/* Background Decorative Text */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[20vw] font-black text-white/2 uppercase tracking-tighter leading-none rotate-90 md:rotate-0">
@@ -78,7 +119,7 @@ export const Navbar = () => {
 
         {/* Close Button */}
         <button 
-          className="absolute top-8 right-6 text-white p-2 z-50 hover:rotate-90 transition-transform duration-500"
+          className="absolute top-8 right-6 text-white p-2 z-50 active:rotate-90 transition-transform duration-500"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           <X size={32} />
@@ -91,16 +132,16 @@ export const Navbar = () => {
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={cn(
-                  "group relative w-full py-6 flex items-center justify-between border-b border-white/5 transition-all duration-500",
+                  "mobile-nav-link relative w-full py-6 flex items-center justify-between border-b border-white/5 transition-all duration-300",
                   isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                 )}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <span className="text-xs font-mono text-white/20 group-hover:text-white transition-colors">0{i + 1}</span>
-                <span className="text-4xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500">
+                <span className="mobile-nav-num text-xs font-mono text-white/30 transition-colors duration-300">0{i + 1}</span>
+                <span className="mobile-nav-name text-4xl font-black uppercase tracking-tighter transition-transform duration-300">
                   {link.name}
                 </span>
-                <div className="w-2 h-2 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="mobile-nav-arrow text-white/30 text-lg transition-all duration-300">→</span>
               </a>
             </React.Fragment>
           ))}
@@ -109,7 +150,7 @@ export const Navbar = () => {
             href="#contact"
             onClick={() => setIsMobileMenuOpen(false)}
             className={cn(
-              "mt-12 w-full py-6 bg-white text-black text-center text-xs font-black uppercase tracking-[0.4em] hover:bg-zinc-200 transition-all duration-700",
+              "mobile-nav-cta mt-12 w-full py-6 bg-white text-black text-center text-xs font-black uppercase tracking-[0.4em] transition-all duration-300",
               isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
             )}
             style={{ transitionDelay: `${navLinks.length * 100}ms` }}
@@ -130,7 +171,9 @@ export const Navbar = () => {
             © 2024
           </div>
         </div>
-      </div>
-    </nav>
+      </div>,
+      document.body
+    )}
+    </>
   );
 };
