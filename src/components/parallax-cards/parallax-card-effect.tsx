@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/lib/utils";
 import { motion, useTransform } from "motion/react";
 
 interface CardProps {
@@ -19,7 +18,7 @@ export default function ParallaxCardEffect({
   progress,
   range,
   targetScale,
-  children
+  children,
 }: CardProps) {
   const scale = useTransform(progress, range, [1, targetScale]);
 
@@ -28,9 +27,10 @@ export default function ParallaxCardEffect({
       <motion.div
         style={{
           scale,
-          top: `calc(-5vh + ${id * 30}px)`
+          top: `calc(-5vh + ${id * 30}px)`,
         }}
-        className={className}>
+        className={className}
+      >
         {children}
       </motion.div>
     </div>
