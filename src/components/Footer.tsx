@@ -58,24 +58,30 @@ export const Footer = () => {
     { label: "Contact", href: "#contact" },
   ];
 
-
-
   return (
     <footer
       ref={container}
       className="relative z-[2] min-h-screen flex flex-col overflow-hidden"
       style={{ background: "#050505" }}
     >
+      <style>{`
+        .footer-bg-parallax {
+          background-image: url('${FOOTER_BG}');
+        }
+        @media (max-width: 768px) {
+          .footer-bg-parallax {
+            background-image: url('/images/photo-profil/defaaryawar.png');
+            background-position: top center !important;
+          }
+        }
+      `}</style>
       {/* Background image with parallax */}
       <div
         ref={bgRef}
-        className="absolute inset-0 pointer-events-none"
+        className="footer-bg-parallax absolute inset-0 pointer-events-none"
         style={{
           top: "60px",
           bottom: "-60px",
-          backgroundImage: FOOTER_BG
-            ? `url(${FOOTER_BG})`
-            : "linear-gradient(135deg, #0a0a0a 0%, #111 40%, #0d0d0d 100%)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -87,8 +93,8 @@ export const Footer = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.5) 35%, rgba(5,5,5,0.5) 65%, rgba(5,5,5,0.92) 100%),
-            linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.3) 100%)
+            linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.4) 35%, rgba(5,5,5,0.4) 65%, rgba(5,5,5,0.92) 100%),
+            linear-gradient(to right, rgba(0,0,0,0.2) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)
           `,
         }}
       />
@@ -107,7 +113,7 @@ export const Footer = () => {
         className="absolute top-0 left-0 right-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent)",
+            "linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.15) 70%, transparent)",
         }}
       />
 
@@ -124,8 +130,8 @@ export const Footer = () => {
           }}
         >
           Defa
-          <span style={{ color: "rgba(255,255,255,0.12)" }}> Wardhana</span>
-          <span style={{ color: "rgba(255,255,255,0.3)" }}>.</span>
+          <span style={{ color: "rgba(255,255,255,0.4)" }}> Wardhana</span>
+          <span style={{ color: "rgba(255,255,255,0.6)" }}>.</span>
         </h2>
 
         {/* Tagline */}
@@ -134,7 +140,7 @@ export const Footer = () => {
           style={{
             fontFamily: "'DM Sans', system-ui, sans-serif",
             fontSize: "clamp(14px, 1.2vw, 18px)",
-            color: "rgba(255,255,255,0.25)",
+            color: "rgba(255,255,255,0.5)",
             lineHeight: 1.7,
             letterSpacing: "0.01em",
           }}
@@ -149,7 +155,7 @@ export const Footer = () => {
             <a
               key={label}
               href={href}
-              className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20 hover:text-white transition-colors duration-400"
+              className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors duration-400"
               style={{
                 fontFamily: "system-ui",
                 textDecoration: "none",
@@ -164,7 +170,7 @@ export const Footer = () => {
         <div
           className="w-full max-w-xs h-px mb-8"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
           }}
         />
 
@@ -177,7 +183,7 @@ export const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className="w-11 h-11 flex items-center justify-center border border-white/8 text-white/20 hover:text-white hover:border-white/30 transition-all duration-500 [&>svg]:w-5 [&>svg]:h-5"
+              className="w-11 h-11 flex items-center justify-center border border-white/20 text-white/50 hover:text-white hover:border-white/50 transition-all duration-500 [&>svg]:w-5 [&>svg]:h-5"
               style={{ textDecoration: "none" }}
             >
               {icon}
@@ -189,7 +195,7 @@ export const Footer = () => {
       {/* Copyright — pinned to bottom */}
       <div className="relative z-10 py-8 text-center">
         <p
-          className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/10"
+          className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/30"
           style={{ fontFamily: "system-ui" }}
         >
           © {new Date().getFullYear()} Defano Arya Wardhana. All Rights Reserved.

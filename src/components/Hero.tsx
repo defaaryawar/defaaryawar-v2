@@ -20,21 +20,12 @@ export const Hero = () => {
 
   useGSAP(
     () => {
-      // ── INTRO TIMELINE ──────────────────────────────────────
-      // clearProps ensures styles are cleaned up after animation
-      // so elements remain visible and don't get stuck
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
       tl.fromTo(
         bgPhotoRef.current,
         { opacity: 0, scale: 1.08, filter: "brightness(0)" },
-        {
-          opacity: 1,
-          scale: 1,
-          filter: "brightness(1)",
-          duration: 2.8,
-          ease: "power3.out",
-        },
+        { opacity: 1, scale: 1, filter: "brightness(1)", duration: 2.8, ease: "power3.out" },
       )
         .from(
           ".hero-char",
@@ -61,7 +52,6 @@ export const Hero = () => {
         .from(".side-label", { opacity: 0, duration: 1 }, "-=0.6")
         .from(".scroll-hint", { opacity: 0, y: 10, duration: 0.8 }, "-=0.4");
 
-      // ── SCROLL PARALLAX (scrub only, no pin) ────────────────
       const st = {
         trigger: container.current,
         start: "top top",
@@ -75,7 +65,6 @@ export const Hero = () => {
       gsap.to(watermarkLeftRef.current, { x: -280, ease: "none", scrollTrigger: st });
       gsap.to(watermarkRightRef.current, { x: 280, ease: "none", scrollTrigger: st });
 
-      // Fade subtitle + cta as scroll — reverse when scroll back up
       gsap.fromTo(
         [subtitleRef.current, ctaRef.current],
         { y: 0, opacity: 1 },
@@ -92,7 +81,6 @@ export const Hero = () => {
         },
       );
 
-      // Cleanup on unmount
       return () => {
         tl.kill();
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -162,16 +150,37 @@ export const Hero = () => {
         />
       </div>
 
-      {/* Watermarks */}
+      {/* ── Watermarks ──────────────────────────────────────────────────────
+          Mobile  : font lebih besar (28vw), posisi vertikal tengah layar
+          Desktop : font 16vw, posisi atas & bawah
+      ─────────────────────────────────────────────────────────────────── */}
+      <style>{`
+        .wm-top {
+          top: 8%;
+          left: -1%;
+          font-size: 28vw;
+        }
+        .wm-bottom {
+          bottom: -4%;
+          right: -1%;
+          font-size: 28vw;
+        }
+        @media (min-width: 768px) {
+          .wm-top {
+            top: -2%;
+            font-size: 16vw;
+          }
+          .wm-bottom {
+            bottom: -4%;
+            font-size: 16vw;
+          }
+        }
+      `}</style>
+
       <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-        <div
-          ref={watermarkLeftRef}
-          className="absolute"
-          style={{ top: "5%", left: "-1%", willChange: "transform" }}
-        >
+        <div ref={watermarkLeftRef} className="wm-top absolute" style={{ willChange: "transform" }}>
           <span
             style={{
-              fontSize: "16vw",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               color: "rgba(255,255,255,0.04)",
@@ -186,12 +195,11 @@ export const Hero = () => {
         </div>
         <div
           ref={watermarkRightRef}
-          className="absolute"
-          style={{ bottom: "4%", right: "-1%", willChange: "transform" }}
+          className="wm-bottom absolute"
+          style={{ willChange: "transform" }}
         >
           <span
             style={{
-              fontSize: "16vw",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               color: "rgba(255,255,255,0.04)",
@@ -263,7 +271,7 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Name — use hero-char class (not "char" to avoid conflicts with other sections) */}
+          {/* Name */}
           <h1
             className="mb-12 leading-[0.86] uppercase select-none"
             style={{ fontFamily: "'Bebas Neue', 'Anton', Impact, sans-serif" }}
@@ -348,7 +356,7 @@ export const Hero = () => {
               ))}
           </p>
 
-          {/* CTA — NO initial opacity:0 inline style, let GSAP handle it entirely */}
+          {/* CTA */}
           <div ref={ctaRef} className="flex flex-col sm:flex-row items-start gap-6">
             <a
               href="#projects"
