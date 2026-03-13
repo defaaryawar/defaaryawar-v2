@@ -115,7 +115,7 @@ export const About = () => {
                 }}
               >
                 <Highlighter action="highlight" color="#EFEFEF">
-                  Merging Design
+                  Bridging Code
                 </Highlighter>
               </h2>
             </div>
@@ -129,7 +129,7 @@ export const About = () => {
                   color: "rgba(255,255,255,0.35)",
                 }}
               >
-                with Engineering.
+                &amp; Networks.
               </h2>
             </div>
 
@@ -144,12 +144,10 @@ export const About = () => {
               }}
             >
               <p>
-                I'm a frontend-focused technical architect who enjoys turning complex systems into
-                fast, intuitive interfaces.
+                I am a Informatics Engineering graduate from Budi Luhur University with a background in Computer Network Engineering from SMK Bina Informatika.
               </p>
               <p>
-                Working mostly in the React ecosystem, I build modern web experiences that balance
-                performance, scalability, and thoughtful motion.
+                As a versatile IT professional, I build scalable modern web applications while actively expanding my expertise in network infrastructure and troubleshooting.
               </p>
             </div>
 
@@ -274,7 +272,7 @@ export const About = () => {
                     color: "#fff",
                   }}
                 >
-                  Technical Architecture
+                  FullStack Dev
                 </p>
               </div>
             </div>
@@ -324,7 +322,7 @@ export const About = () => {
                     color: "#fff",
                   }}
                 >
-                  Motion & Performance
+                  IT & Networking
                 </p>
               </div>
             </div>

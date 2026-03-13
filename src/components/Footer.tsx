@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { Github, Linkedin, Twitter, ArrowUp } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { SOCIAL_LINKS } from "@/config/socials";
 
 // ── Change this to your own background image path ──
 const FOOTER_BG = "/images/photo-profil/defaaryawar-landscape.png";
@@ -50,10 +50,6 @@ export const Footer = () => {
     { scope: container },
   );
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const navLinks = [
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
@@ -62,16 +58,12 @@ export const Footer = () => {
     { label: "Contact", href: "#contact" },
   ];
 
-  const socials = [
-    { Icon: Github, href: "#", label: "GitHub" },
-    { Icon: Linkedin, href: "#", label: "LinkedIn" },
-    { Icon: Twitter, href: "#", label: "Twitter" },
-  ];
+
 
   return (
     <footer
       ref={container}
-      className="relative z-[2] min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative z-[2] min-h-screen flex flex-col overflow-hidden"
       style={{ background: "#050505" }}
     >
       {/* Background image with parallax */}
@@ -119,31 +111,8 @@ export const Footer = () => {
         }}
       />
 
-      {/* Content */}
-      <div className="footer-content relative z-10 container mx-auto px-8 md:px-16 py-8 flex flex-col items-center text-center">
-        {/* Back to top */}
-        <button
-          onClick={scrollToTop}
-          className="group mb-16 flex flex-col items-center gap-3 cursor-pointer"
-          style={{ background: "none", border: "none" }}
-        >
-          <div
-            className="w-12 h-12 flex items-center justify-center border border-white/10 group-hover:border-white/40 transition-all duration-500"
-            style={{ borderRadius: "50%" }}
-          >
-            <ArrowUp
-              size={18}
-              className="text-white/30 group-hover:text-white transition-colors duration-500"
-            />
-          </div>
-          <span
-            className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/15 group-hover:text-white/40 transition-colors duration-500"
-            style={{ fontFamily: "system-ui" }}
-          >
-            Back to top
-          </span>
-        </button>
-
+      {/* Content — centered vertically with flex-1 */}
+      <div className="footer-content relative z-10 container mx-auto px-8 md:px-16 flex-1 flex flex-col items-center justify-center text-center">
         {/* Brand name */}
         <h2
           className="uppercase leading-[0.9] mb-4 select-none"
@@ -161,7 +130,7 @@ export const Footer = () => {
 
         {/* Tagline */}
         <p
-          className="mb-14 max-w-md"
+          className="mb-8 max-w-md"
           style={{
             fontFamily: "'DM Sans', system-ui, sans-serif",
             fontSize: "clamp(14px, 1.2vw, 18px)",
@@ -175,7 +144,7 @@ export const Footer = () => {
         </p>
 
         {/* Navigation */}
-        <nav className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-14">
+        <nav className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-8">
           {navLinks.map(({ label, href }) => (
             <a
               key={label}
@@ -193,28 +162,32 @@ export const Footer = () => {
 
         {/* Divider */}
         <div
-          className="w-full max-w-xs h-px mb-14"
+          className="w-full max-w-xs h-px mb-8"
           style={{
             background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
           }}
         />
 
         {/* Social icons */}
-        <div className="flex items-center gap-6 mb-16">
-          {socials.map(({ Icon, href, label }) => (
+        <div className="flex items-center gap-5">
+          {SOCIAL_LINKS.map(({ icon, href, label }) => (
             <a
               key={label}
               href={href}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label={label}
-              className="w-11 h-11 flex items-center justify-center border border-white/8 text-white/20 hover:text-white hover:border-white/30 transition-all duration-500"
+              className="w-11 h-11 flex items-center justify-center border border-white/8 text-white/20 hover:text-white hover:border-white/30 transition-all duration-500 [&>svg]:w-5 [&>svg]:h-5"
               style={{ textDecoration: "none" }}
             >
-              <Icon size={18} />
+              {icon}
             </a>
           ))}
         </div>
+      </div>
 
-        {/* Copyright */}
+      {/* Copyright — pinned to bottom */}
+      <div className="relative z-10 py-8 text-center">
         <p
           className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/10"
           style={{ fontFamily: "system-ui" }}

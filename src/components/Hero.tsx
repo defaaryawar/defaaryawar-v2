@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { ArrowRight, Github, Linkedin, Twitter } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -41,8 +41,23 @@ export const Hero = () => {
           { y: 180, opacity: 0, duration: 1.3, stagger: 0.025, ease: "power4.out" },
           "-=2",
         )
-        .from(".subtitle-char", { y: 20, opacity: 0, duration: 0.5, stagger: 0.008, ease: "power4.out" }, "-=1.2")
-        .from(".cta-char", { y: 16, opacity: 0, duration: 0.5, stagger: 0.006, ease: "power4.out", clearProps: "opacity,transform" }, "-=0.4")
+        .from(
+          ".subtitle-char",
+          { y: 30, opacity: 0, duration: 0.8, stagger: 0.015, ease: "power4.out" },
+          "-=0.9",
+        )
+        .from(
+          ".cta-char",
+          {
+            y: 24,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.01,
+            ease: "power4.out",
+            clearProps: "opacity,transform",
+          },
+          "-=0.6",
+        )
         .from(".side-label", { opacity: 0, duration: 1 }, "-=0.6")
         .from(".scroll-hint", { opacity: 0, y: 10, duration: 0.8 }, "-=0.4");
 
@@ -80,7 +95,7 @@ export const Hero = () => {
       // Cleanup on unmount
       return () => {
         tl.kill();
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       };
     },
     { scope: container },
@@ -152,7 +167,7 @@ export const Hero = () => {
         <div
           ref={watermarkLeftRef}
           className="absolute"
-          style={{ top: "5%", left: "-6%", willChange: "transform" }}
+          style={{ top: "5%", left: "-1%", willChange: "transform" }}
         >
           <span
             style={{
@@ -172,7 +187,7 @@ export const Hero = () => {
         <div
           ref={watermarkRightRef}
           className="absolute"
-          style={{ bottom: "4%", right: "-8%", willChange: "transform" }}
+          style={{ bottom: "4%", right: "-1%", willChange: "transform" }}
         >
           <span
             style={{
@@ -201,7 +216,7 @@ export const Hero = () => {
             }}
           />
           <span
-            className="text-[9px] font-bold uppercase text-white/20 select-none tracking-[0.55em]"
+            className="text-[9px] font-bold uppercase text-white/20 select-none tracking-[0.45em]"
             style={{
               writingMode: "vertical-rl",
               textOrientation: "mixed",
@@ -209,7 +224,7 @@ export const Hero = () => {
               fontFamily: "system-ui",
             }}
           >
-            Frontend Developer
+            FullStack Developer
           </span>
           <div
             className="w-px h-20"
@@ -321,11 +336,16 @@ export const Hero = () => {
               letterSpacing: "0.01em",
             }}
           >
-            {"Architecting high-performance digital interfaces with a focus on precision, motion, and technical excellence.".split("").map((char, i) => (
-              <span key={i} className={`subtitle-char inline-block${char === " " ? " w-[0.25em]" : ""}`}>
-                {char !== " " ? char : ""}
-              </span>
-            ))}
+            {"Building robust full-stack applications and reliable networks with precision and technical excellence."
+              .split("")
+              .map((char, i) => (
+                <span
+                  key={i}
+                  className={`subtitle-char inline-block${char === " " ? " w-[0.25em]" : ""}`}
+                >
+                  {char !== " " ? char : ""}
+                </span>
+              ))}
           </p>
 
           {/* CTA — NO initial opacity:0 inline style, let GSAP handle it entirely */}
@@ -350,7 +370,10 @@ export const Hero = () => {
             >
               <span style={{ position: "relative", zIndex: 1, display: "inline-flex", gap: "2px" }}>
                 {"Explore Work".split("").map((char, i) => (
-                  <span key={i} className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}>
+                  <span
+                    key={i}
+                    className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}
+                  >
                     {char !== " " ? char : ""}
                   </span>
                 ))}
@@ -399,29 +422,14 @@ export const Hero = () => {
               }}
             >
               {"Get In Touch".split("").map((char, i) => (
-                <span key={i} className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}>
+                <span
+                  key={i}
+                  className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}
+                >
                   {char !== " " ? char : ""}
                 </span>
               ))}
             </a>
-
-            <div className="flex items-center gap-5 sm:ml-4 sm:mt-1">
-              {[
-                { Icon: Github, href: "#" },
-                { Icon: Linkedin, href: "#" },
-                { Icon: Twitter, href: "#" },
-              ].map(({ Icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  style={{ color: "rgba(255,255,255,0.18)", transition: "color 0.3s ease" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.8)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.18)")}
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
           </div>
         </div>
       </div>

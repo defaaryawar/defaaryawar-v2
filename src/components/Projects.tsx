@@ -82,11 +82,11 @@ const MediaModal = ({
     setIdx((v) => (v + 1) % total);
   };
 
-  return ReactDOM.createPortal(
+  return (
     <div
       onClick={onClose}
-      className="fixed inset-0 flex flex-col items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.95)", padding: "16px", zIndex: 9999 }}
+      className="fixed inset-0 z-[999] flex flex-col items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.95)", padding: "16px" }}
     >
       {/* Top bar */}
       <div
@@ -271,8 +271,7 @@ const MediaModal = ({
           ← → to navigate · esc to close
         </p>
       )}
-    </div>,
-    document.body,
+    </div>
   );
 };
 
@@ -295,9 +294,11 @@ const MediaCarousel = ({ media }: { media: MediaItem[] }) => {
 
   return (
     <>
-      {modalOpen && (
-        <MediaModal media={media} initialIdx={idx} onClose={() => setModalOpen(false)} />
-      )}
+      {modalOpen &&
+        ReactDOM.createPortal(
+          <MediaModal media={media} initialIdx={idx} onClose={() => setModalOpen(false)} />,
+          document.body,
+        )}
 
       {/* 
         Mobile  : aspect-ratio 16/9 (proporsional, tidak fixed px)
@@ -313,7 +314,7 @@ const MediaCarousel = ({ media }: { media: MediaItem[] }) => {
           @media (min-width: 768px) {
             .media-carousel-outer {
               padding-bottom: 0 !important;
-              height: 360px !important;
+              height: 420px !important;
             }
           }
         `}</style>
@@ -674,7 +675,7 @@ export const Projects = () => {
                           fontFamily: "'Bebas Neue', Impact, sans-serif",
                           fontSize: "clamp(22px, 3vw, 44px)",
                           letterSpacing: "-0.01em",
-                          color: isOpen ? "#fff" : "rgba(255, 255, 255, 0.67)",
+                          color: isOpen ? "#fff" : "rgba(255,255,255,0.5)",
                           lineHeight: 1,
                           transition: "color 0.25s ease",
                         }}
@@ -750,14 +751,7 @@ export const Projects = () => {
                     </div>
 
                     {/* Info */}
-                    <div
-                      className="w-full md:w-1/2 flex flex-col justify-between"
-                      style={{
-                        padding: "20px 16px",
-                        borderTop: "1px solid rgba(255,255,255,0.07)",
-                        background: "rgba(255,255,255,0.01)",
-                      }}
-                    >
+                    <div className="w-full md:w-1/2 flex flex-col justify-between">
                       <style>{`
                         @media (min-width: 768px) {
                           .proj-info-${i} {
@@ -807,14 +801,14 @@ export const Projects = () => {
                               <span
                                 key={tag}
                                 style={{
-                                  fontSize: "8px",
+                                  fontSize: "11px",
                                   fontWeight: 700,
-                                  letterSpacing: "0.12em",
+                                  letterSpacing: "0.08em",
                                   textTransform: "uppercase",
                                   color: "rgba(255,255,255,0.6)",
                                   border: "1px solid rgba(255,255,255,0.15)",
-                                  padding: "4px 10px",
-                                  borderRadius: 2,
+                                  padding: "5px 14px",
+                                  borderRadius: 3,
                                 }}
                               >
                                 {tag}

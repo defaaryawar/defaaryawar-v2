@@ -44,7 +44,7 @@ const technologies = [
   {
     name: "React",
     icon: "https://cdn.simpleicons.org/react/61DAFB",
-    category: "UI Library",
+    category: "Frontend",
     desc: "Component-based UIs",
   },
   {
@@ -66,16 +66,16 @@ const technologies = [
     desc: "Utility-first CSS",
   },
   {
-    name: "Node.js",
-    icon: "https://cdn.simpleicons.org/nodedotjs/339933",
+    name: "NestJS",
+    icon: "https://cdn.simpleicons.org/nestjs/E0234E",
     category: "Backend",
-    desc: "Server-side runtime",
+    desc: "Node.js framework",
   },
   {
-    name: "React Query",
-    icon: "https://cdn.simpleicons.org/reactquery/FF4154",
-    category: "Data Fetching",
-    desc: "Async state management",
+    name: "Golang",
+    icon: "https://cdn.simpleicons.org/go/00ADD8",
+    category: "Language",
+    desc: "Compiled backend",
   },
   {
     name: "Docker",
@@ -93,12 +93,11 @@ const technologies = [
 
 // Accent colors per category
 const categoryColors: Record<string, string> = {
-  "UI Library": "#61DAFB",
+  Frontend: "#61DAFB",
   Framework: "#ffffff",
   Language: "#3178C6",
   Styling: "#06B6D4",
-  Backend: "#339933",
-  "Data Fetching": "#FF4154",
+  Backend: "#E0234E",
   DevOps: "#2496ED",
   Database: "#4169E1",
 };
@@ -147,20 +146,24 @@ export const TechStack = () => {
     () => {
       gsap.fromTo(
         ".tech-title-line",
-        { opacity: 0 },
+        { yPercent: 100, opacity: 0 },
         {
+          yPercent: 0,
           opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
+          duration: 1,
+          stagger: 0.1,
+          ease: "expo.out",
           scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
         },
       );
       gsap.fromTo(
         ".tech-card",
-        { opacity: 0 },
+        { y: 16, opacity: 0 },
         {
+          y: 0,
           opacity: 1,
-          duration: 0.6,
+          duration: 0.5,
+          stagger: 0.06,
           ease: "power2.out",
           scrollTrigger: { trigger: ".tech-grid", start: "top 82%" },
         },
@@ -174,7 +177,7 @@ export const TechStack = () => {
     <section
       ref={container}
       id="skills"
-      className="relative py-4 overflow-hidden pin-section"
+      className="relative py-24 overflow-hidden"
       style={{ background: "#080809" }}
     >
       {/* Dot grid bg */}
@@ -228,12 +231,12 @@ export const TechStack = () => {
           >
             <span
               className="absolute top-4 left-4 text-[9px] uppercase tracking-[0.4em]"
-              style={{ color: "rgba(255, 255, 255, 0.43)", fontFamily: "monospace" }}
+              style={{ color: "rgba(255,255,255,0.2)", fontFamily: "monospace" }}
             >
               Full-Stack Dev
             </span>
 
-            <div className="relative flex w-full max-w-160 items-center justify-between px-6 py-0">
+            <div className="relative flex w-full max-w-160 items-center justify-between px-6 py-10">
               <div className="flex flex-col gap-10">
                 {technologies.slice(0, 4).map((tech, i) => (
                   <TechCircle key={tech.name} ref={techRefs[i]} icon={tech.icon} name={tech.name} />
@@ -261,7 +264,7 @@ export const TechStack = () => {
                 />
               </div>
 
-              <div className="flex flex-col gap-11">
+              <div className="flex flex-col gap-10">
                 {technologies.slice(4, 8).map((tech, i) => (
                   <TechCircle
                     key={tech.name}
