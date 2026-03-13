@@ -35,53 +35,25 @@ export default function App() {
 
       if (sections.length === 0) return;
 
-      // Animation directions for variety
-      const directions = [
-        { x: -100, y: 0 }, // from left
-        { x: 100, y: 0 }, // from right
-        { x: 0, y: 100 }, // from bottom
-        { x: -80, y: 80 }, // diagonal
-        { x: 80, y: -80 }, // diagonal
-      ];
+      // Ensure ScrollTrigger layout is recalculated when images or components resize
+      window.addEventListener("resize", () => ScrollTrigger.refresh());
 
-      // Create scroll triggers for pinning + entrance animations
-      sections.forEach((section, i) => {
-        const direction = directions[i % directions.length];
-
-        // Pinning Setup
+      sections.forEach((section) => {
+        // "Tirai slide" effect (curtain slide):
+        // Just pin the section when it reaches the appropriate scroll position.
+        // No scale, no fade, no parallax.
         ScrollTrigger.create({
           trigger: section,
           start: () => {
             const offsetHeight = section.offsetHeight;
-            return offsetHeight < window.innerHeight ? "top top" : "bottom bottom";
+            // If section is smaller than viewport, pin at top.
+            // If taller, let it scroll until bottom hits bottom of viewport, then pin.
+            return offsetHeight <= window.innerHeight ? "top top" : "bottom bottom";
           },
           pin: true,
           pinSpacing: false,
+          invalidateOnRefresh: true,
         });
-
-        // Entrance Animation with parallax effect
-        gsap.fromTo(
-          section,
-          {
-            opacity: 0,
-            x: direction.x,
-            y: direction.y,
-            filter: "blur(10px)",
-          },
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 1.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 95%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
       });
 
       return () => {

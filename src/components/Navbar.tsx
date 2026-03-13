@@ -2,18 +2,33 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useScroll, useMotionValueEvent } from 'framer-motion';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Determine if we've scrolled past the top threshold
+    if (latest > 50) {
+      setIsScrolled(true);
+      
+      // If scrolling down, hide navbar. If scrolling up, show it.
+      if (latest > previous && latest > 150) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+    } else {
+      setIsScrolled(false);
+      setIsHidden(false);
+    }
+  });
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -40,7 +55,8 @@ export const Navbar = () => {
         "fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b",
         isScrolled 
           ? "bg-brand-bg/80 backdrop-blur-xl border-white/5 py-4" 
-          : "bg-transparent border-transparent py-8"
+          : "bg-transparent border-transparent py-8",
+        isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">

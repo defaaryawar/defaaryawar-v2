@@ -536,7 +536,14 @@ export const Projects = () => {
   const container = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState<number | null>(0);
 
-  const toggle = (i: number) => setExpanded((prev) => (prev === i ? null : i));
+  const toggle = (i: number) => {
+    setExpanded((prev) => (prev === i ? null : i));
+    // Wait for the accordion transition to complete (0.55s) before recalculating ScrollTrigger heights
+    // This prevents the "Contact" section from sliding over early if the Projects section grows taller.
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 600);
+  };
 
   useGSAP(
     () => {
