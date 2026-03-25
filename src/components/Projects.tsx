@@ -1,13 +1,6 @@
-import { useRef, useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import {
-  Github as GithubIcon,
-  ArrowUpRight,
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Maximize2,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,533 +9,243 @@ import { projects as projectsData } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type MediaItem = { type: "image"; src: string } | { type: "video"; src: string };
-
-interface Project {
+interface ProjectDisplay {
+  slug: string;
   index: string;
   title: string;
   category: string;
   year: string;
   description: string;
-  media: MediaItem[];
+  image: string;
   tags: string[];
-  link: string;
-  github: string;
 }
 
-const projects: Project[] = projectsData.map((p, i) => ({
+const allProjects: ProjectDisplay[] = projectsData.map((p, i) => ({
+  slug: p.slug,
   index: String(i + 1).padStart(2, "0"),
   title: p.title.split(" - ")[0],
   category: p.technologies.slice(0, 2).join(" · "),
   year: "2024",
-  description: p.description,
-  media: p.images.map((src) => ({ type: "image" as const, src })),
+  description: p.descriptionId || p.description,
+  image: p.images[0],
   tags: p.technologies.slice(0, 4),
-  link: p.demoLink ?? "#",
-  github: p.githubLink ?? "#",
 }));
 
-// ─── Modal ────────────────────────────────────────────────────────────────────
-const MediaModal = ({
-  media,
-  initialIdx,
-  onClose,
+const ITEMS_PER_PAGE = 4;
+const totalPages = Math.ceil(allProjects.length / ITEMS_PER_PAGE);
+
+// ─── Zigzag Timeline Item ──────────────────────────────────────────────────────
+const ZigzagItem = ({
+  project,
+  isLeft,
+  onNavigate,
 }: {
-  media: MediaItem[];
-  initialIdx: number;
-  onClose: () => void;
+  project: ProjectDisplay;
+  isLeft: boolean;
+  onNavigate: (slug: string) => void;
 }) => {
-  const [idx, setIdx] = useState(initialIdx);
-  const total = media.length;
-  const item = media[idx];
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") setIdx((v) => (v - 1 + total) % total);
-      if (e.key === "ArrowRight") setIdx((v) => (v + 1) % total);
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [total, onClose]);
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  const prev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((v) => (v - 1 + total) % total);
-  };
-  const next = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((v) => (v + 1) % total);
-  };
+  const [hovered, setHovered] = useState(false);
 
   return (
     <div
-      onClick={onClose}
-      className="fixed inset-0 z-[999] flex flex-col items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.95)", padding: "16px" }}
+      className={`zigzag-item relative flex flex-col md:flex-row items-center gap-0 md:gap-0 ${isLeft ? "" : "md:flex-row-reverse"}`}
     >
-      {/* Top bar */}
+      {/* Image Side */}
       <div
-        className="w-full flex items-center justify-between mb-4"
-        style={{ maxWidth: 1100 }}
-        onClick={(e) => e.stopPropagation()}
+        className="w-full md:w-[calc(50%-32px)] shrink-0 cursor-pointer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => onNavigate(project.slug)}
       >
-        <span
-          style={{
-            fontSize: "10px",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.3)",
-            fontWeight: 700,
-          }}
-        >
-          {idx + 1} / {total}
-        </span>
-        <button
-          onClick={onClose}
-          className="flex items-center gap-2"
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            color: "rgba(255,255,255,0.6)",
-            padding: "6px 14px",
-            borderRadius: 2,
-            cursor: "pointer",
-            fontSize: "11px",
-            letterSpacing: "0.1em",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "#fff";
-            (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
-            (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-          }}
-        >
-          <X size={12} /> Close
-        </button>
-      </div>
-
-      {/* Main media */}
-      <div
-        className="relative w-full flex items-center justify-center"
-        style={{ maxWidth: 1100, flex: 1 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {item.type === "video" ? (
-          <video
-            key={item.src}
-            src={item.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            style={{ maxWidth: "100%", maxHeight: "70vh", objectFit: "contain", borderRadius: 4 }}
-          />
-        ) : (
-          <img
-            key={item.src}
-            src={item.src}
-            alt=""
-            style={{ maxWidth: "100%", maxHeight: "70vh", objectFit: "contain", borderRadius: 4 }}
-          />
-        )}
-
-        {total > 1 && (
-          <>
-            <button
-              onClick={prev}
-              className="absolute flex items-center justify-center"
-              style={{
-                left: 0,
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                color: "rgba(255,255,255,0.7)",
-                width: 40,
-                height: 40,
-                borderRadius: 2,
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
-              }}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={next}
-              className="absolute flex items-center justify-center"
-              style={{
-                right: 0,
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                color: "rgba(255,255,255,0.7)",
-                width: 40,
-                height: 40,
-                borderRadius: 2,
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
-              }}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Thumbnail strip */}
-      {total > 1 && (
         <div
-          className="flex items-center gap-2 mt-5 overflow-x-auto pb-1"
-          style={{ maxWidth: 1100 }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {media.map((m, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              style={{
-                width: 60,
-                height: 40,
-                borderRadius: 2,
-                flexShrink: 0,
-                border:
-                  i === idx ? "2px solid rgba(255,255,255,0.7)" : "2px solid rgba(255,255,255,0.1)",
-                overflow: "hidden",
-                cursor: "pointer",
-                padding: 0,
-                background: "#111",
-                transition: "all 0.2s",
-                opacity: i === idx ? 1 : 0.5,
-              }}
-            >
-              {m.type === "video" ? (
-                <div
-                  className="w-full h-full flex items-center justify-center"
-                  style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}
-                >
-                  ▶
-                </div>
-              ) : (
-                <img
-                  src={m.src}
-                  alt=""
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {total > 1 && (
-        <p
+          className="relative overflow-hidden"
           style={{
-            fontSize: "9px",
-            letterSpacing: "0.25em",
-            color: "rgba(255,255,255,0.2)",
-            marginTop: 10,
-            textTransform: "uppercase",
+            borderRadius: 4,
+            border: `1px solid ${hovered ? "rgba(16,185,129,0.3)" : "rgba(255,255,255,0.08)"}`,
+            transition: "border-color 0.3s",
           }}
         >
-          ← → to navigate · esc to close
-        </p>
-      )}
+          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            <img
+              src={project.image}
+              alt={project.title}
+              referrerPolicy="no-referrer"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                filter: "brightness(0.85) contrast(1.05)",
+                transition: "transform 0.5s ease",
+                transform: hovered ? "scale(1.03)" : "scale(1)",
+              }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+                const parent = e.currentTarget.parentElement;
+                if (parent) {
+                  const fallback = document.createElement("div");
+                  fallback.className = "absolute inset-0 flex items-center justify-center";
+                  fallback.style.background = "rgba(255,255,255,0.03)";
+                  fallback.innerHTML = `<span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);font-weight:700;">No Preview</span>`;
+                  parent.appendChild(fallback);
+                }
+              }}
+            />
+            {/* Hover Overlay */}
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{
+                background: "rgba(0,0,0,0.55)",
+                opacity: hovered ? 1 : 0,
+                transition: "opacity 0.35s ease",
+                zIndex: 2,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: "#fff",
+                  border: "1px solid rgba(255,255,255,0.4)",
+                  padding: "10px 24px",
+                  borderRadius: 3,
+                  transition: "all 0.3s ease",
+                }}
+              >
+                Lihat Detail
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Timeline Node (center) — hidden on mobile */}
+      <div className="hidden md:flex flex-col items-center shrink-0" style={{ width: 64 }}>
+        <div
+          className="relative z-10 w-4 h-4 rounded-full transition-transform duration-300"
+          style={{
+            background: "#10b981",
+            boxShadow: "0 0 20px rgba(16,185,129,0.4), 0 0 40px rgba(16,185,129,0.15)",
+          }}
+        />
+      </div>
+
+      {/* Text Side */}
+      <div className={`w-full md:w-[calc(50%-32px)] shrink-0 ${isLeft ? "md:text-left" : "md:text-right"}`}>
+        <div className="p-5 md:p-0">
+          {/* Index & Category */}
+          <div className={`flex items-center gap-3 mb-4 ${isLeft ? "" : "md:justify-end"}`}>
+            <span
+              style={{
+                fontFamily: "'Bebas Neue', Impact, sans-serif",
+                fontSize: "12px",
+                letterSpacing: "0.15em",
+                color: "#10b981",
+              }}
+            >
+              {project.index}
+            </span>
+            <span
+              style={{
+                fontSize: "9px",
+                fontWeight: 700,
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.3)",
+              }}
+            >
+              {project.category}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3
+            className="uppercase mb-4"
+            style={{
+              fontFamily: "'Bebas Neue', Impact, sans-serif",
+              fontSize: "clamp(26px, 3.5vw, 42px)",
+              letterSpacing: "-0.01em",
+              color: "#fff",
+              lineHeight: 1.05,
+            }}
+          >
+            {project.title}
+          </h3>
+
+          {/* Description */}
+          <p
+            className="mb-5"
+            style={{
+              fontSize: "14px",
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+              color: "rgba(255,255,255,0.55)",
+              lineHeight: 1.8,
+              fontWeight: 400,
+            }}
+          >
+            {project.description.length > 180
+              ? project.description.slice(0, 180) + "..."
+              : project.description}
+          </p>
+
+          {/* Tags */}
+          <div className={`flex flex-wrap gap-2 ${isLeft ? "" : "md:justify-end"}`}>
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.5)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  padding: "4px 12px",
+                  borderRadius: 3,
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* View detail hint */}
+          <div
+            className={`mt-4 flex items-center gap-2 cursor-pointer ${isLeft ? "" : "md:justify-end"}`}
+            onClick={() => onNavigate(project.slug)}
+          >
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.3)",
+                transition: "color 0.3s ease",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.3)"; }}
+            >
+              Lihat Detail →
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-// ─── Carousel ─────────────────────────────────────────────────────────────────
-const MediaCarousel = ({ media }: { media: MediaItem[] }) => {
-  const [idx, setIdx] = useState(0);
-  const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
-  const [modalOpen, setModalOpen] = useState(false);
-  const total = media.length;
-  const item = media[idx];
-
-  const prev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((v) => (v - 1 + total) % total);
-  };
-  const next = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIdx((v) => (v + 1) % total);
-  };
-
-  return (
-    <>
-      {modalOpen &&
-        ReactDOM.createPortal(
-          <MediaModal media={media} initialIdx={idx} onClose={() => setModalOpen(false)} />,
-          document.body,
-        )}
-
-      {/* 
-        Mobile  : aspect-ratio 16/9 (proporsional, tidak fixed px)
-        Desktop : height 360px fixed
-        Trick   : padding-bottom 56.25% = 16:9, di-override via media query
-      */}
-      <div className="media-carousel-outer relative w-full" style={{ background: "#0d0d0d" }}>
-        <style>{`
-          .media-carousel-outer {
-            padding-bottom: 56.25%; /* 16:9 mobile */
-            height: 0;
-          }
-          @media (min-width: 768px) {
-            .media-carousel-outer {
-              padding-bottom: 0 !important;
-              height: 420px !important;
-            }
-          }
-        `}</style>
-
-        <div className="absolute inset-0 overflow-hidden">
-          {item.type === "video" ? (
-            <video
-              key={item.src}
-              src={item.src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                filter: "brightness(0.75) contrast(1.1)",
-              }}
-            />
-          ) : imgErrors[idx] ? (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "rgba(255,255,255,0.2)",
-                  fontSize: 20,
-                }}
-              >
-                ×
-              </div>
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.2)",
-                  fontWeight: 700,
-                }}
-              >
-                No Preview
-              </span>
-            </div>
-          ) : (
-            <img
-              key={item.src}
-              src={item.src}
-              alt=""
-              referrerPolicy="no-referrer"
-              onError={() => setImgErrors((prev) => ({ ...prev, [idx]: true }))}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                filter: "brightness(0.75) contrast(1.1)",
-              }}
-            />
-          )}
-
-          {/* Preview button */}
-          {!imgErrors[idx] && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setModalOpen(true);
-              }}
-              className="absolute flex items-center gap-1.5"
-              style={{
-                top: 10,
-                right: 10,
-                background: "rgba(0,0,0,0.55)",
-                border: "1px solid rgba(255,255,255,0.15)",
-                color: "rgba(255,255,255,0.7)",
-                padding: "5px 10px",
-                borderRadius: 2,
-                cursor: "pointer",
-                zIndex: 10,
-                transition: "all 0.2s",
-                fontSize: "8px",
-                fontWeight: 700,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
-                (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.55)";
-              }}
-            >
-              <Maximize2 size={11} /> Preview
-            </button>
-          )}
-
-          {/* Prev/Next */}
-          {total > 1 && (
-            <>
-              <button
-                onClick={prev}
-                style={{
-                  position: "absolute",
-                  left: 10,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "rgba(0,0,0,0.55)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "rgba(255,255,255,0.8)",
-                  width: 32,
-                  height: 32,
-                  borderRadius: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  zIndex: 10,
-                }}
-              >
-                <ChevronLeft size={15} />
-              </button>
-              <button
-                onClick={next}
-                style={{
-                  position: "absolute",
-                  right: 10,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "rgba(0,0,0,0.55)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "rgba(255,255,255,0.8)",
-                  width: 32,
-                  height: 32,
-                  borderRadius: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  zIndex: 10,
-                }}
-              >
-                <ChevronRight size={15} />
-              </button>
-
-              <div
-                className="absolute bottom-3 left-1/2 flex items-center gap-1.5"
-                style={{ transform: "translateX(-50%)" }}
-              >
-                {media.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIdx(i);
-                    }}
-                    style={{
-                      width: i === idx ? 18 : 5,
-                      height: 5,
-                      borderRadius: 3,
-                      background: i === idx ? "#fff" : "rgba(255,255,255,0.3)",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: 0,
-                      transition: "all 0.25s ease",
-                    }}
-                  />
-                ))}
-              </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 10,
-                  right: 12,
-                  fontSize: "9px",
-                  color: "rgba(255,255,255,0.35)",
-                  letterSpacing: "0.1em",
-                }}
-              >
-                {idx + 1}/{total}
-              </div>
-            </>
-          )}
-
-          {item.type === "video" && (
-            <div
-              style={{
-                position: "absolute",
-                top: 10,
-                left: 10,
-                fontSize: "7px",
-                fontWeight: 700,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.6)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                padding: "2px 6px",
-                borderRadius: 2,
-                background: "rgba(0,0,0,0.4)",
-              }}
-            >
-              Video
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  );
-};
-
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Main Section (Homepage — paginated, 3 items per page) ──────────────────
 export const Projects = () => {
   const container = useRef<HTMLDivElement>(null);
-  const [expanded, setExpanded] = useState<number | null>(0);
+  const navigate = useNavigate();
+  const [page, setPage] = useState(0);
 
-  const toggle = (i: number) => {
-    setExpanded((prev) => (prev === i ? null : i));
-    // Wait for the accordion transition to complete (0.55s) before recalculating ScrollTrigger heights
-    // This prevents the "Contact" section from sliding over early if the Projects section grows taller.
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 600);
+  const start = page * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const displayProjects = allProjects.slice(start, end);
+
+  const goToDetail = (slug: string) => {
+    navigate(`/personal-arts/${slug}`);
   };
 
   useGSAP(
@@ -557,18 +260,24 @@ export const Projects = () => {
           scrollTrigger: { trigger: ".proj-header", start: "top 80%" },
         },
       );
-      gsap.fromTo(
-        ".proj-panel",
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".proj-panel", start: "top 80%" },
-        },
-      );
+
+      const items = gsap.utils.toArray(".zigzag-item") as HTMLElement[];
+      items.forEach((item, i) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            delay: i * 0.15,
+            ease: "power2.out",
+            scrollTrigger: { trigger: item, start: "top 85%" },
+          },
+        );
+      });
     },
-    { scope: container },
+    { scope: container, dependencies: [page] },
   );
 
   return (
@@ -578,6 +287,7 @@ export const Projects = () => {
       className="relative py-20 md:py-36 overflow-hidden"
       style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
+      {/* Big BG number */}
       <div
         className="absolute top-10 right-4 md:right-16 select-none pointer-events-none"
         style={{
@@ -637,275 +347,125 @@ export const Projects = () => {
           </p>
         </div>
 
-        {/* Accordion */}
-        <div
-          className="proj-panel flex flex-col"
-          style={{ border: "1px solid rgba(255,255,255,0.07)" }}
-        >
-          {projects.map((project, i) => {
-            const isOpen = expanded === i;
-            return (
-              <div
+        {/* Zigzag Timeline */}
+        <div className="relative">
+          {/* Vertical Timeline Line — desktop only */}
+          <div
+            className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2"
+            style={{
+              width: 2,
+              background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.08) 10%, rgba(255,255,255,0.08) 90%, transparent)",
+            }}
+          />
+
+          {/* Items */}
+          <div className="flex flex-col gap-12 md:gap-20">
+            {displayProjects.map((project, i) => (
+              <ZigzagItem
                 key={project.title}
-                style={{
-                  borderBottom:
-                    i < projects.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
-                }}
-              >
-                {/* Row header */}
-                <div
-                  onClick={() => toggle(i)}
-                  className="md:px-9"
-                  style={{
-                    padding: "20px 16px",
-                    background: isOpen ? "rgba(255,255,255,0.03)" : "transparent",
-                    transition: "background 0.25s ease",
-                    cursor: "pointer",
-                  }}
-                >
-                  <div className="flex items-center justify-between gap-3 md:gap-6">
-                    <div className="flex items-baseline gap-2 md:gap-4 min-w-0">
-                      <span
-                        style={{
-                          fontFamily: "'Bebas Neue', Impact, sans-serif",
-                          fontSize: "10px",
-                          letterSpacing: "0.1em",
-                          color: "rgba(255,255,255,0.25)",
-                          flexShrink: 0,
-                        }}
-                      >
-                        {project.index}
-                      </span>
-                      <span
-                        className="uppercase truncate"
-                        style={{
-                          fontFamily: "'Bebas Neue', Impact, sans-serif",
-                          fontSize: "clamp(22px, 3vw, 44px)",
-                          letterSpacing: "-0.01em",
-                          color: isOpen ? "#fff" : "rgba(255,255,255,0.5)",
-                          lineHeight: 1,
-                          transition: "color 0.25s ease",
-                        }}
-                      >
-                        {project.title}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 md:gap-6 shrink-0">
-                      <span
-                        className="hidden md:block"
-                        style={{
-                          fontSize: "9px",
-                          fontWeight: 700,
-                          letterSpacing: "0.3em",
-                          textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.4)",
-                        }}
-                      >
-                        {project.category}
-                      </span>
-                      <span
-                        className="hidden sm:block"
-                        style={{
-                          fontSize: "9px",
-                          color: "rgba(255,255,255,0.35)",
-                          letterSpacing: "0.1em",
-                        }}
-                      >
-                        {project.year}
-                      </span>
-                      <div
-                        style={{
-                          width: 22,
-                          height: 22,
-                          border: "1px solid rgba(255,255,255,0.18)",
-                          borderRadius: 2,
-                          flexShrink: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "rgba(255,255,255,0.6)",
-                          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                          transition: "transform 0.3s ease",
-                          fontSize: 17,
-                          lineHeight: 1,
-                        }}
-                      >
-                        +
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Expanded */}
-                <div
-                  style={{
-                    maxHeight: isOpen ? "1200px" : "0px",
-                    overflow: "hidden",
-                    transition: "max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                >
-                  {/*
-                    Mobile  : flex-col  → gambar atas (16:9), info di bawah
-                    Desktop : flex-row  → gambar kiri (360px fixed), info kanan
-                  */}
-                  <div
-                    className="flex flex-col md:flex-row"
-                    style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
-                  >
-                    {/* Gambar */}
-                    <div className="w-full md:w-1/2 shrink-0">
-                      <MediaCarousel media={project.media} />
-                    </div>
-
-                    {/* Info */}
-                    <div className="w-full md:w-1/2 flex flex-col justify-between">
-                      <style>{`
-                        @media (min-width: 768px) {
-                          .proj-info-${i} {
-                            padding: 32px 36px !important;
-                            border-top: none !important;
-                            border-left: 1px solid rgba(255,255,255,0.07) !important;
-                          }
-                        }
-                      `}</style>
-                      <div
-                        className={`proj-info-${i} flex flex-col justify-between h-full`}
-                        style={{
-                          padding: "20px 16px",
-                          borderTop: "1px solid rgba(255,255,255,0.07)",
-                          background: "rgba(255,255,255,0.01)",
-                        }}
-                      >
-                        <div>
-                          <p
-                            style={{
-                              fontSize: "9px",
-                              fontWeight: 700,
-                              letterSpacing: "0.3em",
-                              textTransform: "uppercase",
-                              color: "rgba(255,255,255,0.3)",
-                              marginBottom: 12,
-                            }}
-                          >
-                            {project.category} — {project.year}
-                          </p>
-
-                          <p
-                            style={{
-                              fontSize: "15px",
-                              fontFamily: "'DM Sans', system-ui, sans-serif",
-                              color: "rgba(255,255,255,0.75)",
-                              lineHeight: 1.9,
-                              marginBottom: "20px",
-                              fontWeight: 400,
-                            }}
-                          >
-                            {project.description}
-                          </p>
-
-                          <div className="flex flex-wrap gap-2 mb-6">
-                            {project.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                style={{
-                                  fontSize: "11px",
-                                  fontWeight: 700,
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  color: "rgba(255,255,255,0.6)",
-                                  border: "1px solid rgba(255,255,255,0.15)",
-                                  padding: "5px 14px",
-                                  borderRadius: 3,
-                                }}
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div
-                          className="flex items-center gap-5 pt-4"
-                          style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
-                        >
-                          {project.link && project.link !== "#" && (
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5"
-                              style={{
-                                fontSize: "11px",
-                                fontWeight: 600,
-                                letterSpacing: "0.12em",
-                                textTransform: "uppercase",
-                                color: "rgba(255,255,255,0.6)",
-                                textDecoration: "none",
-                                transition: "color 0.2s",
-                              }}
-                              onMouseEnter={(e) =>
-                                ((e.currentTarget as HTMLElement).style.color = "#fff")
-                              }
-                              onMouseLeave={(e) =>
-                                ((e.currentTarget as HTMLElement).style.color =
-                                  "rgba(255,255,255,0.6)")
-                              }
-                            >
-                              Live <ArrowUpRight size={13} />
-                            </a>
-                          )}
-                          {project.github && project.github !== "#" && (
-                            <a
-                              href={project.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5"
-                              style={{
-                                fontSize: "11px",
-                                fontWeight: 600,
-                                letterSpacing: "0.12em",
-                                textTransform: "uppercase",
-                                color: "rgba(255,255,255,0.6)",
-                                textDecoration: "none",
-                                transition: "color 0.2s",
-                              }}
-                              onMouseEnter={(e) =>
-                                ((e.currentTarget as HTMLElement).style.color = "#fff")
-                              }
-                              onMouseLeave={(e) =>
-                                ((e.currentTarget as HTMLElement).style.color =
-                                  "rgba(255,255,255,0.6)")
-                              }
-                            >
-                              GitHub <GithubIcon size={13} />
-                            </a>
-                          )}
-                          {(!project.link || project.link === "#") &&
-                            (!project.github || project.github === "#") && (
-                              <span
-                                style={{
-                                  fontSize: "11px",
-                                  color: "rgba(255,255,255,0.2)",
-                                  letterSpacing: "0.1em",
-                                }}
-                              >
-                                Private Repository
-                              </span>
-                            )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                project={project}
+                isLeft={(start + i) % 2 === 0}
+                onNavigate={goToDetail}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Pagination */}
         <div
-          className="mt-20 md:mt-32 flex flex-col items-center gap-6 text-center"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "48px" }}
+          className="mt-12 md:mt-16 flex items-center justify-center gap-4 md:gap-6"
+        >
+          {/* Previous */}
+          <button
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={page === 0}
+            className="flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            style={{
+              background: page === 0 ? "transparent" : "rgba(255,255,255,0.04)",
+              border: `1px solid ${page === 0 ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)"}`,
+              color: page === 0 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+              padding: "10px 18px",
+              borderRadius: 4,
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase" as const,
+              transition: "all 0.3s",
+            }}
+            onMouseEnter={(e) => {
+              if (page !== 0) {
+                (e.currentTarget as HTMLElement).style.color = "#fff";
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (page !== 0) {
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
+              }
+            }}
+          >
+            <ChevronLeft size={14} /> Prev
+          </button>
+
+          {/* Page dots */}
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i)}
+                className="cursor-pointer"
+                style={{
+                  width: i === page ? 24 : 8,
+                  height: 8,
+                  borderRadius: 4,
+                  background: i === page ? "#10b981" : "rgba(255,255,255,0.15)",
+                  border: "none",
+                  padding: 0,
+                  transition: "all 0.3s ease",
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Next */}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            disabled={page === totalPages - 1}
+            className="flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            style={{
+              background: page === totalPages - 1 ? "transparent" : "rgba(255,255,255,0.04)",
+              border: `1px solid ${page === totalPages - 1 ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)"}`,
+              color: page === totalPages - 1 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+              padding: "10px 18px",
+              borderRadius: 4,
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase" as const,
+              transition: "all 0.3s",
+            }}
+            onMouseEnter={(e) => {
+              if (page !== totalPages - 1) {
+                (e.currentTarget as HTMLElement).style.color = "#fff";
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (page !== totalPages - 1) {
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
+              }
+            }}
+          >
+            Next <ChevronRight size={14} />
+          </button>
+        </div>
+
+        {/* Lihat Selengkapnya Button — elegant text-only style */}
+        <div
+          className="mt-12 md:mt-20 flex flex-col items-center gap-5 text-center"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "32px" }}
         >
           <p
             style={{
@@ -915,32 +475,40 @@ export const Projects = () => {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Want to see more?
+            Lihat semua {allProjects.length} project
           </p>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3"
+          <button
+            onClick={() => navigate("/personal-arts")}
+            className="group flex items-center justify-center gap-3 cursor-pointer"
             style={{
-              fontFamily: "'Bebas Neue', Impact, sans-serif",
-              fontSize: "clamp(24px, 3.5vw, 48px)",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.18)",
-              textDecoration: "none",
-              transition: "color 0.4s ease",
+              fontFamily: "'Playfair Display', 'Georgia', serif",
+              fontSize: "clamp(18px, 2.5vw, 28px)",
+              fontStyle: "italic",
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+              color: "rgba(255,255,255,0.5)",
+              background: "none",
+              border: "none",
+              borderBottom: "1px solid rgba(255,255,255,0.15)",
+              padding: "8px 4px",
+              borderRadius: 0,
+              transition: "all 0.4s ease",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.color = "#fff";
+              (e.currentTarget as HTMLElement).style.borderBottomColor = "rgba(16,185,129,0.6)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.18)";
+              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)";
+              (e.currentTarget as HTMLElement).style.borderBottomColor = "rgba(255,255,255,0.15)";
             }}
           >
-            View All on GitHub
-            <ArrowUpRight size={28} />
-          </a>
+            Lihat Selengkapnya
+            <ArrowRight
+              size={20}
+              className="transition-transform duration-300 group-hover:translate-x-2"
+            />
+          </button>
         </div>
       </div>
     </section>
