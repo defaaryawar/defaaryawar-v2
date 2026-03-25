@@ -47,6 +47,7 @@ export const Navbar = () => {
     { name: "Tech", href: "#tech", isRoute: false },
     { name: "Work", href: "/personal-arts", isRoute: true },
     { name: "Blog", href: "/blogs", isRoute: true },
+    { name: "Services", href: "/services", isRoute: true },
     { name: "Career", href: "#experience", isRoute: false },
     { name: "Contact", href: "#contact", isRoute: false },
   ];

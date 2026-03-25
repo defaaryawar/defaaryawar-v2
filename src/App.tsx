@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
@@ -14,6 +14,8 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { PersonalArtsPage } from "./components/PersonalArtsPage";
 import { ProjectDetailPage } from "./components/ProjectDetailPage";
+import { ServicesPage } from "./components/ServicesPage";
+import { ServiceDetailPage } from "./components/ServiceDetailPage";
 import { FloatingDock } from "./components/ui/floating-dock";
 import { SOCIAL_LINKS } from "./config/socials";
 import { motion, useScroll, useSpring } from "framer-motion";
@@ -92,11 +94,17 @@ function HomePage() {
 export default function App() {
   const location = useLocation();
 
+  // Scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Show navbar on listing pages, hide on detail pages
   const showNavbar =
     location.pathname === "/" ||
     location.pathname === "/personal-arts" ||
-    location.pathname === "/blogs";
+    location.pathname === "/blogs" ||
+    location.pathname === "/services";
 
   return (
     <ParallaxProvider>
@@ -108,6 +116,9 @@ export default function App() {
         {/* Blog routes */}
         <Route path="/blogs" element={<BlogsPage />} />
         <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+        {/* Services route */}
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:slug" element={<ServiceDetailPage />} />
       </Routes>
     </ParallaxProvider>
   );
