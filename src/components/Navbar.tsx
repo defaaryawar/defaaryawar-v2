@@ -90,7 +90,7 @@ export const Navbar = () => {
               e.preventDefault();
               navigate("/");
             }}
-            className="text-xl font-black tracking-tighter uppercase group cursor-pointer"
+            className="text-xl font-black text-gray-100 tracking-tighter uppercase group cursor-pointer"
           >
             Defa
             <span className="text-white/20 group-hover:text-white transition-colors duration-500">

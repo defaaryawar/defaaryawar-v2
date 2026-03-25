@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
@@ -265,55 +264,8 @@ export const PersonalArtsPage = () => {
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.02] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       <div ref={container} className="relative z-10">
-        {/* Top Bar */}
-        <div
-          className="sticky top-0 z-50 flex items-center justify-between px-5 md:px-12 py-5"
-          style={{
-            background: "rgba(9,9,11,0.85)",
-            backdropFilter: "blur(20px)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
-          }}
-        >
-          <button
-            onClick={() => navigate("/")}
-            className="group flex items-center gap-2 cursor-pointer"
-            style={{
-              background: "none",
-              border: "none",
-              color: "rgba(255,255,255,0.5)",
-              fontSize: "12px",
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              transition: "color 0.3s",
-            }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#fff")}
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)")
-            }
-          >
-            <ArrowLeft
-              size={16}
-              className="transition-transform duration-300 group-hover:-translate-x-1"
-            />
-            Kembali
-          </button>
-
-          <span
-            style={{
-              fontSize: "10px",
-              fontWeight: 700,
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.3)",
-            }}
-          >
-            {allProjects.length} Projects
-          </span>
-        </div>
-
         {/* Page Header */}
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-16 md:pt-24 pb-8 md:pb-16">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-32 md:pt-40 pb-8 md:pb-16">
           <div className="flex items-center gap-4 mb-6 md:mb-8">
             <div className="h-px w-10" style={{ background: "rgba(255,255,255,0.2)" }} />
             <span

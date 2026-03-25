@@ -66,7 +66,6 @@ function HomePage() {
         className="fixed top-0 left-0 right-0 h-0.5 bg-white z-110 origin-left"
         style={{ scaleX }}
       />
-      <Navbar />
       <div className="relative z-10">
         <Hero />
         <About />
@@ -93,8 +92,15 @@ function HomePage() {
 export default function App() {
   const location = useLocation();
 
+  // Show navbar on listing pages, hide on detail pages
+  const showNavbar =
+    location.pathname === "/" ||
+    location.pathname === "/personal-arts" ||
+    location.pathname === "/blogs";
+
   return (
     <ParallaxProvider>
+      {showNavbar && <Navbar />}
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomePage />} />
         <Route path="/personal-arts" element={<PersonalArtsPage />} />

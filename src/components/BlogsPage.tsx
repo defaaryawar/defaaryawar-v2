@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Search, Clock } from "lucide-react";
+import { Search, Clock } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
@@ -69,16 +69,7 @@ export const BlogsPage = () => {
       className="min-h-screen relative selection:bg-white selection:text-black"
       style={{ background: "#080808" }}
     >
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-28 md:pt-32 pb-8">
-        {/* Back */}
-        <button
-          onClick={() => navigate("/")}
-          className="nav-back group flex items-center gap-3 text-white/50 hover:text-white transition-colors cursor-pointer mb-8 md:mb-12"
-        >
-          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Back to Home</span>
-        </button>
-
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-32 md:pt-40 pb-8">
         {/* Page Header — more compact */}
         <div className="page-title mb-10 md:mb-14">
           <span
