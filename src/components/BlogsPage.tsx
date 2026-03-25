@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Search, Clock, ArrowRight } from "lucide-react";
+import { ArrowLeft, Search, Clock } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
