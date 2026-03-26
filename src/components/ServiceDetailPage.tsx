@@ -339,7 +339,7 @@ export const ServiceDetailPage = () => {
         <div
           style={{
             borderBottom: "1px solid rgba(255,255,255,0.06)",
-            paddingTop: "clamp(80px,10vw,120px)",
+            paddingTop: "clamp(24px, 5vw, 40px)",
           }}
         >
           <div className="container mx-auto px-4 md:px-8 lg:px-16 pb-5">
