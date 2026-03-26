@@ -181,55 +181,59 @@ export const Navbar = () => {
             <X size={32} />
           </button>
 
-          <div className="relative z-10 flex flex-col items-center w-full px-12">
-            {navLinks.map((link, i) => (
-              <React.Fragment key={link.name}>
-                <a
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href, link.isRoute)}
-                  className={cn(
-                    "mobile-nav-link relative w-full py-6 flex items-center justify-between border-b border-white/5 transition-all duration-300",
-                    isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0",
-                  )}
-                  style={{ transitionDelay: `${i * 100}ms` }}
-                >
-                  <span className="mobile-nav-num text-xs font-mono text-white/30 transition-colors duration-300">
-                    0{i + 1}
-                  </span>
-                  <span className="mobile-nav-name text-4xl font-black uppercase tracking-tighter transition-transform duration-300">
-                    {link.name}
-                  </span>
-                  <span className="mobile-nav-arrow text-white/30 text-lg transition-all duration-300">
-                    →
-                  </span>
-                </a>
-              </React.Fragment>
-            ))}
+          <div className="relative z-10 flex flex-col items-center w-full px-6 h-full justify-center overflow-y-auto py-24 pb-32">
+            <div className="w-full max-w-sm flex flex-col items-center mx-auto">
+              {navLinks.map((link, i) => (
+                <React.Fragment key={link.name}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href, link.isRoute)}
+                    className={cn(
+                      "mobile-nav-link relative w-full py-3.5 flex items-center justify-between border-b border-white/5 transition-all duration-300",
+                      isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
+                    )}
+                    style={{ transitionDelay: `${i * 50}ms` }}
+                  >
+                    <span className="mobile-nav-num text-[10px] font-mono text-white/30 transition-colors duration-300">
+                      0{i + 1}
+                    </span>
+                    <span className="mobile-nav-name text-2xl font-black uppercase tracking-tighter transition-transform duration-300">
+                      {link.name}
+                    </span>
+                    <span className="mobile-nav-arrow text-white/30 text-sm transition-all duration-300">
+                      →
+                    </span>
+                  </a>
+                </React.Fragment>
+              ))}
 
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, "#contact")}
-              className={cn(
-                "mobile-nav-cta mt-12 w-full py-6 bg-white text-black text-center text-xs font-black uppercase tracking-[0.4em] transition-all duration-300",
-                isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0",
-              )}
-              style={{ transitionDelay: `${navLinks.length * 100}ms` }}
-            >
-              Start a Project
-            </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, "#contact")}
+                className={cn(
+                  "mobile-nav-cta mt-8 w-full py-4 bg-white text-black text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-300 rounded-[2px]",
+                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
+                )}
+                style={{ transitionDelay: `${navLinks.length * 50}ms` }}
+              >
+                Start a Project
+              </a>
+            </div>
           </div>
 
           {/* Bottom Info */}
           <div
             className={cn(
-              "absolute bottom-12 left-12 right-12 flex justify-between items-end transition-all duration-1000 delay-500",
-              isMobileMenuOpen ? "opacity-40 translate-y-0" : "opacity-0 translate-y-10",
+              "absolute bottom-8 left-8 right-8 flex justify-between items-end transition-all duration-1000 delay-500 pointer-events-none",
+              isMobileMenuOpen ? "opacity-30 translate-y-0" : "opacity-0 translate-y-10",
             )}
           >
-            <div className="text-[10px] font-bold uppercase tracking-widest">
-              Based in Jakarta, ID
+            <div className="text-[9px] font-bold uppercase tracking-widest text-left max-w-[50%]">
+              Based in<br />Jakarta, ID
             </div>
-            <div className="text-[10px] font-bold uppercase tracking-widest">© 2024</div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-right">
+              © 2026
+            </div>
           </div>
         </div>,
         document.body,

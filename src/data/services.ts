@@ -12,6 +12,7 @@ export interface Service {
   includeDomain: boolean;
   deliveryDays: number;
   image: string;
+  images?: string[];
   popular?: boolean;
 }
 
@@ -51,7 +52,7 @@ export const services: Service[] = [
     warrantyDays: 15,
     includeDomain: true,
     deliveryDays: 5,
-    image: "/services/landing-page.webp",
+    image: "/our-services/landing-page-1.webp",
   },
   {
     id: "portfolio",
@@ -76,7 +77,11 @@ export const services: Service[] = [
     warrantyDays: 20,
     includeDomain: true,
     deliveryDays: 7,
-    image: "/services/portfolio.webp",
+    image: "/our-services/portofolio-1.webp",
+    images: [
+      "/our-services/portofolio-1.webp",
+      "/our-services/portofolio-2.webp",
+    ],
   },
   {
     id: "company-profile",
@@ -102,7 +107,7 @@ export const services: Service[] = [
     warrantyDays: 30,
     includeDomain: true,
     deliveryDays: 10,
-    image: "/services/company-profile.webp",
+    image: "/our-services/logistik-compro.webp",
     popular: true,
   },
   {
@@ -129,7 +134,8 @@ export const services: Service[] = [
     warrantyDays: 30,
     includeDomain: true,
     deliveryDays: 12,
-    image: "/services/restoran.webp",
+    image: "/our-services/restorant-1.webp",
+    images: ["/our-services/restorant-1.webp", "/our-services/restorant-2.webp"],
   },
   {
     id: "travel-tour",
@@ -155,7 +161,8 @@ export const services: Service[] = [
     warrantyDays: 35,
     includeDomain: true,
     deliveryDays: 14,
-    image: "/services/travel.webp",
+    image: "/our-services/travel-1.webp",
+    images: ["/our-services/travel-1.webp", "/our-services/travel-2.webp"],
     popular: true,
   },
   {
@@ -182,7 +189,7 @@ export const services: Service[] = [
     warrantyDays: 40,
     includeDomain: true,
     deliveryDays: 16,
-    image: "/services/klinik.webp",
+    image: "/our-services/klinik-1.webp",
   },
   {
     id: "ecommerce",
@@ -209,7 +216,12 @@ export const services: Service[] = [
     warrantyDays: 45,
     includeDomain: true,
     deliveryDays: 21,
-    image: "/services/ecommerce.webp",
+    image: "/our-services/ecommerce-1.webp",
+    images: [
+      "/our-services/ecommerce-1.webp",
+      "/our-services/ecommerce-2.webp",
+      "/our-services/ecommerce-3.webp",
+    ],
     popular: true,
   },
   {
@@ -242,7 +254,11 @@ export const services: Service[] = [
     warrantyDays: 45,
     includeDomain: true,
     deliveryDays: 30,
-    image: "/services/rumah-sakit.webp",
+    image: "/our-services/rumah-sakit-1.webp",
+    images: [
+      "/our-services/rumah-sakit-1.webp",
+      "/our-services/rumah-sakit-2.webp",
+    ],
   },
 ];
 

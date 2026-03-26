@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   CheckCircle2,
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   Zap,
 } from "lucide-react";
 
@@ -76,15 +78,59 @@ const ServiceHeroBanner = ({ service }: { service: Service }) => {
     label: "Website",
   };
   const [imgError, setImgError] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = service.images?.length ? service.images : [service.image];
 
   if (!imgError) {
     return (
-      <img
-        src={service.image}
-        alt={service.name}
-        className="absolute inset-0 w-full h-full object-cover"
-        onError={() => setImgError(true)}
-      />
+      <div className="relative w-full h-full group">
+        <img
+          src={images[currentIndex]}
+          alt={`${service.name} preview ${currentIndex + 1}`}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+          onError={() => setImgError(true)}
+        />
+        {images.length > 1 && (
+          <>
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-3 md:px-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+                }}
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 text-white flex items-center justify-center backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all cursor-pointer pointer-events-auto shadow-sm active:scale-95"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+                }}
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 text-white flex items-center justify-center backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all cursor-pointer pointer-events-auto shadow-sm active:scale-95"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentIndex(i);
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer shadow-sm ${
+                    i === currentIndex ? "bg-white w-6" : "bg-white/40 hover:bg-white/70 w-2"
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 
