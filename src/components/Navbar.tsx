@@ -44,7 +44,7 @@ export const Navbar = () => {
 
   const navLinks = [
     { name: "About", href: "#about", isRoute: false },
-    { name: "Tech", href: "#tech", isRoute: false },
+    { name: "Tech", href: "#skills", isRoute: false },
     { name: "Work", href: "/personal-arts", isRoute: true },
     { name: "Blog", href: "/blogs", isRoute: true },
     { name: "Services", href: "/services", isRoute: true },
