@@ -25,6 +25,7 @@ import { useGSAP } from "@gsap/react";
 import { ParallaxProvider } from "react-scroll-parallax";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,6 @@ function HomePage() {
     () => {
       const sections = gsap.utils.toArray("section[id]") as HTMLElement[];
       if (sections.length === 0) return;
-      window.addEventListener("resize", () => ScrollTrigger.refresh());
       sections.forEach((section) => {
         ScrollTrigger.create({
           trigger: section,
