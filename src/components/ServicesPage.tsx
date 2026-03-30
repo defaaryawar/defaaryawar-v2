@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
-import { services, CATEGORIES, getWhatsAppLink, type Service } from "@/data/services";
+import { services, CATEGORIES, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
 import { MessageCircle, Star, BadgeCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -283,6 +283,31 @@ const ServiceCard = ({
         >
           Mulai dari
         </span>
+        {getDiscountPercent(service) > 0 && (
+          <div className="flex items-center gap-1.5" style={{ marginBottom: 2 }}>
+            <span
+              style={{
+                fontFamily: "'DM Sans', system-ui, sans-serif",
+                fontSize: 11,
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.3)",
+                textDecoration: "line-through",
+              }}
+            >
+              {service.originalPriceLabel}
+            </span>
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                color: "#ee4d2d",
+                fontFamily: "system-ui",
+              }}
+            >
+              -{getDiscountPercent(service)}%
+            </span>
+          </div>
+        )}
         <Highlighter action="underline" color="#ee4d2d">
           <span
             style={{

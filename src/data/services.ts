@@ -4,6 +4,8 @@ export interface Service {
   category: string;
   price: number;
   priceLabel: string;
+  originalPrice: number;
+  originalPriceLabel: string;
   description: string;
   features: string[];
   highlights: string[]; // short badge-style highlights shown on detail page
@@ -14,6 +16,11 @@ export interface Service {
   image: string;
   images?: string[];
   popular?: boolean;
+}
+
+export function getDiscountPercent(service: Service): number {
+  if (service.originalPrice <= service.price) return 0;
+  return Math.round(((service.originalPrice - service.price) / service.originalPrice) * 100);
 }
 
 export const CATEGORIES = [
@@ -35,6 +42,8 @@ export const services: Service[] = [
     category: "Landing Page",
     price: 800000,
     priceLabel: "Rp 800.000",
+    originalPrice: 1500000,
+    originalPriceLabel: "Rp 1.500.000",
     description:
       "Halaman promosi satu halaman yang powerful untuk campaign, produk, atau event Anda. Didesain untuk konversi tinggi dengan animasi modern dan form lead capture.",
     features: [
@@ -60,6 +69,8 @@ export const services: Service[] = [
     category: "Portfolio",
     price: 1200000,
     priceLabel: "Rp 1.200.000",
+    originalPrice: 2000000,
+    originalPriceLabel: "Rp 2.000.000",
     description:
       "Tunjukkan karya terbaik Anda dengan website portfolio yang elegan dan profesional. Cocok untuk freelancer, desainer, fotografer, dan kreator konten.",
     features: [
@@ -89,6 +100,8 @@ export const services: Service[] = [
     category: "Company Profile",
     price: 1500000,
     priceLabel: "Rp 1.500.000",
+    originalPrice: 2500000,
+    originalPriceLabel: "Rp 2.500.000",
     description:
       "Bangun kesan profesional perusahaan Anda dengan website modern, informatif, dan mudah dikelola. Dilengkapi CMS agar konten bisa diedit sendiri tanpa coding.",
     features: [
@@ -116,6 +129,8 @@ export const services: Service[] = [
     category: "Restoran & Cafe",
     price: 2000000,
     priceLabel: "Rp 2.000.000",
+    originalPrice: 3500000,
+    originalPriceLabel: "Rp 3.500.000",
     description:
       "Menu digital, reservasi online, dan tampilan estetis untuk tempat makan Anda. Pelanggan bisa lihat menu dan langsung booking meja dari HP mereka.",
     features: [
@@ -143,6 +158,8 @@ export const services: Service[] = [
     category: "Travel & Tour",
     price: 2500000,
     priceLabel: "Rp 2.500.000",
+    originalPrice: 4000000,
+    originalPriceLabel: "Rp 4.000.000",
     description:
       "Tampilkan paket wisata Anda dengan website menarik lengkap dengan sistem booking dan katalog destinasi yang memukau.",
     features: [
@@ -171,6 +188,8 @@ export const services: Service[] = [
     category: "Klinik Kecantikan",
     price: 3000000,
     priceLabel: "Rp 3.000.000",
+    originalPrice: 5000000,
+    originalPriceLabel: "Rp 5.000.000",
     description:
       "Website elegan untuk klinik kecantikan. Tampilkan layanan treatment, jadwal dokter, dan sistem booking appointment yang seamless.",
     features: [
@@ -197,6 +216,8 @@ export const services: Service[] = [
     category: "E-Commerce",
     price: 4000000,
     priceLabel: "Rp 4.000.000",
+    originalPrice: 6500000,
+    originalPriceLabel: "Rp 6.500.000",
     description:
       "Toko online lengkap dengan keranjang belanja, checkout, manajemen produk, dan dashboard admin. Siap terima order dari hari pertama.",
     features: [
@@ -230,6 +251,8 @@ export const services: Service[] = [
     category: "Rumah Sakit",
     price: 5000000,
     priceLabel: "Rp 5.000.000",
+    originalPrice: 8000000,
+    originalPriceLabel: "Rp 8.000.000",
     description:
       "Solusi digital paling lengkap: profil dokter, jadwal praktek, booking appointment, portal pasien, dan blog kesehatan. Siap untuk institusi skala besar.",
     features: [

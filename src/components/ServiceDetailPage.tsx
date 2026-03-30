@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
-import { services, getWhatsAppLink, type Service } from "@/data/services";
+import { services, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   MessageCircle,
@@ -566,6 +566,30 @@ export const ServiceDetailPage = () => {
                   >
                     Investasi Mulai Dari
                   </span>
+                  {getDiscountPercent(service) > 0 && (
+                    <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
+                      <span
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 500,
+                          color: "rgba(255,255,255,0.3)",
+                          textDecoration: "line-through",
+                        }}
+                      >
+                        {service.originalPriceLabel}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: "#ee4d2d",
+                          fontFamily: "system-ui",
+                        }}
+                      >
+                        HEMAT {getDiscountPercent(service)}%
+                      </span>
+                    </div>
+                  )}
                   <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", lineHeight: 1 }}>
                     {service.priceLabel}
                   </div>
