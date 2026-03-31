@@ -130,7 +130,9 @@ const ZigzagItem = ({
       </div>
 
       {/* Text Side */}
-      <div className={`w-full md:w-[calc(50%-32px)] shrink-0 ${isLeft ? "md:text-left" : "md:text-right"}`}>
+      <div
+        className={`w-full md:w-[calc(50%-32px)] shrink-0 ${isLeft ? "md:text-left" : "md:text-right"}`}
+      >
         <div className="p-5 md:p-0">
           {/* Index & Category */}
           <div className={`flex items-center gap-3 mb-4 ${isLeft ? "" : "md:justify-end"}`}>
@@ -222,8 +224,12 @@ const ZigzagItem = ({
                 color: "rgba(255,255,255,0.3)",
                 transition: "color 0.3s ease",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.3)"; }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.3)";
+              }}
             >
               Lihat Detail →
             </span>
@@ -234,15 +240,20 @@ const ZigzagItem = ({
   );
 };
 
-// ─── Main Section (Homepage — paginated, 3 items per page) ──────────────────
+// ─── Main Section ──────────────────────────────────────────────────────────────
 export const Projects = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
 
+  // Recalculate inside component so it's always reactive
+  const currentTotalPages = Math.ceil(allProjects.length / ITEMS_PER_PAGE);
   const start = page * ITEMS_PER_PAGE;
   const end = start + ITEMS_PER_PAGE;
   const displayProjects = allProjects.slice(start, end);
+
+  const canPrev = page > 0;
+  const canNext = page < currentTotalPages - 1;
 
   const goToDetail = (slug: string) => {
     navigate(`/personal-arts/${slug}`);
@@ -354,7 +365,8 @@ export const Projects = () => {
             className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2"
             style={{
               width: 2,
-              background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.08) 10%, rgba(255,255,255,0.08) 90%, transparent)",
+              background:
+                "linear-gradient(to bottom, transparent, rgba(255,255,255,0.08) 10%, rgba(255,255,255,0.08) 90%, transparent)",
             }}
           />
 
@@ -362,7 +374,7 @@ export const Projects = () => {
           <div className="flex flex-col gap-12 md:gap-20">
             {displayProjects.map((project, i) => (
               <ZigzagItem
-                key={project.title}
+                key={`${page}-${project.slug}`}
                 project={project}
                 isLeft={(start + i) % 2 === 0}
                 onNavigate={goToDetail}
@@ -372,18 +384,20 @@ export const Projects = () => {
         </div>
 
         {/* Pagination */}
-        <div
-          className="mt-12 md:mt-16 flex items-center justify-center gap-4 md:gap-6"
-        >
+        <div className="mt-12 md:mt-16 flex items-center justify-center gap-4 md:gap-6">
           {/* Previous */}
           <button
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            className="flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            onClick={() => {
+              if (canPrev) setPage((p) => p - 1);
+            }}
+            disabled={!canPrev}
+            aria-label="Previous page"
+            className="flex items-center gap-2"
             style={{
-              background: page === 0 ? "transparent" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${page === 0 ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)"}`,
-              color: page === 0 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+              cursor: canPrev ? "pointer" : "not-allowed",
+              background: canPrev ? "rgba(255,255,255,0.04)" : "transparent",
+              border: `1px solid ${canPrev ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.05)"}`,
+              color: canPrev ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.15)",
               padding: "10px 18px",
               borderRadius: 4,
               fontSize: "11px",
@@ -391,15 +405,17 @@ export const Projects = () => {
               letterSpacing: "0.15em",
               textTransform: "uppercase" as const,
               transition: "all 0.3s",
+              // Fix: reserve space so button doesn't disappear — use opacity instead of hiding
+              opacity: canPrev ? 1 : 0.35,
             }}
             onMouseEnter={(e) => {
-              if (page !== 0) {
+              if (canPrev) {
                 (e.currentTarget as HTMLElement).style.color = "#fff";
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
               }
             }}
             onMouseLeave={(e) => {
-              if (page !== 0) {
+              if (canPrev) {
                 (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
               }
@@ -410,12 +426,13 @@ export const Projects = () => {
 
           {/* Page dots */}
           <div className="flex items-center gap-2">
-            {Array.from({ length: totalPages }, (_, i) => (
+            {Array.from({ length: currentTotalPages }, (_, i) => (
               <button
                 key={i}
                 onClick={() => setPage(i)}
-                className="cursor-pointer"
+                aria-label={`Go to page ${i + 1}`}
                 style={{
+                  cursor: "pointer",
                   width: i === page ? 24 : 8,
                   height: 8,
                   borderRadius: 4,
@@ -430,13 +447,17 @@ export const Projects = () => {
 
           {/* Next */}
           <button
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={page === totalPages - 1}
-            className="flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            onClick={() => {
+              if (canNext) setPage((p) => p + 1);
+            }}
+            disabled={!canNext}
+            aria-label="Next page"
+            className="flex items-center gap-2"
             style={{
-              background: page === totalPages - 1 ? "transparent" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${page === totalPages - 1 ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.12)"}`,
-              color: page === totalPages - 1 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+              cursor: canNext ? "pointer" : "not-allowed",
+              background: canNext ? "rgba(255,255,255,0.04)" : "transparent",
+              border: `1px solid ${canNext ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.05)"}`,
+              color: canNext ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.15)",
               padding: "10px 18px",
               borderRadius: 4,
               fontSize: "11px",
@@ -444,15 +465,17 @@ export const Projects = () => {
               letterSpacing: "0.15em",
               textTransform: "uppercase" as const,
               transition: "all 0.3s",
+              // Fix: reserve space so button doesn't disappear
+              opacity: canNext ? 1 : 0.35,
             }}
             onMouseEnter={(e) => {
-              if (page !== totalPages - 1) {
+              if (canNext) {
                 (e.currentTarget as HTMLElement).style.color = "#fff";
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
               }
             }}
             onMouseLeave={(e) => {
-              if (page !== totalPages - 1) {
+              if (canNext) {
                 (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
               }
@@ -462,7 +485,7 @@ export const Projects = () => {
           </button>
         </div>
 
-        {/* Lihat Selengkapnya Button — elegant text-only style */}
+        {/* Lihat Selengkapnya */}
         <div
           className="mt-12 md:mt-20 flex flex-col items-center gap-5 text-center"
           style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "32px" }}
