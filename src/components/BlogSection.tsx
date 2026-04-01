@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Highlighter } from "./ui/Highlighter";
 import { blogs } from "@/data/blogs";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ const latestBlogs = blogs.slice(0, 3);
 export const BlogSection = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   useGSAP(
     () => {
@@ -80,7 +82,7 @@ export const BlogSection = () => {
                 className="uppercase text-[10px] font-bold tracking-[0.55em]"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
-                Editorial
+                {t("blogs_section.editorial")}
               </span>
             </div>
             <h2
@@ -90,13 +92,13 @@ export const BlogSection = () => {
                 fontSize: "clamp(48px, 8vw, 110px)",
               }}
             >
-              {"Blog".split("").map((c, i) => (
+              {t("blogs_section.title_part1").split("").map((c, i) => (
                 <span key={i} className="blog-heading-char inline-block">
                   {c}
                 </span>
               ))}
               <Highlighter action="underline" color="#10b981">
-                <span className="blog-heading-char inline-block">.</span>
+                <span className="blog-heading-char inline-block">{t("blogs_section.title_part2")}</span>
               </Highlighter>
             </h2>
           </div>
@@ -108,8 +110,7 @@ export const BlogSection = () => {
               lineHeight: 1.75,
             }}
           >
-            Catatan panjang tentang engineering, arsitektur, dan pelajaran dari membangun produk
-            nyata.
+            {t("blogs_section.description")}
           </p>
         </div>
 
@@ -136,7 +137,7 @@ export const BlogSection = () => {
               {/* Full-bleed Cover Image */}
               <img
                 src={blog.coverImage}
-                alt={blog.title}
+                alt={i18n.language === "en" ? blog.titleEn : blog.title}
                 referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                 style={{ filter: "brightness(0.65) contrast(1.1)" }}
@@ -193,7 +194,7 @@ export const BlogSection = () => {
                     color: "#10b981",
                   }}
                 >
-                  {new Date(blog.date).toLocaleDateString("id-ID", {
+                  {new Date(blog.date).toLocaleDateString(i18n.language === 'en' ? "en-US" : "id-ID", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
@@ -211,7 +212,9 @@ export const BlogSection = () => {
                     lineHeight: 1.15,
                   }}
                 >
-                  {blog.title.length > 60 ? blog.title.slice(0, 60) + "..." : blog.title}
+                  {(i18n.language === "en" ? blog.titleEn : blog.title).length > 60 
+                    ? (i18n.language === "en" ? blog.titleEn : blog.title).slice(0, 60) + "..." 
+                    : (i18n.language === "en" ? blog.titleEn : blog.title)}
                 </h3>
 
                 {/* Excerpt */}
@@ -224,7 +227,9 @@ export const BlogSection = () => {
                     fontWeight: 400,
                   }}
                 >
-                  {blog.excerpt.length > 100 ? blog.excerpt.slice(0, 100) + "..." : blog.excerpt}
+                  {(i18n.language === "en" ? blog.excerptEn : blog.excerpt).length > 100 
+                    ? (i18n.language === "en" ? blog.excerptEn : blog.excerpt).slice(0, 100) + "..." 
+                    : (i18n.language === "en" ? blog.excerptEn : blog.excerpt)}
                 </p>
 
                 {/* Read more */}
@@ -240,7 +245,7 @@ export const BlogSection = () => {
                     }}
                     className="group-hover:!text-white/60"
                   >
-                    Baca Selengkapnya →
+                    {t("blogs_section.read_more")} →
                   </span>
                 </div>
               </div>
@@ -282,7 +287,7 @@ export const BlogSection = () => {
               (e.currentTarget as HTMLElement).style.borderBottomColor = "rgba(255,255,255,0.15)";
             }}
           >
-            Lihat Semua Blog
+            {t("blogs_section.view_all")}
             <ArrowRight
               size={20}
               className="transition-transform duration-300 group-hover:translate-x-2"

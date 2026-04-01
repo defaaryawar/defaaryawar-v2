@@ -3,12 +3,14 @@ import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PHOTO_SRC = "/images/photo-profil/defaaryawar-landscape.png";
 
 export const Hero = () => {
+  const { t } = useTranslation();
   const container = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const bgPhotoRef = useRef<HTMLDivElement>(null);
@@ -190,7 +192,7 @@ export const Hero = () => {
               fontFamily: "'Bebas Neue', Impact, sans-serif",
             }}
           >
-            FULLSTACK
+            {t("hero.watermark_top")}
           </span>
         </div>
         <div
@@ -209,7 +211,7 @@ export const Hero = () => {
               fontFamily: "'Bebas Neue', Impact, sans-serif",
             }}
           >
-            DEVELOPER
+            {t("hero.watermark_bottom")}
           </span>
         </div>
       </div>
@@ -232,7 +234,7 @@ export const Hero = () => {
               fontFamily: "system-ui",
             }}
           >
-            FullStack Developer
+            {t("hero.side_label")}
           </span>
           <div
             className="w-px h-20"
@@ -247,7 +249,7 @@ export const Hero = () => {
           className="text-[9px] font-bold uppercase text-white/15 select-none tracking-[0.55em]"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed", fontFamily: "system-ui" }}
         >
-          ©2025 Portfolio
+          {t("hero.portfolio")}
         </span>
       </div>
 
@@ -262,7 +264,7 @@ export const Hero = () => {
                 className="text-[10px] uppercase tracking-[0.6em] text-white/35 font-medium"
                 style={{ fontFamily: "system-ui, sans-serif" }}
               >
-                Available for Work
+                {t("hero.badge")}
               </span>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
@@ -329,7 +331,7 @@ export const Hero = () => {
               className="text-[10px] uppercase tracking-[0.5em] text-white/20"
               style={{ fontFamily: "system-ui" }}
             >
-              Based in Indonesia
+              {t("hero.location")}
             </span>
           </div>
 
@@ -344,7 +346,7 @@ export const Hero = () => {
               letterSpacing: "0.01em",
             }}
           >
-            {"Building robust full-stack applications and reliable networks with precision and technical excellence."
+            {t("hero.subtitle")
               .split("")
               .map((char, i) => (
                 <span
@@ -377,7 +379,7 @@ export const Hero = () => {
               }}
             >
               <span style={{ position: "relative", zIndex: 1, display: "inline-flex", gap: "2px" }}>
-                {"Explore Work".split("").map((char, i) => (
+                {t("hero.cta_primary").split("").map((char, i) => (
                   <span
                     key={i}
                     className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}
@@ -429,7 +431,7 @@ export const Hero = () => {
                 e.currentTarget.style.color = "rgba(255,255,255,0.5)";
               }}
             >
-              {"Get In Touch".split("").map((char, i) => (
+              {t("hero.cta_secondary").split("").map((char, i) => (
                 <span
                   key={i}
                   className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}

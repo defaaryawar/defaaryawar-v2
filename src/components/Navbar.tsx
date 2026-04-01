@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useScroll, useMotionValueEvent } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,6 +12,12 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'id' : 'en';
+    i18n.changeLanguage(newLang);
+  };
 
   const { scrollY } = useScroll();
 
@@ -43,13 +50,13 @@ export const Navbar = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: "About", href: "#about", isRoute: false },
-    { name: "Tech", href: "#skills", isRoute: false },
-    { name: "Work", href: "/personal-arts", isRoute: true },
-    { name: "Blog", href: "/blogs", isRoute: true },
-    { name: "Services", href: "/services", isRoute: true },
-    { name: "Career", href: "#experience", isRoute: false },
-    { name: "Contact", href: "#contact", isRoute: false },
+    { name: t("navbar.about"), href: "#about", isRoute: false },
+    { name: t("navbar.tech"), href: "#skills", isRoute: false },
+    { name: t("navbar.work"), href: "/personal-arts", isRoute: true },
+    { name: t("navbar.blog"), href: "/blogs", isRoute: true },
+    { name: t("navbar.services"), href: "/services", isRoute: true },
+    { name: t("navbar.career"), href: "#experience", isRoute: false },
+    { name: t("navbar.contact"), href: "#contact", isRoute: false },
   ];
 
   const handleNavClick = useCallback(
@@ -116,17 +123,31 @@ export const Navbar = () => {
               onClick={(e) => handleNavClick(e, "#contact")}
               className="px-8 py-3 bg-white text-black text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all cursor-pointer"
             >
-              Hire Me
+              {t("navbar.hire_me")}
             </a>
+            
+            <button
+              onClick={toggleLanguage}
+              className="text-[12px] font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors border border-white/20 px-3 py-1 rounded"
+            >
+              {i18n.language === 'en' ? 'EN' : 'ID'}
+            </button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-4">
+            <button
+              onClick={toggleLanguage}
+              className="text-[10px] font-bold uppercase tracking-widest text-white/80 border border-white/20 px-2 py-1 rounded"
+            >
+              {i18n.language === 'en' ? 'EN' : 'ID'}
+            </button>
+            <button
+              className="text-white"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -216,7 +237,7 @@ export const Navbar = () => {
                 )}
                 style={{ transitionDelay: `${navLinks.length * 50}ms` }}
               >
-                Start a Project
+                {t("navbar.start_project")}
               </a>
             </div>
           </div>

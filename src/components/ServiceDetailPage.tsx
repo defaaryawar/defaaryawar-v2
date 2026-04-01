@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useTranslation } from "react-i18next";
 import { Highlighter } from "./ui/Highlighter";
 import { services, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
 import { useParams, useNavigate } from "react-router-dom";
@@ -234,6 +235,7 @@ const ServiceHeroBanner = ({ service }: { service: Service }) => {
 export const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const service = services.find((s) => s.id === slug);
   const container = useRef<HTMLDivElement>(null);
 
@@ -252,7 +254,7 @@ export const ServiceDetailPage = () => {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Layanan Tidak Ditemukan
+            {t("service_detail.not_found")}
           </h1>
           <button
             onClick={() => navigate("/services")}
@@ -269,7 +271,7 @@ export const ServiceDetailPage = () => {
               borderRadius: 4,
             }}
           >
-            ← Kembali ke Layanan
+            ← {t("service_detail.back_to_services")}
           </button>
         </div>
       </main>
@@ -306,7 +308,12 @@ export const ServiceDetailPage = () => {
     { scope: container },
   );
 
-  const warrantyLabel = service.warrantyDays >= 45 ? "1,5 bulan" : `${service.warrantyDays} hari`;
+  const warrantyLabel =
+    service.warrantyDays >= 45
+      ? i18n.language === "en"
+        ? "1.5 months"
+        : "1,5 bulan"
+      : `${service.warrantyDays} ${i18n.language === "en" ? "days" : "hari"}`;
 
   return (
     <main
@@ -358,17 +365,17 @@ export const ServiceDetailPage = () => {
               onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
             >
-              <ArrowLeft size={14} /> Kembali ke Services
+              <ArrowLeft size={14} /> {t("service_detail.back_to_services")}
             </button>
             <div className="flex items-center gap-2 mb-3">
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>Services</span>
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.15)" }}>›</span>
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
-                {service.category}
+                {i18n.language === "en" ? service.categoryEn : service.category}
               </span>
               <span style={{ fontSize: 10, color: "rgba(255,255,255,0.15)" }}>›</span>
               <span style={{ fontSize: 10, color: cfg.accent, fontWeight: 600 }}>
-                {service.name}
+                {i18n.language === "en" ? service.nameEn : service.name}
               </span>
             </div>
           </div>
@@ -397,7 +404,7 @@ export const ServiceDetailPage = () => {
                   }}
                 >
                   <Highlighter action="underline" color={cfg.accent}>
-                    {service.name.split("").map((c, i) => (
+                    {(i18n.language === "en" ? service.nameEn : service.name).split("").map((c, i) => (
                       <span key={i} className="inline-block" style={{ color: "#fff" }}>
                         {c === " " ? "\u00A0" : c}
                       </span>
@@ -412,7 +419,7 @@ export const ServiceDetailPage = () => {
                     maxWidth: 640,
                   }}
                 >
-                  {service.description}
+                  {i18n.language === "en" ? service.descriptionEn : service.description}
                 </p>
               </div>
 
@@ -424,10 +431,14 @@ export const ServiceDetailPage = () => {
                   { icon: Globe, label: "DOMAIN & HOSTING", value: "Gratis Setahun" },
                   {
                     icon: RefreshCw,
-                    label: "REVISI DESAIN",
-                    value: `${service.revisions}x Revisi`,
+                    label: t("service_detail.revisions"),
+                    value: `${service.revisions}x ${i18n.language === "en" ? "Revisions" : "Revisi"}`,
                   },
-                  { icon: ShieldCheck, label: "GARANSI ERROR", value: warrantyLabel },
+                  {
+                    icon: ShieldCheck,
+                    label: t("service_detail.warranty"),
+                    value: warrantyLabel,
+                  },
                 ].map((stat, i) => (
                   <div key={i} className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2" style={{ color: cfg.accent }}>
@@ -458,7 +469,7 @@ export const ServiceDetailPage = () => {
                     marginBottom: 20,
                   }}
                 >
-                  Yang Anda Dapatkan
+                  {t("service_detail.what_you_get")}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6">
                   {service.features.map((f, i) => (
@@ -471,7 +482,7 @@ export const ServiceDetailPage = () => {
                       <span
                         style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.6 }}
                       >
-                        {f}
+                        {i18n.language === "en" ? service.featuresEn[i] : f}
                       </span>
                     </div>
                   ))}
@@ -485,37 +496,39 @@ export const ServiceDetailPage = () => {
                     fontSize: 24,
                     letterSpacing: "0.05em",
                     color: "#fff",
-                    marginBottom: 24,
+                    marginBottom: 20,
                   }}
                 >
-                  Alur Kerja
+                  {t("service_detail.workflow")}
                 </h3>
-                <div className="relative border-l border-white/10 ml-2.5 flex flex-col gap-8 pb-2">
+                <div className="flex flex-col gap-6">
                   {[
                     {
                       step: "01",
-                      title: "Konsultasi",
-                      desc: "Diskusi kebutuhan via WhatsApp — gratis.",
+                      title: t("service_detail.workflow_steps.step1_title"),
+                      desc: t("service_detail.workflow_steps.step1_desc"),
                     },
                     {
                       step: "02",
-                      title: "Desain Mockup",
-                      desc: "Pembuatan prototipe / preview desain halaman pertama.",
+                      title: t("service_detail.workflow_steps.step2_title"),
+                      desc: t("service_detail.workflow_steps.step2_desc"),
                     },
                     {
                       step: "03",
-                      title: "Development",
-                      desc: "Implementasi koding website sesuai desain yang disetujui.",
+                      title: t("service_detail.workflow_steps.step3_title"),
+                      desc: t("service_detail.workflow_steps.step3_desc"),
                     },
                     {
                       step: "04",
-                      title: "Revisi",
-                      desc: `Tinjau hasil kerja dan ajukan revisi hingga ${service.revisions}x.`,
+                      title: t("service_detail.workflow_steps.step4_title"),
+                      desc: t("service_detail.workflow_steps.step4_desc", {
+                        revisions: service.revisions,
+                      }),
                     },
                     {
                       step: "05",
-                      title: "Handover",
-                      desc: "Setup domain & hosting, website berhasil dilaunching.",
+                      title: t("service_detail.workflow_steps.step5_title"),
+                      desc: t("service_detail.workflow_steps.step5_desc"),
                     },
                   ].map((item, i) => (
                     <div key={i} className="relative pl-7">
@@ -564,7 +577,7 @@ export const ServiceDetailPage = () => {
                       marginBottom: 4,
                     }}
                   >
-                    Investasi Mulai Dari
+                    {t("service_detail.investment_starts_from")}
                   </span>
                   {getDiscountPercent(service) > 0 && (
                     <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
@@ -586,7 +599,7 @@ export const ServiceDetailPage = () => {
                           fontFamily: "system-ui",
                         }}
                       >
-                        HEMAT {getDiscountPercent(service)}%
+                        {t("service_detail.save")} {getDiscountPercent(service)}%
                       </span>
                     </div>
                   )}
@@ -596,7 +609,7 @@ export const ServiceDetailPage = () => {
                   <div className="flex items-center gap-1.5 mt-2.5">
                     <BadgeCheck size={14} color="#10b981" />
                     <span style={{ fontSize: 12, color: "#10b981", fontWeight: 600 }}>
-                      Tansparan & Tanpa Hidden Fee
+                      {t("service_detail.transparent_pricing")}
                     </span>
                   </div>
                 </div>
@@ -613,7 +626,8 @@ export const ServiceDetailPage = () => {
                         color: "rgba(255,255,255,0.7)",
                       }}
                     >
-                      <Zap size={10} color={cfg.accent} /> {h}
+                      <Zap size={10} color={cfg.accent} />{" "}
+                      {i18n.language === "en" ? service.highlightsEn[service.highlights.indexOf(h)] : h}
                     </span>
                   ))}
                 </div>
@@ -635,7 +649,7 @@ export const ServiceDetailPage = () => {
                       textDecoration: "none",
                     }}
                   >
-                    <MessageCircle size={16} /> Pesan / Tanya Detail via WA
+                    <MessageCircle size={16} /> {t("service_detail.order_via_wa")}
                   </a>
                   <p
                     style={{
@@ -645,9 +659,9 @@ export const ServiceDetailPage = () => {
                       lineHeight: 1.5,
                     }}
                   >
-                    Estimasi pengerjaan: {service.deliveryDays} hari kerja.
+                    {t("service_detail.delivery_estimation", { days: service.deliveryDays })}
                     <br />
-                    Klik tombol di atas untuk diskusi langsung dengan developer.
+                    {t("service_detail.discussion_note")}
                   </p>
                 </div>
               </div>

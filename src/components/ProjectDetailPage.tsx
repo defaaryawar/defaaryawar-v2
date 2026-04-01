@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -13,6 +14,7 @@ import { projects as projectsData } from "@/data/projects";
 export const ProjectDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   const projectIndex = projectsData.findIndex((p) => p.slug === slug);
   const project = projectsData[projectIndex];
@@ -38,7 +40,7 @@ export const ProjectDetailPage = () => {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Project Not Found
+            {t("project_detail.not_found")}
           </h1>
           <button
             onClick={() => navigate("/personal-arts")}
@@ -55,15 +57,17 @@ export const ProjectDetailPage = () => {
               borderRadius: 4,
             }}
           >
-            ← Kembali ke Personal Arts
+            ← {t("project_detail.back_to_projects")}
           </button>
         </div>
       </main>
     );
   }
 
-  const displayTitle = project.title.split(" - ")[0];
-  const subtitle = project.title.split(" - ").slice(1).join(" - ");
+  const projectTitle = i18n.language === "en" ? project.title : project.titleId;
+  const displayTitle = projectTitle.split(" - ")[0];
+  const subtitle = projectTitle.split(" - ").slice(1).join(" - ");
+  const detailDescription = i18n.language === "en" ? project.detailDescriptionEn : project.detailDescription;
 
   // Parse detailDescription markdown-like content into simple HTML
   const renderDescription = (text: string) => {
@@ -224,7 +228,7 @@ export const ProjectDetailPage = () => {
               size={16}
               className="transition-transform duration-300 group-hover:-translate-x-1"
             />
-            All Projects
+            {t("project_detail.back_to_projects")}
           </button>
 
           <span
@@ -312,7 +316,7 @@ export const ProjectDetailPage = () => {
         <div className="container mx-auto px-4 md:px-8 lg:px-16 py-12 md:py-20">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
             {/* Left — Detail Description */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-0">
               <h3
                 style={{
                   fontFamily: "'Bebas Neue', Impact, sans-serif",
@@ -322,7 +326,7 @@ export const ProjectDetailPage = () => {
                   marginBottom: "16px",
                 }}
               >
-                About This Project
+                {t("project_detail.about")}
               </h3>
               <div
                 style={{
@@ -330,7 +334,7 @@ export const ProjectDetailPage = () => {
                   paddingTop: "20px",
                 }}
               >
-                {renderDescription(project.detailDescription || project.description)}
+                {renderDescription(detailDescription || project.descriptionId)}
               </div>
             </div>
 
@@ -347,7 +351,7 @@ export const ProjectDetailPage = () => {
                     marginBottom: "12px",
                   }}
                 >
-                  Tech Stack
+                  {t("project_detail.tech_stack")}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech) => (
@@ -384,7 +388,7 @@ export const ProjectDetailPage = () => {
                     marginBottom: "12px",
                   }}
                 >
-                  Links
+                  {t("project_detail.links")}
                 </h4>
                 <div className="flex flex-col gap-3">
                   {project.demoLink && project.demoLink !== "" && (
@@ -416,7 +420,7 @@ export const ProjectDetailPage = () => {
                           "rgba(255,255,255,0.7)";
                       }}
                     >
-                      <span>Live Demo</span>
+                      <span>{t("project_detail.live_demo")}</span>
                       <ArrowUpRight size={14} />
                     </a>
                   )}
@@ -450,7 +454,7 @@ export const ProjectDetailPage = () => {
                       }}
                     >
                       <span className="flex items-center gap-2">
-                        <GithubIcon size={14} /> Source Code
+                        <GithubIcon size={14} /> {t("project_detail.source_code")}
                       </span>
                       <ArrowUpRight size={14} />
                     </a>
@@ -465,7 +469,7 @@ export const ProjectDetailPage = () => {
                           fontStyle: "italic",
                         }}
                       >
-                        Private Repository — Links not available
+                        {t("project_detail.private_repo")}
                       </p>
                     )}
                 </div>
@@ -486,7 +490,7 @@ export const ProjectDetailPage = () => {
                       marginBottom: "12px",
                     }}
                   >
-                    Gallery
+                    {t("project_detail.gallery")}
                   </h4>
                   <div className="flex flex-col gap-3">
                     {project.images.slice(1).map((img, i) => (
@@ -562,7 +566,7 @@ export const ProjectDetailPage = () => {
                         color: "rgba(255,255,255,0.3)",
                       }}
                     >
-                      Previous
+                      {t("project_detail.previous")}
                     </span>
                   </div>
                   <p
@@ -574,7 +578,7 @@ export const ProjectDetailPage = () => {
                       lineHeight: 1.1,
                     }}
                   >
-                    {prevProject.title.split(" - ")[0]}
+                    {(i18n.language === "en" ? prevProject.title : prevProject.titleId).split(" - ")[0]}
                   </p>
                 </button>
               )}
@@ -616,7 +620,7 @@ export const ProjectDetailPage = () => {
                         color: "rgba(255,255,255,0.3)",
                       }}
                     >
-                      Next
+                      {t("project_detail.next")}
                     </span>
                     <ChevronRight size={12} style={{ color: "rgba(255,255,255,0.3)" }} />
                   </div>
@@ -629,7 +633,7 @@ export const ProjectDetailPage = () => {
                       lineHeight: 1.1,
                     }}
                   >
-                    {nextProject.title.split(" - ")[0]}
+                    {(i18n.language === "en" ? nextProject.title : nextProject.titleId).split(" - ")[0]}
                   </p>
                 </button>
               )}

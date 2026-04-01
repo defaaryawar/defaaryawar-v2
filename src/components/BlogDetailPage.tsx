@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Calendar, Tag, ChevronLeft, ChevronRight, Share2, Cop
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 import { blogs } from "@/data/blogs";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -172,13 +173,18 @@ export const BlogDetailPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const blogIndex = blogs.findIndex((b) => b.slug === slug);
   const blog = blogs[blogIndex];
   const prevBlog = blogIndex > 0 ? blogs[blogIndex - 1] : null;
   const nextBlog = blogIndex < blogs.length - 1 ? blogs[blogIndex + 1] : null;
 
-  const headings = blog ? parseHeadings(blog.content) : [];
+  const content = blog ? (i18n.language === "en" ? blog.contentEn : blog.content) : "";
+  const title = blog ? (i18n.language === "en" ? blog.titleEn : blog.title) : "";
+  const excerpt = blog ? (i18n.language === "en" ? blog.excerptEn : blog.excerpt) : "";
+
+  const headings = blog ? parseHeadings(content) : [];
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -270,7 +276,7 @@ export const BlogDetailPage = () => {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Blog Not Found
+            {t("blog_detail.not_found")}
           </h1>
           <button
             onClick={() => navigate("/blogs")}
@@ -287,14 +293,14 @@ export const BlogDetailPage = () => {
               borderRadius: 4,
             }}
           >
-            ← Kembali ke Blog
+            ← {t("blog_detail.back_to_blog")}
           </button>
         </div>
       </main>
     );
   }
 
-  const formattedDate = new Date(blog.date).toLocaleDateString("id-ID", {
+  const formattedDate = new Date(blog.date).toLocaleDateString(i18n.language === "en" ? "en-US" : "id-ID", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -343,7 +349,7 @@ export const BlogDetailPage = () => {
               size={16}
               className="transition-transform duration-300 group-hover:-translate-x-1"
             />
-            All Posts
+            {t("blog_detail.all_posts")}
           </button>
 
           <div className="flex items-center gap-3">
@@ -364,7 +370,7 @@ export const BlogDetailPage = () => {
               }}
             >
               {copied ? <Check size={12} /> : <Copy size={12} />}
-              {copied ? "Link Copied!" : "Copy Link"}
+              {copied ? t("blog_detail.link_copied") : t("blog_detail.copy_link")}
             </button>
           </div>
         </div>
@@ -432,7 +438,7 @@ export const BlogDetailPage = () => {
                 maxWidth: "900px",
               }}
             >
-              {blog.title}
+              {title}
             </h1>
             <div className="detail-meta flex flex-wrap items-center gap-5 mt-6">
               <div className="flex items-center gap-3">
@@ -481,7 +487,7 @@ export const BlogDetailPage = () => {
                     fontWeight: 500,
                   }}
                 >
-                  {blog.readTime} read
+                  {blog.readTime} {t("blog_detail.read")}
                 </span>
               </div>
             </div>
@@ -575,7 +581,7 @@ export const BlogDetailPage = () => {
                     }}
                   >
                     <Share2 size={13} />
-                    {copied ? "Link Copied!" : "Share Article"}
+                    {copied ? t("blog_detail.link_copied") : t("blog_detail.share_article")}
                   </button>
                 </div>
               </div>
@@ -602,7 +608,7 @@ export const BlogDetailPage = () => {
                   listStyle: "none",
                 }}
               >
-                <span>Table of Contents</span>
+                <span>{t("blog_detail.table_of_contents")}</span>
                 <span style={{ color: "rgba(255,255,255,0.2)" }}>▾</span>
               </summary>
               <nav className="px-5 pb-4">
@@ -653,11 +659,11 @@ export const BlogDetailPage = () => {
                   borderBottom: "1px solid rgba(255,255,255,0.06)",
                 }}
               >
-                {blog.excerpt}
+                {i18n.language === "en" ? blog.excerptEn : excerpt}
               </p>
 
               {/* Rendered content */}
-              <div>{renderContent(blog.content)}</div>
+              <div>{renderContent(i18n.language === "en" ? blog.contentEn : content)}</div>
 
               {/* Tags at bottom */}
               <div
@@ -719,7 +725,7 @@ export const BlogDetailPage = () => {
                       color: "rgba(255,255,255,0.3)",
                     }}
                   >
-                    Written by
+                    {t("blog_detail.written_by")}
                   </span>
                   <h4
                     className="mt-1"
@@ -740,8 +746,7 @@ export const BlogDetailPage = () => {
                       marginTop: "4px",
                     }}
                   >
-                    Fullstack Developer & AI Enthusiast based in Jakarta.
-                    Building products that solve real problems.
+                    {t("blog_detail.author_bio")}
                   </p>
                 </div>
               </div>
@@ -798,7 +803,7 @@ export const BlogDetailPage = () => {
                         color: "rgba(255,255,255,0.3)",
                       }}
                     >
-                      Previous Post
+                      {t("blog_detail.previous_post")}
                     </span>
                   </div>
                   <p
@@ -810,9 +815,9 @@ export const BlogDetailPage = () => {
                       lineHeight: 1.1,
                     }}
                   >
-                    {prevBlog.title.length > 60
-                      ? prevBlog.title.slice(0, 60) + "..."
-                      : prevBlog.title}
+                    {(i18n.language === "en" ? prevBlog.titleEn : prevBlog.title).length > 60
+                      ? (i18n.language === "en" ? prevBlog.titleEn : prevBlog.title).slice(0, 60) + "..."
+                      : (i18n.language === "en" ? prevBlog.titleEn : prevBlog.title)}
                   </p>
                 </button>
               )}
@@ -847,14 +852,14 @@ export const BlogDetailPage = () => {
                   <div className="flex items-center gap-2 mb-2 justify-end">
                     <span
                       style={{
-                        fontSize: "9px",
-                        fontWeight: 700,
+                        fontSize: "10px",
+                        fontWeight: 800,
                         letterSpacing: "0.3em",
                         textTransform: "uppercase",
-                        color: "rgba(255,255,255,0.3)",
+                        color: "rgba(255,255,255,0.25)",
                       }}
                     >
-                      Next Post
+                      {t("blog_detail.table_of_contents")}
                     </span>
                     <ChevronRight
                       size={12}
@@ -870,9 +875,9 @@ export const BlogDetailPage = () => {
                       lineHeight: 1.1,
                     }}
                   >
-                    {nextBlog.title.length > 60
-                      ? nextBlog.title.slice(0, 60) + "..."
-                      : nextBlog.title}
+                    {(i18n.language === "en" ? nextBlog.titleEn : nextBlog.title).length > 60
+                      ? (i18n.language === "en" ? nextBlog.titleEn : nextBlog.title).slice(0, 60) + "..."
+                      : (i18n.language === "en" ? nextBlog.titleEn : nextBlog.title)}
                   </p>
                 </button>
               )}

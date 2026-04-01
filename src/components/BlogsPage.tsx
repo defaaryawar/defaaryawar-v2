@@ -3,23 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { Search, Clock } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useTranslation } from "react-i18next";
 import { Highlighter } from "./ui/Highlighter";
 import { blogs } from "@/data/blogs";
 
 export const BlogsPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
   const featuredBlog = blogs.find((b) => b.featured) || blogs[0];
   const regularBlogs = blogs
     .filter((b) => b.slug !== featuredBlog.slug)
-    .filter(
-      (b) =>
-        !searchQuery ||
-        b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())),
-    );
+    .filter((b) => {
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      const title = i18n.language === "en" ? b.titleEn : b.title;
+      const excerpt = i18n.language === "en" ? b.excerptEn : b.excerpt;
+      return (
+        title.toLowerCase().includes(q) ||
+        excerpt.toLowerCase().includes(q) ||
+        b.tags.some((tag) => tag.toLowerCase().includes(q))
+      );
+    });
 
   useGSAP(
     () => {
@@ -63,6 +70,22 @@ export const BlogsPage = () => {
     { scope: container },
   );
 
+  const getLocalDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString(i18n.language === "en" ? "en-US" : "id-ID", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const getShortDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString(i18n.language === "en" ? "en-US" : "id-ID", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   return (
     <div
       ref={container}
@@ -76,7 +99,7 @@ export const BlogsPage = () => {
             className="uppercase text-[10px] font-bold tracking-[0.5em]"
             style={{ color: "#10b981" }}
           >
-            Editorial
+            {t("blogs_page.editorial")}
           </span>
           <h1
             className="uppercase leading-[0.9] mt-3"
@@ -86,9 +109,9 @@ export const BlogsPage = () => {
               color: "#fff",
             }}
           >
-            The{" "}
+            {t("blogs_page.title_the")}{" "}
             <Highlighter action="underline" color="#10b981">
-              Journal
+              {t("blogs_page.title_journal")}
             </Highlighter>
           </h1>
           <p
@@ -99,8 +122,7 @@ export const BlogsPage = () => {
               lineHeight: 1.7,
             }}
           >
-            Long-form notes on product, engineering, and design. Search the archive or start with
-            this week's cover story.
+            {t("blogs_page.subtitle")}
           </p>
         </div>
 
@@ -126,7 +148,7 @@ export const BlogsPage = () => {
           <div className="relative" style={{ height: "clamp(300px, 45vw, 480px)" }}>
             <img
               src={featuredBlog.coverImage}
-              alt={featuredBlog.title}
+              alt={i18n.language === "en" ? featuredBlog.titleEn : featuredBlog.title}
               referrerPolicy="no-referrer"
               className="absolute inset-0 w-full h-full object-cover"
               style={{ filter: "brightness(0.55) contrast(1.1)" }}
@@ -154,7 +176,7 @@ export const BlogsPage = () => {
                   border: "1px solid rgba(16,185,129,0.2)",
                 }}
               >
-                Cover Story
+                {t("blogs_page.cover_story")}
               </span>
 
               <h2
@@ -166,7 +188,7 @@ export const BlogsPage = () => {
                   color: "#fff",
                 }}
               >
-                {featuredBlog.title}
+                {i18n.language === "en" ? featuredBlog.titleEn : featuredBlog.title}
               </h2>
               <p
                 className="mt-3 max-w-2xl hidden sm:block"
@@ -176,7 +198,7 @@ export const BlogsPage = () => {
                   lineHeight: 1.7,
                 }}
               >
-                {featuredBlog.excerpt}
+                {i18n.language === "en" ? featuredBlog.excerptEn : featuredBlog.excerpt}
               </p>
 
               {/* Author + meta */}
@@ -200,11 +222,7 @@ export const BlogsPage = () => {
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.15)" }}>·</span>
                 <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.35)" }}>
-                  {new Date(featuredBlog.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {getLocalDate(featuredBlog.date)}
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.15)" }}>·</span>
                 <span
@@ -228,7 +246,7 @@ export const BlogsPage = () => {
               color: "#fff",
             }}
           >
-            From the archive
+            {t("blogs_page.archive_title")}
           </h2>
 
           <div className="relative w-full sm:w-72">
@@ -238,7 +256,7 @@ export const BlogsPage = () => {
             />
             <input
               type="text"
-              placeholder="Search by title or topic..."
+              placeholder={t("blogs_page.search_placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-[13px] text-white focus:outline-none focus:border-[#10b981]/50 transition-colors placeholder:text-white/20"
@@ -260,7 +278,7 @@ export const BlogsPage = () => {
               >
                 <img
                   src={blog.coverImage}
-                  alt={blog.title}
+                  alt={i18n.language === "en" ? blog.titleEn : blog.title}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover transition-transform duration-700"
                   style={{ filter: "brightness(0.85) contrast(1.05)" }}
@@ -276,11 +294,7 @@ export const BlogsPage = () => {
                   color: "#10b981",
                 }}
               >
-                {new Date(blog.date).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                {getShortDate(blog.date)}
               </div>
 
               <h3
@@ -293,7 +307,7 @@ export const BlogsPage = () => {
                   letterSpacing: "0.02em",
                 }}
               >
-                {blog.title}
+                {i18n.language === "en" ? blog.titleEn : blog.title}
               </h3>
 
               <p
@@ -303,7 +317,11 @@ export const BlogsPage = () => {
                   lineHeight: 1.7,
                 }}
               >
-                {blog.excerpt.length > 100 ? blog.excerpt.slice(0, 100) + "..." : blog.excerpt}
+                {(i18n.language === "en" ? blog.excerptEn : blog.excerpt).length > 100
+                  ? (i18n.language === "en" ? blog.excerptEn : blog.excerpt).slice(0, 100) + "..."
+                  : i18n.language === "en"
+                  ? blog.excerptEn
+                  : blog.excerpt}
               </p>
             </article>
           ))}

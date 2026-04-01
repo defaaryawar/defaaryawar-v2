@@ -5,6 +5,7 @@ import { Highlighter } from "./ui/Highlighter";
 import { services, CATEGORIES, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
 import { MessageCircle, Star, BadgeCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // ─── CSS-generated website mockup preview ────────────────────────────────────
 const ServicePreview = ({ service }: { service: Service }) => {
@@ -190,7 +191,9 @@ const ServiceCard = ({
 }: {
   service: Service;
   onSelect: (s: Service) => void;
-}) => (
+}) => {
+  const { t, i18n } = useTranslation();
+  return (
   <div
     className="service-card flex flex-col overflow-hidden cursor-pointer"
     style={{
@@ -230,7 +233,7 @@ const ServiceCard = ({
           }}
         >
           <Star size={8} fill="#fff" color="#fff" />
-          Terlaris
+          {t("services.popular")}
         </div>
       )}
 
@@ -248,7 +251,7 @@ const ServiceCard = ({
           letterSpacing: "0.04em",
         }}
       >
-        {service.category}
+        {i18n.language === "en" ? service.categoryEn : service.category}
       </div>
     </div>
 
@@ -267,7 +270,7 @@ const ServiceCard = ({
           overflow: "hidden",
         }}
       >
-        {service.name}
+        {i18n.language === "en" ? service.nameEn : service.name}
       </h3>
 
       <div>
@@ -281,7 +284,7 @@ const ServiceCard = ({
             fontFamily: "system-ui",
           }}
         >
-          Mulai dari
+          {t("services.starting_from")}
         </span>
         {getDiscountPercent(service) > 0 && (
           <div className="flex items-center gap-1.5" style={{ marginBottom: 2 }}>
@@ -326,7 +329,7 @@ const ServiceCard = ({
       <div className="flex items-center gap-1 mt-auto">
         <BadgeCheck size={10} color="#10b981" />
         <span style={{ fontSize: 9, color: "#10b981", fontWeight: 600, fontFamily: "system-ui" }}>
-          Terverifikasi
+          {t("services.verified")}
         </span>
       </div>
 
@@ -368,11 +371,12 @@ const ServiceCard = ({
         onClick={(e) => e.stopPropagation()} // prevent card click from firing
       >
         <MessageCircle size={12} />
-        Pesan Sekarang
+        {t("services.order_now")}
       </a>
     </div>
   </div>
-);
+  );
+};
 
 // ─── Filter Chip ──────────────────────────────────────────────────────────────
 const FilterChip = ({
@@ -406,9 +410,12 @@ export const ServicesPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<string>("Semua");
+  const { t, i18n } = useTranslation();
 
   const filteredServices =
-    activeFilter === "Semua" ? services : services.filter((s) => s.category === activeFilter);
+    activeFilter === "Semua"
+      ? services
+      : services.filter((s) => s.category === activeFilter);
 
   useGSAP(
     () => {
@@ -460,7 +467,7 @@ export const ServicesPage = () => {
                   fontFamily: "system-ui",
                 }}
               >
-                Jasa Pembuatan Website
+                {t("services.header_subtitle")}
               </span>
             </div>
 
@@ -472,14 +479,14 @@ export const ServicesPage = () => {
                 marginBottom: 20,
               }}
             >
-              {"Our ".split("").map((c, i) => (
+              {t("services.title_part1").split("").map((c, i) => (
                 <span key={i} className="inline-block" style={{ color: "#fff" }}>
                   {c === " " ? "\u00A0" : c}
                 </span>
               ))}
               <br />
               <Highlighter action="underline" color="#ee4d2d">
-                {"Services".split("").map((c, i) => (
+                {t("services.title_part2").split("").map((c, i) => (
                   <span key={i} className="inline-block" style={{ color: "#fff" }}>
                     {c}
                   </span>
@@ -498,7 +505,7 @@ export const ServicesPage = () => {
                 maxWidth: 460,
               }}
             >
-              Pilih paket yang sesuai kebutuhan bisnis Anda — konsultasi gratis via WhatsApp.
+              {t("services.description")}
             </p>
           </div>
         </div>
@@ -520,7 +527,7 @@ export const ServicesPage = () => {
               {CATEGORIES.map((cat) => (
                 <FilterChip
                   key={cat}
-                  label={cat}
+                  label={t(`services.categories.${cat}`)}
                   active={activeFilter === cat}
                   onClick={() => setActiveFilter(cat)}
                 />
@@ -538,7 +545,7 @@ export const ServicesPage = () => {
               <span style={{ color: "rgba(255,255,255,0.6)", fontWeight: 700 }}>
                 {filteredServices.length}
               </span>{" "}
-              layanan tersedia
+              {t("services.services_available")}
             </span>
           </div>
 
@@ -556,7 +563,7 @@ export const ServicesPage = () => {
             <div className="flex flex-col items-center py-24 gap-3">
               <span style={{ fontSize: 36 }}>🔍</span>
               <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>
-                Tidak ada layanan untuk kategori ini.
+                {t("services.no_services")}
               </p>
             </div>
           )}
@@ -579,7 +586,7 @@ export const ServicesPage = () => {
                 marginBottom: 8,
               }}
             >
-              Butuh Paket Custom?
+              {t("services.custom_package")}
             </h2>
             <p
               style={{
@@ -590,7 +597,7 @@ export const ServicesPage = () => {
                 margin: "0 auto 20px",
               }}
             >
-              Punya kebutuhan khusus? Kami buatkan website sesuai spesifikasi Anda.
+              {t("services.custom_package_desc")}
             </p>
             <a
               href={`https://wa.me/6281219147116?text=${encodeURIComponent("Halo Defano! Saya tertarik dengan jasa pembuatan website custom. Bisa kita diskusi lebih lanjut?")}`}
@@ -615,7 +622,7 @@ export const ServicesPage = () => {
               }}
             >
               <MessageCircle size={14} />
-              Konsultasi Gratis
+              {t("services.free_consultation")}
             </a>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useTranslation } from "react-i18next";
 import { Highlighter } from "./ui/Highlighter";
 import { projects as projectsData } from "@/data/projects";
 
@@ -12,20 +13,10 @@ interface ProjectDisplay {
   category: string;
   year: string;
   description: string;
+  descriptionEn: string;
   image: string;
   tags: string[];
 }
-
-const allProjects: ProjectDisplay[] = projectsData.map((p, i) => ({
-  slug: p.slug,
-  index: String(i + 1).padStart(2, "0"),
-  title: p.title.split(" - ")[0],
-  category: p.technologies.slice(0, 2).join(" · "),
-  year: "2024",
-  description: p.description,
-  image: p.images[0],
-  tags: p.technologies.slice(0, 4),
-}));
 
 const ZigzagItemFull = ({
   project,
@@ -37,6 +28,9 @@ const ZigzagItemFull = ({
   onNavigate: (slug: string) => void;
 }) => {
   const [hovered, setHovered] = useState(false);
+  const { t, i18n } = useTranslation();
+
+  const description = i18n.language === "en" ? project.descriptionEn : project.description;
 
   return (
     <div
@@ -104,7 +98,7 @@ const ZigzagItemFull = ({
                   transition: "all 0.3s ease",
                 }}
               >
-                Lihat Detail
+                {t("personal_arts_page.view_detail")}
               </span>
             </div>
           </div>
@@ -176,9 +170,7 @@ const ZigzagItemFull = ({
               fontWeight: 400,
             }}
           >
-            {project.description.length > 220
-              ? project.description.slice(0, 220) + "..."
-              : project.description}
+            {description.length > 220 ? description.slice(0, 220) + "..." : description}
           </p>
 
           <div className={`flex flex-wrap gap-2 mb-4 ${isLeft ? "" : "md:justify-end"}`}>
@@ -221,7 +213,7 @@ const ZigzagItemFull = ({
                 (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.3)";
               }}
             >
-              Lihat Detail →
+              {t("personal_arts_page.view_detail")} →
             </span>
           </div>
         </div>
@@ -234,6 +226,19 @@ const ZigzagItemFull = ({
 export const PersonalArtsPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const allProjects: ProjectDisplay[] = projectsData.map((p, i) => ({
+    slug: p.slug,
+    index: String(i + 1).padStart(2, "0"),
+    title: p.title.split(" - ")[0],
+    category: p.technologies.slice(0, 2).join(" · "),
+    year: "2024",
+    description: p.descriptionId,
+    descriptionEn: p.description,
+    image: p.images[0],
+    tags: p.technologies.slice(0, 4),
+  }));
 
   const goToDetail = (slug: string) => {
     navigate(`/personal-arts/${slug}`);
@@ -272,7 +277,7 @@ export const PersonalArtsPage = () => {
               className="uppercase text-[10px] font-bold tracking-[0.55em]"
               style={{ color: "rgba(255,255,255,0.4)" }}
             >
-              All Projects
+              {t("personal_arts_page.all_projects")}
             </span>
           </div>
           <h1
@@ -282,18 +287,22 @@ export const PersonalArtsPage = () => {
               fontSize: "clamp(42px, 7vw, 100px)",
             }}
           >
-            {"Personal ".split("").map((c, i) => (
-              <span key={i} className={`inline-block${c === " " ? " w-[0.25em]" : ""}`}>
-                {c !== " " ? c : ""}
-              </span>
-            ))}
-            <br />
-            <Highlighter action="underline" color="#10b981">
-              {"Arts".split("").map((c, i) => (
-                <span key={i} className="inline-block">
-                  {c}
+            {t("personal_arts_page.title_personal")
+              .split("")
+              .map((c, i) => (
+                <span key={i} className={`inline-block${c === " " ? " w-[0.25em]" : ""}`}>
+                  {c !== " " ? c : ""}
                 </span>
               ))}
+            <br />
+            <Highlighter action="underline" color="#10b981">
+              {t("personal_arts_page.title_arts")
+                .split("")
+                .map((c, i) => (
+                  <span key={i} className="inline-block">
+                    {c}
+                  </span>
+                ))}
               <span className="inline-block">.</span>
             </Highlighter>
           </h1>
@@ -301,7 +310,7 @@ export const PersonalArtsPage = () => {
             className="mt-6 max-w-md"
             style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)", lineHeight: 1.75 }}
           >
-            Semua project yang telah saya kerjakan. Klik pada project untuk melihat detail lengkap.
+            {t("personal_arts_page.subtitle")}
           </p>
         </div>
 

@@ -22,6 +22,23 @@ export const projects = [
 
 **Dampak:**
 Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan mereka fokus pada proses pengajaran yang sesungguhnya.`,
+        detailDescriptionEn: `APMA (Automated Professional Module Author) is an AI-powered SaaS platform specifically designed to help Indonesian teachers create complete and professional teaching modules (Modul Ajar) in minutes.
+
+**Key Features:**
+- Automated module generation using AI (OpenAI API) compliant with Kurikulum Merdeka and K13 standards
+- Supports all education levels from PAUD to SMA/SMK
+- Flexible export to Word (.docx) and PDF formats
+- Deep customization of module structure, including core materials, learning activities, assessments, remedial plans, and reflections
+- Interactive dashboard for module management
+
+**Technical Challenges:**
+- Integrating streaming responses from OpenAI API for a real-time experience
+- Implementing a flexible template engine for various curriculum formats
+- Optimizing prompt engineering to generate high-quality educational content
+- Authentication system and subscription management for the SaaS model
+
+**Impact:**
+This platform can reduce teachers' administrative workload by up to 90%, allowing them to focus on the actual teaching process.`,
         images: [
             "/projects/apma-thumbnail.webp",
             "/projects/apma-1.webp"
@@ -67,6 +84,30 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 - Desain arsitektur yang scalable untuk multiple services
 - Implementasi real-time tracking dengan fallback SSE
 - Konsistensi data antar layanan menggunakan event-driven patterns`,
+        detailDescriptionEn: `SoftShop is a comprehensive ecommerce ecosystem built with a multi-service monolithic architecture, demonstrating the ability to build large-scale systems from scratch.
+
+**System Architecture:**
+- 3 independent backend services using Golang and NestJS
+- 3 separate frontend applications for customers, admins, and couriers
+- Message queuing with RabbitMQ for inter-service communication
+- Caching layer using Redis for performance optimization
+
+**Features Per Application:**
+1. **Customer Storefront**: Product browsing, cart management, complete checkout flow
+2. **Admin Panel**: Inventory management, order processing, analytics dashboard
+3. **Courier System**: Real-time delivery tracking via WebSocket and Server-Sent Events (SSE)
+
+**Technology Stack:**
+- Backend: Golang + NestJS with clean code architecture
+- Database: PostgreSQL via Supabase
+- Real-time: WebSocket + SSE for courier tracking
+- Media: Cloudinary for product image management
+- Queue: RabbitMQ for event-driven communication
+
+**Technical Challenges:**
+- Scalable architecture design for multiple services
+- Implementing real-time tracking with SSE fallback
+- Data consistency across services using event-driven patterns`,
         images: ["/projects/softShop.webp"],
         technologies: [
             "Golang",
@@ -113,6 +154,28 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 - Incremental Static Regeneration (ISR) untuk performa dan freshness konten
 - Responsive design yang sempurna di mobile, tablet, dan desktop
 - SEO-friendly dengan metadata dinamis per halaman produk`,
+        detailDescriptionEn: `SpillTheThings is an online fashion store offering a variety of high-quality fashion products ranging from bags, clothes, pants, to selected accessories.
+
+**Key Features:**
+- Complete product catalog with categories: Bags, Clothes, Pants, Accessories
+- Product filtering and sorting based on category, price, and popularity
+- Product detail pages with image gallery, description, and size/color options
+- Shopping cart with quantity management
+- Smooth and intuitive checkout flow
+- Product content management via Sanity Studio (headless CMS)
+
+**Architecture & Stack:**
+- Frontend: Next.js (App Router) for SSR, SSG, and optimal performance
+- CMS: Sanity as a headless CMS for easy product management
+- Styling: Tailwind CSS + Shadcn UI for a consistent and premium design system
+- TypeScript for type safety throughout the codebase
+
+**Technical Highlights:**
+- Next.js Image Optimization integration for fast product image loading
+- GROQ queries via Sanity client for efficient data fetching
+- Incremental Static Regeneration (ISR) for performance and content freshness
+- Perfect responsive design on mobile, tablet, and desktop
+- SEO-friendly with dynamic metadata per product page`,
         images: ["/projects/SpillTheThings.webp"],
         technologies: [
             "Next.js",
@@ -152,6 +215,27 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 - Integrasi API pihak ketiga (TMDB) dengan caching strategy
 - Containerized deployment workflow dengan Docker
 - State management patterns dengan Redux Toolkit`,
+        detailDescriptionEn: `Deflix is a Netflix-inspired movie discovery platform that allows users to browse, search, and watch movie trailers directly.
+
+**Key Features:**
+- Trending movies page updated in real-time
+- Filtering by genre, release year, and rating
+- Detailed movie pages complete with cast, crew, and synopsis data
+- Embedded trailer playback directly in the app
+- Search functionality with debouncing for optimal UX
+
+**Full-Stack Architecture:**
+- Frontend: Next.js with server-side rendering for SEO and performance
+- Backend: NestJS as an API layer with RESTful endpoints
+- Database: PostgreSQL for persistent data storage
+- State Management: Redux for predictable state updates
+- Deployment: Docker containers for environment consistency
+
+**Key Learnings:**
+- Implementing SSR (Server-Side Rendering) with Next.js
+- Third-party API integration (TMDB) with caching strategy
+- Containerized deployment workflow with Docker
+- State management patterns with Redux Toolkit`,
         images: ["/projects/deflix.webp"],
         technologies: ["Next.js", "NestJS", "PostgreSQL", "TMDB API", "Redux", "Docker"],
         demoLink: "https://deflix-three.vercel.app/",
@@ -184,6 +268,27 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 - RESTful API design dengan proper error handling
 - Unit testing ekstensif untuk code reliability
 - Responsive design yang optimal di desktop dan tablet`,
+        detailDescriptionEn: `A modern admin dashboard for Jaya Mandiri that manages delivery operations efficiently and organized.
+
+**Dashboard Features:**
+- Full CRUD for shipment tracking (shipment management)
+- Driver management with status tracking
+- Route optimization and assignment
+- Analytics and reporting for delivery performance
+- Data visualization with charts and graphs
+
+**Application Architecture:**
+- Frontend: React (Vite) for extremely fast build times
+- Backend: NestJS with modular architecture
+- Database: PostgreSQL for relational data storage
+- Testing: Jest with comprehensive coverage
+
+**Best Practices:**
+- Custom React hooks for data fetching and state management
+- Reusable component architecture for UI consistency
+- RESTful API design with proper error handling
+- Extensive unit testing for code reliability
+- Optimal responsive design for desktop and tablets`,
         images: ["/projects/admin-jm.webp"],
         technologies: ["React", "Vite", "NestJS", "PostgreSQL", "Jest", "Hooks"],
         githubLink: "https://github.com/defaaryawar/dashboard-jaya-mandiri"
@@ -216,6 +321,28 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 - Lazy loading untuk gambar dan asset performance
 - SEO-friendly structure dengan proper meta tags
 - Performance optimization dengan code splitting`,
+        detailDescriptionEn: `A professional company profile website for Jaya Mandiri, a logistics company that elegantly displays its brand identity.
+
+**Pages & Features:**
+- Landing page with smooth scroll animations
+- Service showcase displaying logistics services
+- Interactive company history timeline
+- Team profiles with photos and roles
+- Contact section with form and contact info
+- Google Maps integration for office locations
+
+**Design System:**
+- TailwindCSS for utility-first styling
+- Shadcn UI for consistent and accessible components
+- Custom animations using CSS transitions and Framer Motion
+- Premium and readable typography system
+
+**Technical Aspects:**
+- Modular component architecture for reusability
+- Optimal responsive layouts on all screen sizes
+- Lazy loading for image and asset performance
+- SEO-friendly structure with proper meta tags
+- Performance optimization with code splitting`,
         images: ["/projects/jayamandiri.webp"],
         technologies: ["React", "Tailwind CSS", "Shadcn UI"],
         demoLink: "https://jaya-mandiri.vercel.app/",
@@ -253,6 +380,32 @@ Platform ini mampu memangkas beban administratif guru hingga 90%, memungkinkan m
 
 **Highlight:**
 Project ini menunjukkan kemampuan dalam membangun aplikasi web yang tidak hanya fungsional, tetapi juga memiliki estetika visual yang premium dan user experience yang menyenangkan.`,
+        detailDescriptionEn: `Nion Coffee is one of the most complete and polished projects in the portfolio, featuring a coffee company profile with a cafe-inspired aesthetic.
+
+**Complete Features:**
+- Dynamic product catalog fetched from REST API
+- Interactive menu system with filtering and sorting
+- Store locator with location and operating house information
+- Customer testimonials section
+- Comprehensive about section with company history
+- Newsletter subscription
+
+**Architecture & Patterns:**
+- OOP design patterns for clean code structure
+- Redux for predictable state management
+- Strict separation of concerns between layers
+- REST API integration with proper error handling
+- Component-based architecture for scalability
+
+**Technology:**
+- React + Vite for blazing-fast development and build
+- TailwindCSS + DaisyUI for a rich, cafe-inspired aesthetic
+- Redux Toolkit for state management
+- REST API for dynamic content fetching
+- Perfect responsive design on all devices
+
+**Highlight:**
+This project demonstrates the ability to build a web application that is not only functional but also possesses a premium visual aesthetic and an enjoyable user experience.`,
         images: ["/projects/nion.webp"],
         technologies: ["React", "Vite", "Tailwind CSS", "DaisyUI", "REST API", "OOP", "Redux"],
         demoLink: "https://nioncoffee.store/",

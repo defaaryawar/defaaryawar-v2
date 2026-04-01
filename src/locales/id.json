@@ -1,0 +1,211 @@
+{
+  "navbar": {
+    "about": "Tentang",
+    "tech": "Teknologi",
+    "work": "Karya",
+    "blog": "Blog",
+    "services": "Layanan",
+    "career": "Karir",
+    "contact": "Kontak",
+    "hire_me": "Rekrut Saya",
+    "start_project": "Mulai Proyek"
+  },
+  "hero": {
+    "watermark_top": "FULLSTACK",
+    "watermark_bottom": "DEVELOPER",
+    "side_label": "Pengembang FullStack",
+    "portfolio": "Portofolio ©2025",
+    "badge": "Tersedia untuk Dipekerjakan",
+    "location": "Berbasis di Indonesia",
+    "subtitle": "Membangun aplikasi full-stack yang tangguh dan jaringan tepercaya dengan presisi dan keunggulan teknis.",
+    "cta_primary": "Eksplorasi Karya",
+    "cta_secondary": "Hubungi Saya"
+  },
+  "about": {
+    "background_label": "Latar Belakang",
+    "title_part1": "Menjembatani Kode",
+    "title_part2": "& Jaringan.",
+    "desc1": "Saya adalah lulusan Teknik Informatika dari Universitas Budi Luhur dengan latar belakang Teknik Komputer Jaringan dari SMK Bina Informatika.",
+    "desc2": "Sebagai profesional TI yang serbabisa, saya membangun aplikasi web modern yang skalabel sembari aktif memperluas keahlian saya di infrastruktur jaringan dan pemecahan masalah.",
+    "stat1_label": "Tahun Pengalaman",
+    "stat2_label": "Proyek Diselesaikan",
+    "stat3_label": "Teknologi Dikuasai",
+    "float1_title": "Fokus Utama",
+    "float1_desc": "Pengembang FullStack",
+    "float2_title": "Keahlian",
+    "float2_desc": "TI & Jaringan"
+  },
+  "projects": {
+    "no_preview": "Tak Ada Pratinjau",
+    "view_detail": "Lihat Detail",
+    "portfolio_label": "Portofolio",
+    "title_part1": "Karya ",
+    "title_part2": "Pribadi",
+    "description": "Pameran implementasi teknis di mana performa bertemu dengan presisi estetika.",
+    "prev": "Sebel.",
+    "next": "Lanjut",
+    "view_all_prefix": "Lihat semua",
+    "view_all_suffix": "proyek",
+    "view_more": "Lihat Selengkapnya"
+  },
+  "experience": {
+    "current": "Sekarang"
+  },
+  "services": {
+    "popular": "Terlaris",
+    "starting_from": "Mulai dari",
+    "verified": "Terverifikasi",
+    "order_now": "Pesan Sekarang",
+    "header_subtitle": "Jasa Pembuatan Website",
+    "title_part1": "Layanan ",
+    "title_part2": "Kami",
+    "description": "Pilih paket yang sesuai kebutuhan bisnis Anda — konsultasi gratis via WhatsApp.",
+    "services_available": "layanan tersedia",
+    "no_services": "Tidak ada layanan untuk kategori ini.",
+    "custom_package": "Butuh Paket Custom?",
+    "custom_package_desc": "Punya kebutuhan khusus? Kami buatkan website sesuai spesifikasi Anda.",
+    "free_consultation": "Konsultasi Gratis",
+    "categories": {
+      "Semua": "Semua",
+      "Landing Page": "Landing Page",
+      "Portfolio": "Portfolio",
+      "Company Profile": "Company Profile",
+      "Restoran & Cafe": "Restoran & Cafe",
+      "Travel & Tour": "Travel & Tour",
+      "Klinik Kecantikan": "Klinik Kecantikan",
+      "E-Commerce": "E-Commerce",
+      "Rumah Sakit": "Rumah Sakit"
+    }
+  },
+  "certificates": {
+    "verify": "Verifikasi",
+    "credential_id": "ID Kredensial",
+    "skills_acquired": "Keahlian yang Diperoleh",
+    "achievements_label": "Pencapaian",
+    "title_part1": "Sertifikat ",
+    "title_part2": "Saya",
+    "description": "Klik baris mana saja untuk melihat detail lengkap sertifikat dan info kredensial."
+  },
+  "tech_stack": {
+    "capabilities": "Kemampuan",
+    "title_part1": "Keahlian ",
+    "title_part2": "Teknis",
+    "description": "Teknologi yang saya andalkan untuk membangun produk digital yang cepat dan skalabel.",
+    "full_stack_dev": "Pengembang Full-Stack",
+    "stack_label": "Stack",
+    "technologies_count": "8 teknologi",
+    "tech_desc": {
+      "React": "UI Berbasis Komponen",
+      "Next.js": "Aplikasi React Full-stack",
+      "TypeScript": "JavaScript Type-safe",
+      "Tailwind": "CSS Berbasis Utilitas",
+      "NestJS": "Kerangka Kerja Node.js",
+      "Golang": "Backend Terkompilasi",
+      "Docker": "Penyebaran Kontainer",
+      "PostgreSQL": "Penyimpanan Data Relasional"
+    }
+  },
+  "blogs_section": {
+    "editorial": "Editorial",
+    "title_part1": "Blog",
+    "title_part2": ".",
+    "description": "Catatan panjang tentang engineering, arsitektur, dan pelajaran dari membangun produk nyata.",
+    "read_more": "Baca Selengkapnya",
+    "view_all": "Lihat Semua Blog"
+  },
+  "contact": {
+    "inquiry": "Pertanyaan",
+    "title_part1": "Mari Mulai ",
+    "title_part2": "Percakapan.",
+    "description": "Saat ini menerima proyek baru dan konsultasi teknis. Hubungi saya untuk mendiskusikan visi Anda.",
+    "direct_email": "Email Langsung",
+    "full_name": "Nama Lengkap",
+    "email_address": "Alamat Email",
+    "subject": "Subjek",
+    "subject_placeholder": "Pertanyaan Proyek",
+    "message": "Pesan",
+    "message_placeholder": "Ceritakan tentang kebutuhan proyek Anda...",
+    "submit": "Kirim Pesan"
+  },
+  "footer": {
+    "tagline": "Membangun antarmuka digital berkinerja tinggi dengan presisi, animasi, dan keunggulan teknis.",
+    "all_rights_reserved": "Seluruh Hak Cipta Dilindungi.",
+    "nav": {
+      "about": "Tentang",
+      "skills": "Teknologi",
+      "projects": "Karya",
+      "experience": "Pengalaman",
+      "contact": "Kontak"
+    }
+  },
+  "personal_arts_page": {
+    "all_projects_label": "Semua Proyek",
+    "title_part1": "Karya ",
+    "title_part2": "Pribadi",
+    "description": "Semua proyek yang telah saya kerjakan. Klik pada proyek untuk melihat detail lengkap.",
+    "view_detail": "Lihat Detail"
+  },
+  "project_detail": {
+    "not_found": "Proyek Tidak Ditemukan",
+    "back": "Kembali ke Karya Pribadi",
+    "all_projects": "Semua Proyek",
+    "about": "Tentang Proyek Ini",
+    "tech_stack": "Teknologi",
+    "links": "Tautan",
+    "live_demo": "Demo Langsung",
+    "source_code": "Kode Sumber",
+    "gallery": "Galeri",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "private_repo": "Repositori Privat — Tautan tidak tersedia"
+  },
+  "blogs_page": {
+    "editorial": "Editorial",
+    "title_the": "Jurnal ",
+    "title_journal": "Digital",
+    "subtitle": "Catatan panjang tentang produk, teknik, dan desain. Cari arsip atau mulai dengan cerita sampul minggu ini.",
+    "cover_story": "Cerita Sampul",
+    "archive_title": "Dari Arsip",
+    "search_placeholder": "Cari berdasarkan judul atau topik..."
+  },
+  "blog_detail": {
+    "not_found": "Blog Tidak Ditemukan",
+    "back_to_blog": "Kembali ke Blog",
+    "all_posts": "Semua Tulisan",
+    "copy_link": "Salin Tautan",
+    "link_copied": "Tautan Disalin!",
+    "table_of_contents": "Daftar Isi",
+    "share_article": "Bagikan Artikel",
+    "written_by": "Ditulis oleh",
+    "author_bio": "Fullstack Developer & AI Enthusiast berbasis di Jakarta. Membangun produk yang menyelesaikan masalah nyata.",
+    "previous_post": "Sebelumnya",
+    "next_post": "Selanjutnya",
+    "read": "baca"
+  },
+  "service_detail": {
+    "not_found": "Layanan Tidak Ditemukan",
+    "back_to_services": "Kembali ke Layanan",
+    "revisions": "REVISI DESAIN",
+    "warranty": "GARANSI ERROR",
+    "what_you_get": "Yang Anda Dapatkan",
+    "workflow": "Alur Kerja",
+    "workflow_steps": {
+      "step1_title": "Konsultasi",
+      "step1_desc": "Diskusi kebutuhan via WhatsApp — gratis.",
+      "step2_title": "Desain Mockup",
+      "step2_desc": "Pembuatan prototipe / preview desain halaman pertama.",
+      "step3_title": "Development",
+      "step3_desc": "Implementasi koding website sesuai desain yang disetujui.",
+      "step4_title": "Revisi",
+      "step4_desc": "Tinjau hasil kerja dan ajukan revisi hingga {{revisions}}x.",
+      "step5_title": "Handover",
+      "step5_desc": "Setup domain & hosting, website berhasil dilaunching."
+    },
+    "investment_starts_from": "Investasi Mulai Dari",
+    "save": "HEMAT",
+    "transparent_pricing": "Transparan & Tanpa Hidden Fee",
+    "order_via_wa": "Pesan / Tanya Detail via WA",
+    "delivery_estimation": "Estimasi pengerjaan: {{days}} hari kerja.",
+    "discussion_note": "Klik tombol di atas untuk diskusi langsung dengan developer."
+  }
+}

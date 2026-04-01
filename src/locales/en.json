@@ -1,0 +1,211 @@
+{
+  "navbar": {
+    "about": "About",
+    "tech": "Technology",
+    "work": "Work",
+    "blog": "Blog",
+    "services": "Services",
+    "career": "Career",
+    "contact": "Contact",
+    "hire_me": "Hire Me",
+    "start_project": "Start Project"
+  },
+  "hero": {
+    "watermark_top": "FULLSTACK",
+    "watermark_bottom": "DEVELOPER",
+    "side_label": "FullStack Developer",
+    "portfolio": "Portfolio ©2025",
+    "badge": "Available for Hire",
+    "location": "Based in Indonesia",
+    "subtitle": "Building robust full-stack applications and trusted networks with precision and technical excellence.",
+    "cta_primary": "Explore Work",
+    "cta_secondary": "Contact Me"
+  },
+  "about": {
+    "background_label": "Background",
+    "title_part1": "Bridging Code",
+    "title_part2": "& Networks.",
+    "desc1": "I am an Informatics Engineering graduate from Budi Luhur University with a background in Computer Network Engineering from SMK Bina Informatika.",
+    "desc2": "As a versatile IT professional, I build modern scalable web applications while actively expanding my expertise in network infrastructure and troubleshooting.",
+    "stat1_label": "Years Experience",
+    "stat2_label": "Projects Completed",
+    "stat3_label": "Tech Stack",
+    "float1_title": "Main Focus",
+    "float1_desc": "FullStack Developer",
+    "float2_title": "Expertise",
+    "float2_desc": "IT & Networking"
+  },
+  "projects": {
+    "no_preview": "No Preview",
+    "view_detail": "View Detail",
+    "portfolio_label": "Portfolio",
+    "title_part1": "Personal ",
+    "title_part2": "Work",
+    "description": "A showcase of technical implementations where performance meets aesthetic precision.",
+    "prev": "Prev.",
+    "next": "Next",
+    "view_all_prefix": "View all",
+    "view_all_suffix": "projects",
+    "view_more": "View More"
+  },
+  "experience": {
+    "current": "Present"
+  },
+  "services": {
+    "popular": "Popular",
+    "starting_from": "Starting from",
+    "verified": "Verified",
+    "order_now": "Order Now",
+    "header_subtitle": "Website Development Services",
+    "title_part1": "Our ",
+    "title_part2": "Services",
+    "description": "Choose a package that fits your business needs — free consultation via WhatsApp.",
+    "services_available": "services available",
+    "no_services": "No services found for this category.",
+    "custom_package": "Need a Custom Package?",
+    "custom_package_desc": "Have special requirements? We'll build a website according to your specifications.",
+    "free_consultation": "Free Consultation",
+    "categories": {
+      "Semua": "All",
+      "Landing Page": "Landing Page",
+      "Portfolio": "Portfolio",
+      "Company Profile": "Company Profile",
+      "Restoran & Cafe": "Restaurant & Cafe",
+      "Travel & Tour": "Travel & Tour",
+      "Klinik Kecantikan": "Beauty Clinic",
+      "E-Commerce": "E-Commerce",
+      "Rumah Sakit": "Hospital"
+    }
+  },
+  "certificates": {
+    "verify": "Verify",
+    "credential_id": "Credential ID",
+    "skills_acquired": "Skills Acquired",
+    "achievements_label": "Achievements",
+    "title_part1": "My ",
+    "title_part2": "Certificates",
+    "description": "Click any row to view full certificate details and credential info."
+  },
+  "tech_stack": {
+    "capabilities": "Capabilities",
+    "title_part1": "Technical ",
+    "title_part2": "Expertise",
+    "description": "Technologies I rely on to build fast and scalable digital products.",
+    "full_stack_dev": "Full-Stack Developer",
+    "stack_label": "Stack",
+    "technologies_count": "8 technologies",
+    "tech_desc": {
+      "React": "Component-based UI",
+      "Next.js": "Full-stack React apps",
+      "TypeScript": "Type-safe JavaScript",
+      "Tailwind": "Utility-first CSS",
+      "NestJS": "Node.js Framework",
+      "Golang": "Compiled Backend",
+      "Docker": "Container Deployment",
+      "PostgreSQL": "Relational Data Store"
+    }
+  },
+  "blogs_section": {
+    "editorial": "Editorial",
+    "title_part1": "Blog",
+    "title_part2": ".",
+    "description": "Long-form notes on engineering, architecture, and lessons from building real products.",
+    "read_more": "Read More",
+    "view_all": "View All Blogs"
+  },
+  "contact": {
+    "inquiry": "Inquiry",
+    "title_part1": "Let's Start ",
+    "title_part2": "a Conversation.",
+    "description": "Currently accepting new projects and technical consultations. Reach out to discuss your vision.",
+    "direct_email": "Direct Email",
+    "full_name": "Full Name",
+    "email_address": "Email Address",
+    "subject": "Subject",
+    "subject_placeholder": "Project Inquiry",
+    "message": "Message",
+    "message_placeholder": "Tell us about your project needs...",
+    "submit": "Send Message"
+  },
+  "footer": {
+    "tagline": "Building high-performance digital interfaces with precision, animation, and technical excellence.",
+    "all_rights_reserved": "All Rights Reserved.",
+    "nav": {
+      "about": "About",
+      "skills": "Technology",
+      "projects": "Work",
+      "experience": "Experience",
+      "contact": "Contact"
+    }
+  },
+  "personal_arts_page": {
+    "all_projects_label": "All Projects",
+    "title_part1": "Personal ",
+    "title_part2": "Work",
+    "description": "All projects I've worked on. Click on a project to see full details.",
+    "view_detail": "View Detail"
+  },
+  "project_detail": {
+    "not_found": "Project Not Found",
+    "back": "Back to Personal Work",
+    "all_projects": "All Projects",
+    "about": "About This Project",
+    "tech_stack": "Tech Stack",
+    "links": "Links",
+    "live_demo": "Live Demo",
+    "source_code": "Source Code",
+    "gallery": "Gallery",
+    "previous": "Previous",
+    "next": "Next",
+    "private_repo": "Private Repository — Link unavailable"
+  },
+  "blogs_page": {
+    "editorial": "Editorial",
+    "title_the": "The ",
+    "title_journal": "Journal",
+    "subtitle": "Long-form notes on product, engineering, and design. Search the archive or start with this week's cover story.",
+    "cover_story": "Cover Story",
+    "archive_title": "From the Archive",
+    "search_placeholder": "Search by title or topic..."
+  },
+  "blog_detail": {
+    "not_found": "Blog Not Found",
+    "back_to_blog": "Back to Blog",
+    "all_posts": "All Posts",
+    "copy_link": "Copy Link",
+    "link_copied": "Link Copied!",
+    "table_of_contents": "Table of Contents",
+    "share_article": "Share Article",
+    "written_by": "Written by",
+    "author_bio": "Fullstack Developer & AI Enthusiast based in Jakarta. Building products that solve real problems.",
+    "previous_post": "Previous Post",
+    "next_post": "Next Post",
+    "read": "read"
+  },
+  "service_detail": {
+    "not_found": "Service Not Found",
+    "back_to_services": "Back to Services",
+    "revisions": "DESIGN REVISIONS",
+    "warranty": "ERROR WARRANTY",
+    "what_you_get": "What You Get",
+    "workflow": "Workflow",
+    "workflow_steps": {
+      "step1_title": "Consultation",
+      "step1_desc": "Discuss needs via WhatsApp — free.",
+      "step2_title": "Mockup Design",
+      "step2_desc": "Creating prototype / preview of the first page.",
+      "step3_title": "Development",
+      "step3_desc": "Coding implementation according to agreed design.",
+      "step4_title": "Revisions",
+      "step4_desc": "Review work and request revisions up to {{revisions}}x.",
+      "step5_title": "Handover",
+      "step5_desc": "Setup domain & hosting, website successfully launched."
+    },
+    "investment_starts_from": "Investment Starts From",
+    "save": "SAVE",
+    "transparent_pricing": "Transparent & No Hidden Fee",
+    "order_via_wa": "Order / Inquiry via WhatsApp",
+    "delivery_estimation": "Delivery estimation: {{days}} working days.",
+    "discussion_note": "Click button above for direct discussion with developer."
+  }
+}

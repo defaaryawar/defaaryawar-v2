@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Highlighter } from "./ui/Highlighter";
 import { projects as projectsData } from "@/data/projects";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,7 +16,8 @@ interface ProjectDisplay {
   title: string;
   category: string;
   year: string;
-  description: string;
+  descriptionId: string;
+  descriptionEn: string;
   image: string;
   tags: string[];
 }
@@ -26,15 +28,14 @@ const allProjects: ProjectDisplay[] = projectsData.map((p, i) => ({
   title: p.title.split(" - ")[0],
   category: p.technologies.slice(0, 2).join(" · "),
   year: "2024",
-  description: p.descriptionId || p.description,
+  descriptionId: p.descriptionId || p.description,
+  descriptionEn: p.description,
   image: p.images[0],
   tags: p.technologies.slice(0, 4),
 }));
 
 const ITEMS_PER_PAGE = 4;
-const totalPages = Math.ceil(allProjects.length / ITEMS_PER_PAGE);
 
-// ─── Zigzag Timeline Item ──────────────────────────────────────────────────────
 const ZigzagItem = ({
   project,
   isLeft,
@@ -45,6 +46,8 @@ const ZigzagItem = ({
   onNavigate: (slug: string) => void;
 }) => {
   const [hovered, setHovered] = useState(false);
+  const { t, i18n } = useTranslation();
+  const desc = i18n.language === "en" ? project.descriptionEn : project.descriptionId;
 
   return (
     <div
@@ -83,7 +86,7 @@ const ZigzagItem = ({
                   const fallback = document.createElement("div");
                   fallback.className = "absolute inset-0 flex items-center justify-center";
                   fallback.style.background = "rgba(255,255,255,0.03)";
-                  fallback.innerHTML = `<span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);font-weight:700;">No Preview</span>`;
+                  fallback.innerHTML = `<span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);font-weight:700;">${t("projects.no_preview")}</span>`;
                   parent.appendChild(fallback);
                 }
               }}
@@ -111,7 +114,7 @@ const ZigzagItem = ({
                   transition: "all 0.3s ease",
                 }}
               >
-                Lihat Detail
+                {t("projects.view_detail")}
               </span>
             </div>
           </div>
@@ -184,9 +187,7 @@ const ZigzagItem = ({
               fontWeight: 400,
             }}
           >
-            {project.description.length > 180
-              ? project.description.slice(0, 180) + "..."
-              : project.description}
+            {desc.length > 180 ? desc.slice(0, 180) + "..." : desc}
           </p>
 
           {/* Tags */}
@@ -231,7 +232,7 @@ const ZigzagItem = ({
                 (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.3)";
               }}
             >
-              Lihat Detail →
+              {t("projects.view_detail")} →
             </span>
           </div>
         </div>
@@ -245,6 +246,7 @@ export const Projects = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
+  const { t } = useTranslation();
 
   // Recalculate inside component so it's always reactive
   const currentTotalPages = Math.ceil(allProjects.length / ITEMS_PER_PAGE);
@@ -321,7 +323,7 @@ export const Projects = () => {
                 className="uppercase text-[10px] font-bold tracking-[0.55em]"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
-                Portfolio
+                {t("projects.portfolio_label")}
               </span>
             </div>
             <h2
@@ -331,21 +333,25 @@ export const Projects = () => {
                 fontSize: "clamp(48px, 8vw, 110px)",
               }}
             >
-              {"Personal ".split("").map((c, i) => (
-                <span
-                  key={i}
-                  className={`proj-heading-char inline-block${c === " " ? " w-[0.25em]" : ""}`}
-                >
-                  {c !== " " ? c : ""}
-                </span>
-              ))}
-              <br />
-              <Highlighter action="underline" color="#10b981">
-                {"Arts".split("").map((c, i) => (
-                  <span key={i} className="proj-heading-char inline-block">
-                    {c}
+              {t("projects.title_part1")
+                .split("")
+                .map((c, i) => (
+                  <span
+                    key={i}
+                    className={`proj-heading-char inline-block${c === " " ? " w-[0.25em]" : ""}`}
+                  >
+                    {c !== " " ? c : ""}
                   </span>
                 ))}
+              <br />
+              <Highlighter action="underline" color="#10b981">
+                {t("projects.title_part2")
+                  .split("")
+                  .map((c, i) => (
+                    <span key={i} className="proj-heading-char inline-block">
+                      {c}
+                    </span>
+                  ))}
                 <span className="proj-heading-char inline-block">.</span>
               </Highlighter>
             </h2>
@@ -354,7 +360,7 @@ export const Projects = () => {
             className="max-w-sm"
             style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", lineHeight: 1.75 }}
           >
-            A showcase of technical implementations where performance meets aesthetic precision.
+            {t("projects.description")}
           </p>
         </div>
 
@@ -421,7 +427,7 @@ export const Projects = () => {
               }
             }}
           >
-            <ChevronLeft size={14} /> Prev
+            <ChevronLeft size={14} /> {t("projects.prev")}
           </button>
 
           {/* Page dots */}
@@ -481,7 +487,7 @@ export const Projects = () => {
               }
             }}
           >
-            Next <ChevronRight size={14} />
+            {t("projects.next")} <ChevronRight size={14} />
           </button>
         </div>
 
@@ -498,7 +504,7 @@ export const Projects = () => {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Lihat semua {allProjects.length} project
+            {t("projects.view_all_prefix")} {allProjects.length} {t("projects.view_all_suffix")}
           </p>
           <button
             onClick={() => navigate("/personal-arts")}
@@ -526,7 +532,7 @@ export const Projects = () => {
               (e.currentTarget as HTMLElement).style.borderBottomColor = "rgba(255,255,255,0.15)";
             }}
           >
-            Lihat Selengkapnya
+            {t("projects.view_more")}
             <ArrowRight
               size={20}
               className="transition-transform duration-300 group-hover:translate-x-2"

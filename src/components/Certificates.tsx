@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { certificatesData } from "@/data/certificates";
 import { Highlighter } from "./ui/Highlighter";
 import { ArrowUpRight, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,8 @@ export const Certificates = () => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const { t, i18n } = useTranslation();
+  const isId = i18n.language === 'id';
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -160,7 +163,7 @@ export const Certificates = () => {
                           marginBottom: 8,
                         }}
                       >
-                        {active.issuer} — {active.date}
+                        {isId && active.issuerId ? active.issuerId : active.issuer} — {active.date}
                       </p>
                       <h3
                         style={{
@@ -171,7 +174,7 @@ export const Certificates = () => {
                           lineHeight: 1.05,
                         }}
                       >
-                        {active.title}
+                        {isId && active.titleId ? active.titleId : active.title}
                       </h3>
                     </div>
 
@@ -203,7 +206,7 @@ export const Certificates = () => {
                             "rgba(255,255,255,0.15)";
                         }}
                       >
-                        Verify <ArrowUpRight size={12} />
+                        {t("certificates.verify")} <ArrowUpRight size={12} />
                       </a>
                     )}
                   </div>
@@ -227,7 +230,7 @@ export const Certificates = () => {
                           fontWeight: 700,
                         }}
                       >
-                        Credential ID
+                        {t("certificates.credential_id")}
                       </span>
                       <p
                         style={{
@@ -254,7 +257,7 @@ export const Certificates = () => {
                         marginBottom: 28,
                       }}
                     >
-                      {active.description}
+                      {isId && active.descriptionId ? active.descriptionId : active.description}
                     </p>
                   )}
 
@@ -271,7 +274,7 @@ export const Certificates = () => {
                           marginBottom: 12,
                         }}
                       >
-                        Skills Acquired
+                        {t("certificates.skills_acquired")}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {active.skills.map((skill, i) => (
@@ -324,7 +327,7 @@ export const Certificates = () => {
               className="uppercase text-[10px] font-bold tracking-[0.55em]"
               style={{ color: "rgba(255,255,255,0.4)" }}
             >
-              Achievements
+              {t("certificates.achievements_label")}
             </span>
           </div>
           <h2
@@ -334,9 +337,9 @@ export const Certificates = () => {
               fontSize: "clamp(48px, 8vw, 110px)",
             }}
           >
-            My{" "}
+            {t("certificates.title_part1")}
             <Highlighter action="underline" color="#10b981">
-              Certificates
+              {t("certificates.title_part2")}
             </Highlighter>
             <span style={{ color: "rgba(255,255,255,0.3)" }}>.</span>
           </h2>
@@ -344,7 +347,7 @@ export const Certificates = () => {
             className="mt-5 max-w-sm"
             style={{ fontSize: "14px", color: "rgba(255,255,255,0.35)", lineHeight: 1.75 }}
           >
-            Click any row to view full certificate details and credential info.
+            {t("certificates.description")}
           </p>
         </div>
 
@@ -421,7 +424,7 @@ export const Certificates = () => {
                     transition: "color 0.2s",
                   }}
                 >
-                  {cert.title}
+                  {isId && cert.titleId ? cert.titleId : cert.title}
                 </p>
                 <p
                   style={{
@@ -431,7 +434,7 @@ export const Certificates = () => {
                     letterSpacing: "0.05em",
                   }}
                 >
-                  {cert.issuer}
+                  {isId && cert.issuerId ? cert.issuerId : cert.issuer}
                 </p>
               </div>
 

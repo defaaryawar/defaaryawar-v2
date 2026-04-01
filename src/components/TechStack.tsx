@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { AnimatedBeam } from "./ui/animated-beam";
 import { cn } from "@/lib/utils";
 import { Highlighter } from "./ui/Highlighter";
+import { useTranslation } from "react-i18next";
 
 const slugs = [
   "typescript",
@@ -139,6 +140,7 @@ export const TechStack = () => {
   const ref7 = useRef<HTMLDivElement>(null);
   const ref8 = useRef<HTMLDivElement>(null);
   const techRefs = [ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8];
+  const { t } = useTranslation();
 
   const curvatures = [-60, -20, 20, 60];
 
@@ -197,7 +199,7 @@ export const TechStack = () => {
               className="tech-title-line text-[11px] font-bold uppercase tracking-[0.45em]"
               style={{ color: "rgba(165,180,252,0.5)", fontFamily: "monospace" }}
             >
-              Capabilities
+              {t("tech_stack.capabilities")}
             </p>
           </div>
           <div>
@@ -205,9 +207,9 @@ export const TechStack = () => {
               className="tech-title-line text-5xl leading-none font-black sm:text-6xl md:text-7xl lg:text-8xl"
               style={{ fontFamily: '"Bebas Neue", sans-serif' }}
             >
-              <span style={{ color: "#EFEFEF" }}>Technical </span>
+              <span style={{ color: "#EFEFEF" }}>{t("tech_stack.title_part1")}</span>
               <Highlighter action="underline" color="#FF9800">
-                Skill
+                {t("tech_stack.title_part2")}
               </Highlighter>{" "}
             </h2>
           </div>
@@ -216,7 +218,7 @@ export const TechStack = () => {
               className="tech-title-line text-sm max-w-sm leading-relaxed"
               style={{ color: "rgba(255,255,255,0.35)" }}
             >
-              Technologies I rely on to build fast, scalable digital products.
+              {t("tech_stack.description")}
             </p>
           </div>
         </div>
@@ -233,7 +235,7 @@ export const TechStack = () => {
               className="absolute top-4 left-4 text-[9px] uppercase tracking-[0.4em]"
               style={{ color: "rgba(255,255,255,0.2)", fontFamily: "monospace" }}
             >
-              Full-Stack Dev
+              {t("tech_stack.full_stack_dev")}
             </span>
 
             <div className="relative flex w-full max-w-160 items-center justify-between px-6 py-10">
@@ -319,7 +321,7 @@ export const TechStack = () => {
                 className="text-[9px] font-bold uppercase tracking-[0.4em]"
                 style={{ color: "rgba(165,180,252,0.4)", fontFamily: "monospace" }}
               >
-                Stack
+                {t("tech_stack.stack_label")}
               </span>
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400/60" />
@@ -327,7 +329,7 @@ export const TechStack = () => {
                   className="text-[9px] uppercase tracking-widest"
                   style={{ color: "rgba(255,255,255,0.2)", fontFamily: "monospace" }}
                 >
-                  8 technologies
+                  {t("tech_stack.technologies_count")}
                 </span>
               </div>
             </div>
@@ -382,7 +384,7 @@ export const TechStack = () => {
                       className="text-[11px] mt-0.5 truncate"
                       style={{ color: "rgba(255,255,255,0.28)" }}
                     >
-                      {tech.desc}
+                      {t(`tech_stack.tech_desc.${tech.name}`)}
                     </p>
                   </div>
 

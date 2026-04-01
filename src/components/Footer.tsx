@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SOCIAL_LINKS } from "@/config/socials";
+import { useTranslation } from "react-i18next";
 
 // ── Change this to your own background image path ──
 const FOOTER_BG = "/images/photo-profil/defaaryawar-landscape.png";
@@ -9,6 +10,7 @@ const FOOTER_BG = "/images/photo-profil/defaaryawar-landscape.png";
 export const Footer = () => {
   const container = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useGSAP(
     () => {
@@ -51,11 +53,11 @@ export const Footer = () => {
   );
 
   const navLinks = [
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience" },
-    { label: "Contact", href: "#contact" },
+    { label: t("footer.nav.about"), href: "#about" },
+    { label: t("footer.nav.skills"), href: "#skills" },
+    { label: t("footer.nav.projects"), href: "#projects" },
+    { label: t("footer.nav.experience"), href: "#experience" },
+    { label: t("footer.nav.contact"), href: "#contact" },
   ];
 
   return (
@@ -145,8 +147,7 @@ export const Footer = () => {
             letterSpacing: "0.01em",
           }}
         >
-          Crafting high-performance digital interfaces with precision, motion, and technical
-          excellence.
+          {t("footer.tagline")}
         </p>
 
         {/* Navigation */}
@@ -195,10 +196,10 @@ export const Footer = () => {
       {/* Copyright — pinned to bottom */}
       <div className="relative z-10 py-8 text-center">
         <p
-          className="text-[9px] font-bold uppercase tracking-[0.5em] text-white/30"
+          className="text-[9px] font-bold uppercase tracking-[0.55em] text-white/30"
           style={{ fontFamily: "system-ui" }}
         >
-          © {new Date().getFullYear()} Defano Arya Wardhana. All Rights Reserved.
+          © {new Date().getFullYear()} Defano Arya Wardhana. {t("footer.all_rights_reserved")}
         </p>
       </div>
     </footer>

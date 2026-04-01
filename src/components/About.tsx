@@ -4,12 +4,14 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Highlighter } from "./ui/Highlighter";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PHOTO_SRC = "/images/photo-profil/defaaryawar.png";
 
 export const About = () => {
+  const { t } = useTranslation();
   const container = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -101,7 +103,7 @@ export const About = () => {
                 className="uppercase text-[10px] font-bold tracking-[0.55em]"
                 style={{ fontFamily: "system-ui", color: "rgba(255,255,255,0.3)" }}
               >
-                Background
+                {t("about.background_label")}
               </span>
             </div>
 
@@ -115,7 +117,7 @@ export const About = () => {
                 }}
               >
                 <Highlighter action="highlight" color="#EFEFEF">
-                  Bridging Code
+                  {t("about.title_part1")}
                 </Highlighter>
               </h2>
             </div>
@@ -129,7 +131,7 @@ export const About = () => {
                   color: "rgba(255,255,255,0.35)",
                 }}
               >
-                &amp; Networks.
+                {t("about.title_part2")}
               </h2>
             </div>
 
@@ -144,19 +146,19 @@ export const About = () => {
               }}
             >
               <p>
-                I am a Informatics Engineering graduate from Budi Luhur University with a background in Computer Network Engineering from SMK Bina Informatika.
+                {t("about.desc1")}
               </p>
               <p>
-                As a versatile IT professional, I build scalable modern web applications while actively expanding my expertise in network infrastructure and troubleshooting.
+                {t("about.desc2")}
               </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-0">
               {[
-                { val: 2, label: "Years of Craft" },
-                { val: 20, label: "Projects Shipped" },
-                { val: 8, label: "Tech Mastered" },
+                { val: 2, label: t("about.stat1_label") },
+                { val: 20, label: t("about.stat2_label") },
+                { val: 8, label: t("about.stat3_label") },
               ].map(({ val, label }, i) => (
                 <div
                   key={label}
@@ -261,7 +263,7 @@ export const About = () => {
                     fontWeight: 700,
                   }}
                 >
-                  Core Focus
+                  {t("about.float1_title")}
                 </p>
                 <p
                   className="uppercase tracking-tight"
@@ -272,7 +274,7 @@ export const About = () => {
                     color: "#fff",
                   }}
                 >
-                  FullStack Dev
+                  {t("about.float1_desc")}
                 </p>
               </div>
             </div>
@@ -311,7 +313,7 @@ export const About = () => {
                     fontWeight: 700,
                   }}
                 >
-                  Specialty
+                  {t("about.float2_title")}
                 </p>
                 <p
                   className="uppercase tracking-tight"
@@ -322,7 +324,7 @@ export const About = () => {
                     color: "#fff",
                   }}
                 >
-                  IT & Networking
+                  {t("about.float2_desc")}
                 </p>
               </div>
             </div>
