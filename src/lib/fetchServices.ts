@@ -32,7 +32,7 @@ interface SanityService {
 // ─── GROQ Queries ─────────────────────────────────────────────────────────────
 const ALL_SERVICES_QUERY = `*[_type == "service"] | order(price asc) {
   _id,
-  "id": slug.current,
+  "id": id,
   name,
   nameEn,
   category,
@@ -56,9 +56,9 @@ const ALL_SERVICES_QUERY = `*[_type == "service"] | order(price asc) {
   popular
 }`;
 
-const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && slug.current == $slug][0] {
+const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && id == $slug][0] {
   _id,
-  "id": slug.current,
+  "id": id,
   name,
   nameEn,
   category,
