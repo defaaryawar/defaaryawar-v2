@@ -93,7 +93,7 @@ const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && id == $slug][0] {
 // ─── Transform Sanity doc → Service ───────────────────────────────────────────
 function mapSanityToService(doc: SanityService): Service {
   // Helper to handle both string paths and Sanity image objects
-  const imageToUrl = (img: unknown, fieldName?: string): string => {
+  const imageToUrl = (img: unknown, _fieldName?: string): string => {
     if (!img) return "/our-services/placeholder.webp";
     
     // String path from seed

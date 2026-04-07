@@ -55,7 +55,7 @@ export function useServices() {
                 });
             }
           },
-          error: (err) => {
+          error: (_err) => {
             listenerActive = false;
           },
         });
