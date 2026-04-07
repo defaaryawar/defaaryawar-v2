@@ -240,10 +240,35 @@ export const ServiceDetailPage = () => {
   const { service, loading } = useService(slug);
   const container = useRef<HTMLDivElement>(null);
 
+  // ✅ Call all hooks FIRST, before any early returns
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [slug]);
 
+  useGSAP(
+    () => {
+      if (!service) return; // Guard inside effect
+      
+      gsap.fromTo(
+        ".detail-hero",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+      );
+      gsap.fromTo(
+        ".detail-content",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, delay: 0.12, ease: "power2.out" },
+      );
+      gsap.fromTo(
+        ".detail-sidebar",
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 0.4, delay: 0.2, ease: "power2.out" },
+      );
+    },
+    { scope: container },
+  );
+
+  // ✅ Now early returns are OK since all hooks already called
   if (loading) {
     return (
       <main className="relative bg-[#080808] text-white min-h-screen flex items-center justify-center font-['DM_Sans',system-ui,sans-serif]">
@@ -290,6 +315,7 @@ export const ServiceDetailPage = () => {
     );
   }
 
+  // ✅ Now safe to use service
   const onBack = () => navigate("/services");
 
   const cfg = previewConfig[service.id] ?? {
@@ -298,27 +324,6 @@ export const ServiceDetailPage = () => {
     accent: "#10b981",
     label: "Website",
   };
-
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        ".detail-hero",
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        ".detail-content",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, delay: 0.12, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        ".detail-sidebar",
-        { opacity: 0, x: 20 },
-        { opacity: 1, x: 0, duration: 0.4, delay: 0.2, ease: "power2.out" },
-      );
-    },
-    { scope: container },
-  );
 
   const warrantyLabel =
     service.warrantyDays >= 45

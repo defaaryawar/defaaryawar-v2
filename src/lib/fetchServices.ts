@@ -51,8 +51,12 @@ const ALL_SERVICES_QUERY = `*[_type == "service"] | order(price asc) {
   warrantyDays,
   includeDomain,
   deliveryDays,
-  image,
-  images,
+  image {
+    asset->,
+    hotspot,
+    crop
+  },
+  "images": images[] { asset->, hotspot, crop },
   popular
 }`;
 
@@ -77,13 +81,41 @@ const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && id == $slug][0] {
   warrantyDays,
   includeDomain,
   deliveryDays,
-  image,
-  images,
+  image {
+    asset->,
+    hotspot,
+    crop
+  },
+  "images": images[] { asset->, hotspot, crop },
   popular
 }`;
 
 // ─── Transform Sanity doc → Service ───────────────────────────────────────────
 function mapSanityToService(doc: SanityService): Service {
+  // Helper to handle both string paths and Sanity image objects
+  const imageToUrl = (img: unknown, fieldName?: string): string => {
+    if (!img) return "/our-services/placeholder.webp";
+    
+    // String path from seed
+    if (typeof img === 'string') return img;
+    
+    // Image object from Sanity Studio (with resolved asset)
+    const imgObj = img as any;
+    
+    // Check if asset exists and has _id (resolved asset object)
+    if (imgObj?.asset && imgObj.asset._id) {
+      try {
+        // Use urlFor with resolved asset object - it will handle _id internally
+        return urlFor(img as SanityImageSource).width(800).quality(80).auto("format").url();
+      } catch (err) {
+        return "/our-services/placeholder.webp";
+      }
+    }
+    
+    // Asset is null or doesn't have _id - use placeholder
+    return "/our-services/placeholder.webp";
+  };
+
   return {
     id: doc.id,
     name: doc.name,
@@ -104,13 +136,11 @@ function mapSanityToService(doc: SanityService): Service {
     warrantyDays: doc.warrantyDays,
     includeDomain: doc.includeDomain,
     deliveryDays: doc.deliveryDays,
-    image: doc.image
-      ? urlFor(doc.image as SanityImageSource).width(800).quality(80).auto("format").url()
-      : "/our-services/placeholder.webp",
+    image: imageToUrl(doc.image, `${doc.id}-image`),
     images: doc.images?.length
-      ? doc.images.map((img) =>
-          urlFor(img as SanityImageSource).width(800).quality(80).auto("format").url()
-        )
+      ? doc.images
+          .map((img, idx) => imageToUrl(img, `${doc.id}-images[${idx}]`))
+          .filter((url) => url !== "/our-services/placeholder.webp") // Filter out broken images
       : undefined,
     popular: doc.popular,
   };
@@ -119,7 +149,6 @@ function mapSanityToService(doc: SanityService): Service {
 // ─── Fetch all services ───────────────────────────────────────────────────────
 export async function fetchAllServices(): Promise<Service[]> {
   if (!isSanityConfigured()) {
-    console.info("[Services] Sanity not configured — using static fallback data");
     return staticServices;
   }
 
@@ -127,13 +156,11 @@ export async function fetchAllServices(): Promise<Service[]> {
     const docs: SanityService[] = await sanityClient.fetch(ALL_SERVICES_QUERY);
 
     if (!docs || docs.length === 0) {
-      console.info("[Services] No data in Sanity — using static fallback data");
       return staticServices;
     }
 
     return docs.map(mapSanityToService);
   } catch (error) {
-    console.error("[Services] Failed to fetch from Sanity:", error);
     return staticServices;
   }
 }
@@ -158,7 +185,6 @@ export async function fetchServiceBySlug(
 
     return mapSanityToService(doc);
   } catch (error) {
-    console.error("[Services] Failed to fetch service by slug:", error);
     return staticServices.find((s) => s.id === slug) ?? null;
   }
 }

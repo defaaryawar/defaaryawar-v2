@@ -51,18 +51,15 @@ export function useServices() {
                   setServices(data);
                 })
                 .catch((err) => {
-                  console.error('Error refetching services after mutation:', err);
                   setError(err.message);
                 });
             }
           },
           error: (err) => {
-            console.error('Listener error:', err);
             listenerActive = false;
           },
         });
     } catch (err) {
-      console.error('Failed to setup listener:', err);
       listenerActive = false;
     }
 
@@ -77,11 +74,9 @@ export function useServices() {
               cachedServices = data;
               cachedSingleService.clear();
               setServices(data);
-              console.log('[Poll] Services updated');
             }
           })
           .catch((err) => {
-            console.error('Error polling services:', err);
             setError(err.message);
           });
       }
