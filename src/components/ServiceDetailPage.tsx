@@ -3,7 +3,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 import { Highlighter } from "./ui/Highlighter";
-import { services, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { useService } from "@/hooks/useServices";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   MessageCircle,
@@ -236,12 +237,23 @@ export const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const service = services.find((s) => s.id === slug);
+  const { service, loading } = useService(slug);
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [slug]);
+
+  if (loading) {
+    return (
+      <main className="relative bg-[#080808] text-white min-h-screen flex items-center justify-center font-['DM_Sans',system-ui,sans-serif]">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
+          <div style={{ width: 200, height: 14, borderRadius: 4, background: "rgba(255,255,255,0.06)" }} />
+        </div>
+      </main>
+    );
+  }
 
   if (!service) {
     return (

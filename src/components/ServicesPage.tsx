@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
-import { services, CATEGORIES, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { CATEGORIES, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { useServices } from "@/hooks/useServices";
 import { MessageCircle, Star, BadgeCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -257,6 +258,7 @@ const ServiceCard = ({
 
     {/* Body */}
     <div className="flex flex-col flex-1 p-3 gap-2">
+      {/* Title */}
       <h3
         style={{
           fontFamily: "'DM Sans', system-ui, sans-serif",
@@ -273,25 +275,14 @@ const ServiceCard = ({
         {i18n.language === "en" ? service.nameEn : service.name}
       </h3>
 
-      <div>
-        <span
-          style={{
-            fontSize: 9,
-            color: "rgba(255,255,255,0.3)",
-            display: "block",
-            marginBottom: 2,
-            fontWeight: 500,
-            fontFamily: "system-ui",
-          }}
-        >
-          {t("services.starting_from")}
-        </span>
+      {/* ── Price section — prominent, right after title ── */}
+      <div style={{ marginTop: 2 }}>
         {getDiscountPercent(service) > 0 && (
-          <div className="flex items-center gap-1.5" style={{ marginBottom: 2 }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
             <span
               style={{
                 fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 500,
                 color: "rgba(255,255,255,0.3)",
                 textDecoration: "line-through",
@@ -300,11 +291,16 @@ const ServiceCard = ({
               {service.originalPriceLabel}
             </span>
             <span
+              className="px-1.5 py-0.5"
               style={{
                 fontSize: 10,
-                fontWeight: 700,
-                color: "#ee4d2d",
+                fontWeight: 800,
+                color: "#fff",
+                background: "#ee4d2d",
+                borderRadius: 3,
                 fontFamily: "system-ui",
+                letterSpacing: "0.02em",
+                lineHeight: 1,
               }}
             >
               -{getDiscountPercent(service)}%
@@ -315,14 +311,27 @@ const ServiceCard = ({
           <span
             style={{
               fontFamily: "'DM Sans', system-ui, sans-serif",
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: 800,
               color: "#fff",
+              letterSpacing: "-0.02em",
             }}
           >
             {service.priceLabel}
           </span>
         </Highlighter>
+        <span
+          style={{
+            fontSize: 9,
+            color: "rgba(255,255,255,0.25)",
+            display: "block",
+            marginTop: 2,
+            fontWeight: 500,
+            fontFamily: "system-ui",
+          }}
+        >
+          {t("services.starting_from")}
+        </span>
       </div>
 
       {/* Verified */}
@@ -368,7 +377,7 @@ const ServiceCard = ({
             el.style.borderColor = "rgba(238,77,45,0.35)";
           }
         }}
-        onClick={(e) => e.stopPropagation()} // prevent card click from firing
+        onClick={(e) => e.stopPropagation()}
       >
         <MessageCircle size={12} />
         {t("services.order_now")}
@@ -405,12 +414,40 @@ const FilterChip = ({
   </button>
 );
 
+// ─── Skeleton Card ────────────────────────────────────────────────────────────
+const SkeletonCard = () => (
+  <div
+    className="flex flex-col overflow-hidden animate-pulse"
+    style={{
+      background: "#111113",
+      border: "1px solid rgba(255,255,255,0.07)",
+      borderRadius: 8,
+    }}
+  >
+    <div style={{ aspectRatio: "4/3", background: "rgba(255,255,255,0.04)" }} />
+    <div className="flex flex-col flex-1 p-3 gap-3">
+      <div style={{ height: 14, width: "75%", borderRadius: 3, background: "rgba(255,255,255,0.06)" }} />
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-2">
+          <div style={{ height: 12, width: "40%", borderRadius: 3, background: "rgba(255,255,255,0.05)" }} />
+          <div style={{ height: 16, width: 32, borderRadius: 3, background: "rgba(238,77,45,0.15)" }} />
+        </div>
+        <div style={{ height: 18, width: "55%", borderRadius: 3, background: "rgba(255,255,255,0.08)" }} />
+        <div style={{ height: 9, width: "30%", borderRadius: 2, background: "rgba(255,255,255,0.04)" }} />
+      </div>
+      <div style={{ height: 10, width: "35%", borderRadius: 2, background: "rgba(255,255,255,0.04)", marginTop: "auto" }} />
+      <div style={{ height: 32, borderRadius: 5, background: "rgba(255,255,255,0.04)" }} />
+    </div>
+  </div>
+);
+
 // ─── Services Page ────────────────────────────────────────────────────────────
 export const ServicesPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<string>("Semua");
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const { services, loading } = useServices();
 
   const filteredServices =
     activeFilter === "Semua"
@@ -428,7 +465,7 @@ export const ServicesPage = () => {
         );
       });
     },
-    { scope: container, dependencies: [activeFilter], revertOnUpdate: true },
+    { scope: container, dependencies: [activeFilter, loading], revertOnUpdate: true },
   );
 
   return (
@@ -550,16 +587,18 @@ export const ServicesPage = () => {
           </div>
 
           <div className="grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-            {filteredServices.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                onSelect={(s) => navigate(`/services/${s.id}`)}
-              />
-            ))}
+            {loading
+              ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+              : filteredServices.map((service) => (
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                    onSelect={(s) => navigate(`/services/${s.id}`)}
+                  />
+                ))}
           </div>
 
-          {filteredServices.length === 0 && (
+          {!loading && filteredServices.length === 0 && (
             <div className="flex flex-col items-center py-24 gap-3">
               <span style={{ fontSize: 36 }}>🔍</span>
               <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>
