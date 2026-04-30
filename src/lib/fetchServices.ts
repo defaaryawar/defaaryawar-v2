@@ -27,6 +27,11 @@ interface SanityService {
   image: unknown;
   images?: unknown[];
   popular?: boolean;
+  packages?: {
+    basic: { price: number; priceLabel: string };
+    business: { price: number; priceLabel: string };
+    premium: { price: number; priceLabel: string };
+  };
 }
 
 // ─── GROQ Queries ─────────────────────────────────────────────────────────────
@@ -57,7 +62,12 @@ const ALL_SERVICES_QUERY = `*[_type == "service"] | order(price asc) {
     crop
   },
   "images": images[] { asset->, hotspot, crop },
-  popular
+  popular,
+  packages {
+    basic { price, priceLabel },
+    business { price, priceLabel },
+    premium { price, priceLabel }
+  }
 }`;
 
 const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && id == $slug][0] {
@@ -87,7 +97,12 @@ const SERVICE_BY_SLUG_QUERY = `*[_type == "service" && id == $slug][0] {
     crop
   },
   "images": images[] { asset->, hotspot, crop },
-  popular
+  popular,
+  packages {
+    basic { price, priceLabel },
+    business { price, priceLabel },
+    premium { price, priceLabel }
+  }
 }`;
 
 // ─── Transform Sanity doc → Service ───────────────────────────────────────────
@@ -143,6 +158,7 @@ function mapSanityToService(doc: SanityService): Service {
           .filter((url) => url !== "/our-services/placeholder.webp") // Filter out broken images
       : undefined,
     popular: doc.popular,
+    packages: doc.packages,
   };
 }
 

@@ -1,3 +1,8 @@
+export interface ServicePackage {
+  price: number;
+  priceLabel: string;
+}
+
 export interface Service {
   id: string;
   name: string;
@@ -21,6 +26,11 @@ export interface Service {
   image: string;
   images?: string[];
   popular?: boolean;
+  packages?: {
+    basic: ServicePackage;
+    business: ServicePackage;
+    premium: ServicePackage;
+  };
 }
 
 export function getDiscountPercent(service: Service): number {
@@ -51,6 +61,11 @@ export const services: Service[] = [
     priceLabel: "Rp 800.000",
     originalPrice: 1500000,
     originalPriceLabel: "Rp 1.500.000",
+    packages: {
+      basic: { price: 800000, priceLabel: "Rp 800.000" },
+      business: { price: 1500000, priceLabel: "Rp 1.500.000" },
+      premium: { price: 2500000, priceLabel: "Rp 2.500.000" },
+    },
     description:
       "Halaman promosi satu halaman yang powerful untuk campaign, produk, atau event Anda. Didesain untuk konversi tinggi dengan animasi modern dan form lead capture.",
     descriptionEn:
@@ -93,6 +108,11 @@ export const services: Service[] = [
     priceLabel: "Rp 1.200.000",
     originalPrice: 2000000,
     originalPriceLabel: "Rp 2.000.000",
+    packages: {
+      basic: { price: 1200000, priceLabel: "Rp 1.200.000" },
+      business: { price: 2000000, priceLabel: "Rp 2.000.000" },
+      premium: { price: 3500000, priceLabel: "Rp 3.500.000" },
+    },
     description:
       "Tunjukkan karya terbaik Anda dengan website portfolio yang elegan dan profesional. Cocok untuk freelancer, desainer, fotografer, dan kreator konten.",
     descriptionEn:
@@ -136,6 +156,11 @@ export const services: Service[] = [
     priceLabel: "Rp 1.500.000",
     originalPrice: 2500000,
     originalPriceLabel: "Rp 2.500.000",
+    packages: {
+      basic: { price: 1500000, priceLabel: "Rp 1.500.000" },
+      business: { price: 2500000, priceLabel: "Rp 2.500.000" },
+      premium: { price: 4000000, priceLabel: "Rp 4.000.000" },
+    },
     description:
       "Bangun kesan profesional perusahaan Anda dengan website modern, informatif, dan mudah dikelola. Dilengkapi CMS agar konten bisa diedit sendiri tanpa coding.",
     descriptionEn:
@@ -181,6 +206,11 @@ export const services: Service[] = [
     priceLabel: "Rp 2.000.000",
     originalPrice: 3500000,
     originalPriceLabel: "Rp 3.500.000",
+    packages: {
+      basic: { price: 2000000, priceLabel: "Rp 2.000.000" },
+      business: { price: 3500000, priceLabel: "Rp 3.500.000" },
+      premium: { price: 5000000, priceLabel: "Rp 5.000.000" },
+    },
     description:
       "Menu digital, reservasi online, dan tampilan estetis untuk tempat makan Anda. Pelanggan bisa lihat menu dan langsung booking meja dari HP mereka.",
     descriptionEn:
@@ -226,6 +256,11 @@ export const services: Service[] = [
     priceLabel: "Rp 2.500.000",
     originalPrice: 4000000,
     originalPriceLabel: "Rp 4.000.000",
+    packages: {
+      basic: { price: 2500000, priceLabel: "Rp 2.500.000" },
+      business: { price: 4000000, priceLabel: "Rp 4.000.000" },
+      premium: { price: 6500000, priceLabel: "Rp 6.500.000" },
+    },
     description:
       "Tampilkan paket wisata Anda dengan website menarik lengkap dengan sistem booking dan katalog destinasi yang memukau.",
     descriptionEn:
@@ -272,6 +307,11 @@ export const services: Service[] = [
     priceLabel: "Rp 3.000.000",
     originalPrice: 5000000,
     originalPriceLabel: "Rp 5.000.000",
+    packages: {
+      basic: { price: 3000000, priceLabel: "Rp 3.000.000" },
+      business: { price: 5000000, priceLabel: "Rp 5.000.000" },
+      premium: { price: 7500000, priceLabel: "Rp 7.500.000" },
+    },
     description:
       "Website elegan untuk klinik kecantikan. Tampilkan layanan treatment, jadwal dokter, dan sistem booking appointment yang seamless.",
     descriptionEn:
@@ -316,6 +356,11 @@ export const services: Service[] = [
     priceLabel: "Rp 4.000.000",
     originalPrice: 6500000,
     originalPriceLabel: "Rp 6.500.000",
+    packages: {
+      basic: { price: 4000000, priceLabel: "Rp 4.000.000" },
+      business: { price: 6500000, priceLabel: "Rp 6.500.000" },
+      premium: { price: 9000000, priceLabel: "Rp 9.000.000" },
+    },
     description:
       "Toko online lengkap dengan keranjang belanja, checkout, manajemen produk, dan dashboard admin. Siap terima order dari hari pertama.",
     descriptionEn:
@@ -368,6 +413,11 @@ export const services: Service[] = [
     priceLabel: "Rp 5.000.000",
     originalPrice: 8000000,
     originalPriceLabel: "Rp 8.000.000",
+    packages: {
+      basic: { price: 5000000, priceLabel: "Rp 5.000.000" },
+      business: { price: 8000000, priceLabel: "Rp 8.000.000" },
+      premium: { price: 12000000, priceLabel: "Rp 12.000.000" },
+    },
     description:
       "Solusi digital paling lengkap: profil dokter, jadwal praktek, booking appointment, portal pasien, dan blog kesehatan. Siap untuk institusi skala besar.",
     descriptionEn:

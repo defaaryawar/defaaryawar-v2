@@ -275,49 +275,19 @@ const ServiceCard = ({
         {i18n.language === "en" ? service.nameEn : service.name}
       </h3>
 
-      {/* ── Price section — prominent, right after title ── */}
+      {/* ── Packages info section ── */}
       <div style={{ marginTop: 2 }}>
-        {getDiscountPercent(service) > 0 && (
-          <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
-            <span
-              style={{
-                fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 12,
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.3)",
-                textDecoration: "line-through",
-              }}
-            >
-              {service.originalPriceLabel}
-            </span>
-            <span
-              className="px-1.5 py-0.5"
-              style={{
-                fontSize: 10,
-                fontWeight: 800,
-                color: "#fff",
-                background: "#ee4d2d",
-                borderRadius: 3,
-                fontFamily: "system-ui",
-                letterSpacing: "0.02em",
-                lineHeight: 1,
-              }}
-            >
-              -{getDiscountPercent(service)}%
-            </span>
-          </div>
-        )}
         <Highlighter action="underline" color="#ee4d2d">
           <span
             style={{
               fontFamily: "'DM Sans', system-ui, sans-serif",
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: 800,
               color: "#fff",
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.01em",
             }}
           >
-            {service.priceLabel}
+            {i18n.language === "en" ? "4 Packages Available" : "4 Paket Tersedia"}
           </span>
         </Highlighter>
         <span
@@ -325,12 +295,12 @@ const ServiceCard = ({
             fontSize: 9,
             color: "rgba(255,255,255,0.25)",
             display: "block",
-            marginTop: 2,
+            marginTop: 4,
             fontWeight: 500,
             fontFamily: "system-ui",
           }}
         >
-          {t("services.starting_from")}
+          Basic · Business · Premium · Enterprise
         </span>
       </div>
 

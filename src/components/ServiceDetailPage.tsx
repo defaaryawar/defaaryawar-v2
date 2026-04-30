@@ -17,6 +17,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
+  Check,
+  X,
 } from "lucide-react";
 
 // ─── Mini preview (same as ServicesPage) ─────────────────────────────────────
@@ -594,34 +596,10 @@ export const ServiceDetailPage = () => {
                       marginBottom: 4,
                     }}
                   >
-                    {t("service_detail.investment_starts_from")}
+                    {i18n.language === "en" ? "Available in" : "Tersedia dalam"}
                   </span>
-                  {getDiscountPercent(service) > 0 && (
-                    <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
-                      <span
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 500,
-                          color: "rgba(255,255,255,0.3)",
-                          textDecoration: "line-through",
-                        }}
-                      >
-                        {service.originalPriceLabel}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#ee4d2d",
-                          fontFamily: "system-ui",
-                        }}
-                      >
-                        {t("service_detail.save")} {getDiscountPercent(service)}%
-                      </span>
-                    </div>
-                  )}
-                  <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", lineHeight: 1 }}>
-                    {service.priceLabel}
+                  <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", lineHeight: 1, fontFamily: "'Bebas Neue', Impact, sans-serif", letterSpacing: "0.02em" }}>
+                    {i18n.language === "en" ? "4 PACKAGES" : "4 PAKET PILIHAN"}
                   </div>
                   <div className="flex items-center gap-1.5 mt-2.5">
                     <BadgeCheck size={14} color="#10b981" />
@@ -652,22 +630,22 @@ export const ServiceDetailPage = () => {
                 <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "8px 0" }} />
 
                 <div className="flex flex-col gap-3">
-                  <a
-                    href={getWhatsAppLink(service)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-3 transition-opacity hover:opacity-90"
+                  <button
+                    onClick={() => {
+                      document.querySelector('.detail-packages')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="flex items-center justify-center gap-2 w-full py-3 transition-opacity hover:opacity-90 cursor-pointer"
                     style={{
                       background: "#fff",
                       color: "#000",
                       borderRadius: 4,
                       fontSize: 13,
                       fontWeight: 700,
-                      textDecoration: "none",
+                      border: "none",
                     }}
                   >
-                    <MessageCircle size={16} /> {t("service_detail.order_via_wa")}
-                  </a>
+                    {t("service_detail.choose_plan")}
+                  </button>
                   <p
                     style={{
                       fontSize: 11,
@@ -682,6 +660,238 @@ export const ServiceDetailPage = () => {
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Pricing/Packages Section */}
+          <div className="mt-24 pt-16 pb-12 detail-packages" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="text-center mb-16">
+              <h2
+                style={{
+                  fontFamily: "'Bebas Neue', Impact, sans-serif",
+                  fontSize: "clamp(32px,4vw,48px)",
+                  letterSpacing: "0.05em",
+                  color: "#fff",
+                  marginBottom: 16,
+                }}
+              >
+                {t("service_detail.packages")}
+              </h2>
+              <p
+                style={{
+                  fontSize: 15,
+                  color: "rgba(255,255,255,0.5)",
+                  maxWidth: 500,
+                  margin: "0 auto",
+                  lineHeight: 1.6,
+                }}
+              >
+                {t("service_detail.packages_desc")}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+              {[
+                {
+                  id: "basic",
+                  name: t("service_detail.tier_basic"),
+                  desc: t("service_detail.tier_basic_desc"),
+                  recommended: false,
+                  color: "#ffffff",
+                  features: [
+                    { name: t("service_detail.feature_domain"), value: ".com", inc: true },
+                    { name: t("service_detail.feature_hosting"), value: "Shared", inc: true },
+                    { name: t("service_detail.feature_design"), value: "Template Premium", inc: true },
+                    { name: t("service_detail.feature_responsive"), value: "", inc: true },
+                    { name: t("service_detail.feature_social"), value: "", inc: false },
+                    { name: t("service_detail.feature_seo"), value: "Basic", inc: true },
+                    { name: t("service_detail.feature_cms"), value: "", inc: false },
+                    { name: t("service_detail.feature_revisions"), value: "1x", inc: true },
+                    { name: t("service_detail.feature_articles"), value: "", inc: false },
+                  ],
+                },
+                {
+                  id: "business",
+                  name: t("service_detail.tier_business"),
+                  desc: t("service_detail.tier_business_desc"),
+                  recommended: true,
+                  color: "#ee4d2d",
+                  features: [
+                    { name: t("service_detail.feature_domain"), value: ".com / .id", inc: true },
+                    { name: t("service_detail.feature_hosting"), value: "Cloud Hosting", inc: true },
+                    { name: t("service_detail.feature_design"), value: "Custom Design", inc: true },
+                    { name: t("service_detail.feature_responsive"), value: "", inc: true },
+                    { name: t("service_detail.feature_social"), value: "", inc: true },
+                    { name: t("service_detail.feature_seo"), value: "Advanced", inc: true },
+                    { name: t("service_detail.feature_cms"), value: "Standard", inc: true },
+                    { name: t("service_detail.feature_revisions"), value: "3x", inc: true },
+                    { name: t("service_detail.feature_articles"), value: "3 Artikel", inc: true },
+                  ],
+                },
+                {
+                  id: "premium",
+                  name: t("service_detail.tier_premium"),
+                  desc: t("service_detail.tier_premium_desc"),
+                  recommended: false,
+                  color: "#facc15",
+                  features: [
+                    { name: t("service_detail.feature_domain"), value: ".com / .id / .co.id", inc: true },
+                    { name: t("service_detail.feature_hosting"), value: "Dedicated VPS", inc: true },
+                    { name: t("service_detail.feature_design"), value: "Premium Custom", inc: true },
+                    { name: t("service_detail.feature_responsive"), value: "", inc: true },
+                    { name: t("service_detail.feature_social"), value: "Auto Post", inc: true },
+                    { name: t("service_detail.feature_seo"), value: "Advanced", inc: true },
+                    { name: t("service_detail.feature_cms"), value: "Advanced", inc: true },
+                    { name: t("service_detail.feature_revisions"), value: "5x", inc: true },
+                    { name: t("service_detail.feature_articles"), value: "5 Artikel", inc: true },
+                  ],
+                },
+                {
+                  id: "enterprise",
+                  name: t("service_detail.tier_enterprise"),
+                  desc: t("service_detail.tier_enterprise_desc"),
+                  recommended: false,
+                  color: "#ffffff",
+                  isEnterprise: true,
+                  features: [],
+                },
+              ].map((tier, idx) => (
+                <div
+                  key={idx}
+                  className={`relative flex flex-col rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 group`}
+                  style={{
+                    background: "rgba(255,255,255,0.02)",
+                    border: tier.recommended 
+                      ? `1px solid ${tier.color}80` 
+                      : "1px solid rgba(255,255,255,0.06)",
+                    boxShadow: tier.recommended ? `0 10px 40px -10px ${tier.color}30` : "none",
+                  }}
+                >
+                  {tier.recommended && (
+                    <div
+                      className="absolute top-0 inset-x-0 py-1 text-center"
+                      style={{
+                        background: `${tier.color}20`,
+                        color: tier.color,
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Most Popular
+                    </div>
+                  )}
+
+                  <div className={`p-6 md:p-8 ${tier.recommended ? 'pt-10 md:pt-12' : ''} flex flex-col h-full`}>
+                    <h3
+                      style={{
+                        fontSize: 24,
+                        fontFamily: "'Bebas Neue', Impact, sans-serif",
+                        letterSpacing: "0.05em",
+                        color: "#fff",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {tier.name}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(255,255,255,0.45)",
+                        lineHeight: 1.5,
+                        minHeight: 40,
+                        marginBottom: 16,
+                      }}
+                    >
+                      {tier.desc}
+                    </p>
+
+                    {!tier.isEnterprise && service.packages && (
+                      <div className="mb-6 p-3 rounded-lg" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.03)" }}>
+                        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 2 }}>
+                          {i18n.language === 'en' ? 'Starting from' : 'Mulai dari'}
+                        </div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: tier.color, fontFamily: "'DM Sans', system-ui, sans-serif", letterSpacing: "-0.02em" }}>
+                          {tier.id === 'basic' ? service.packages.basic.priceLabel : tier.id === 'business' ? service.packages.business.priceLabel : service.packages.premium.priceLabel}
+                        </div>
+                      </div>
+                    )}
+
+                    {!tier.isEnterprise ? (
+                      <div className="flex-1 flex flex-col gap-4 mb-8">
+                        {tier.features.map((f, i) => (
+                          <div key={i} className="flex items-start gap-3">
+                            {f.inc ? (
+                              <Check size={16} color={tier.color} className="shrink-0 mt-0.5" />
+                            ) : (
+                              <X size={16} color="rgba(255,255,255,0.2)" className="shrink-0 mt-0.5" />
+                            )}
+                            <div className="flex flex-col justify-center">
+                              <span
+                                style={{
+                                  fontSize: 12,
+                                  color: f.inc ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)",
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {f.name}
+                              </span>
+                              {f.value && (
+                                <span
+                                  style={{
+                                    fontSize: 13,
+                                    color: f.inc ? "#fff" : "rgba(255,255,255,0.2)",
+                                    fontWeight: 700,
+                                    marginTop: 2,
+                                  }}
+                                >
+                                  {f.value}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex-1 flex flex-col items-center justify-center text-center p-6 mb-8 bg-black/20 rounded-lg border border-white/5">
+                        <MessageCircle size={32} color={tier.color} className="mb-4 opacity-80" />
+                        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
+                          {t("service_detail.enterprise_note")}
+                        </p>
+                      </div>
+                    )}
+
+                    <a
+                      href={`${getWhatsAppLink(service)}&text=${encodeURIComponent(`Halo, saya tertarik dengan layanan ${service.name} untuk paket ${tier.name}. Bisa minta info lebih lanjut?`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto w-full py-3 rounded text-center transition-all duration-300"
+                      style={{
+                        background: tier.recommended ? tier.color : "rgba(255,255,255,0.05)",
+                        color: tier.recommended ? "#fff" : "rgba(255,255,255,0.8)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        border: tier.recommended ? "none" : "1px solid rgba(255,255,255,0.1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!tier.recommended) {
+                          e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                          e.currentTarget.style.color = "#fff";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!tier.recommended) {
+                          e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                          e.currentTarget.style.color = "rgba(255,255,255,0.8)";
+                        }
+                      }}
+                    >
+                      {tier.isEnterprise ? t("service_detail.contact_wa") : t("service_detail.choose_plan")}
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
