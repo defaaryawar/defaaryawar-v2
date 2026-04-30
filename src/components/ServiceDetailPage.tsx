@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 import { Highlighter } from "./ui/Highlighter";
-import { getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { getWhatsAppLink, type Service } from "@/data/services";
 import { useService } from "@/hooks/useServices";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -250,7 +250,7 @@ export const ServiceDetailPage = () => {
   useGSAP(
     () => {
       if (!service) return; // Guard inside effect
-      
+
       gsap.fromTo(
         ".detail-hero",
         { opacity: 0, y: 24 },
@@ -275,8 +275,22 @@ export const ServiceDetailPage = () => {
     return (
       <main className="relative bg-[#080808] text-white min-h-screen flex items-center justify-center font-['DM_Sans',system-ui,sans-serif]">
         <div className="animate-pulse flex flex-col items-center gap-4">
-          <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
-          <div style={{ width: 200, height: 14, borderRadius: 4, background: "rgba(255,255,255,0.06)" }} />
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.06)",
+            }}
+          />
+          <div
+            style={{
+              width: 200,
+              height: 14,
+              borderRadius: 4,
+              background: "rgba(255,255,255,0.06)",
+            }}
+          />
         </div>
       </main>
     );
@@ -423,11 +437,13 @@ export const ServiceDetailPage = () => {
                   }}
                 >
                   <Highlighter action="underline" color={cfg.accent}>
-                    {(i18n.language === "en" ? service.nameEn : service.name).split("").map((c, i) => (
-                      <span key={i} className="inline-block" style={{ color: "#fff" }}>
-                        {c === " " ? "\u00A0" : c}
-                      </span>
-                    ))}
+                    {(i18n.language === "en" ? service.nameEn : service.name)
+                      .split("")
+                      .map((c, i) => (
+                        <span key={i} className="inline-block" style={{ color: "#fff" }}>
+                          {c === " " ? "\u00A0" : c}
+                        </span>
+                      ))}
                   </Highlighter>
                 </h1>
                 <p
@@ -598,7 +614,16 @@ export const ServiceDetailPage = () => {
                   >
                     {i18n.language === "en" ? "Available in" : "Tersedia dalam"}
                   </span>
-                  <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", lineHeight: 1, fontFamily: "'Bebas Neue', Impact, sans-serif", letterSpacing: "0.02em" }}>
+                  <div
+                    style={{
+                      fontSize: 32,
+                      fontWeight: 800,
+                      color: "#fff",
+                      lineHeight: 1,
+                      fontFamily: "'Bebas Neue', Impact, sans-serif",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
                     {i18n.language === "en" ? "4 PACKAGES" : "4 PAKET PILIHAN"}
                   </div>
                   <div className="flex items-center gap-1.5 mt-2.5">
@@ -622,7 +647,9 @@ export const ServiceDetailPage = () => {
                       }}
                     >
                       <Zap size={10} color={cfg.accent} />{" "}
-                      {i18n.language === "en" ? service.highlightsEn[service.highlights.indexOf(h)] : h}
+                      {i18n.language === "en"
+                        ? service.highlightsEn[service.highlights.indexOf(h)]
+                        : h}
                     </span>
                   ))}
                 </div>
@@ -632,7 +659,9 @@ export const ServiceDetailPage = () => {
                 <div className="flex flex-col gap-3">
                   <button
                     onClick={() => {
-                      document.querySelector('.detail-packages')?.scrollIntoView({ behavior: 'smooth' });
+                      document
+                        .querySelector(".detail-packages")
+                        ?.scrollIntoView({ behavior: "smooth" });
                     }}
                     className="flex items-center justify-center gap-2 w-full py-3 transition-opacity hover:opacity-90 cursor-pointer"
                     style={{
@@ -664,7 +693,10 @@ export const ServiceDetailPage = () => {
           </div>
 
           {/* Pricing/Packages Section */}
-          <div className="mt-24 pt-16 pb-12 detail-packages" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div
+            className="mt-24 pt-16 pb-12 detail-packages"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          >
             <div className="text-center mb-16">
               <h2
                 style={{
@@ -701,7 +733,11 @@ export const ServiceDetailPage = () => {
                   features: [
                     { name: t("service_detail.feature_domain"), value: ".com", inc: true },
                     { name: t("service_detail.feature_hosting"), value: "Shared", inc: true },
-                    { name: t("service_detail.feature_design"), value: "Template Premium", inc: true },
+                    {
+                      name: t("service_detail.feature_design"),
+                      value: "Template Premium",
+                      inc: true,
+                    },
                     { name: t("service_detail.feature_responsive"), value: "", inc: true },
                     { name: t("service_detail.feature_social"), value: "", inc: false },
                     { name: t("service_detail.feature_seo"), value: "Basic", inc: true },
@@ -718,7 +754,11 @@ export const ServiceDetailPage = () => {
                   color: "#ee4d2d",
                   features: [
                     { name: t("service_detail.feature_domain"), value: ".com / .id", inc: true },
-                    { name: t("service_detail.feature_hosting"), value: "Cloud Hosting", inc: true },
+                    {
+                      name: t("service_detail.feature_hosting"),
+                      value: "Cloud Hosting",
+                      inc: true,
+                    },
                     { name: t("service_detail.feature_design"), value: "Custom Design", inc: true },
                     { name: t("service_detail.feature_responsive"), value: "", inc: true },
                     { name: t("service_detail.feature_social"), value: "", inc: true },
@@ -735,9 +775,21 @@ export const ServiceDetailPage = () => {
                   recommended: false,
                   color: "#facc15",
                   features: [
-                    { name: t("service_detail.feature_domain"), value: ".com / .id / .co.id", inc: true },
-                    { name: t("service_detail.feature_hosting"), value: "Dedicated VPS", inc: true },
-                    { name: t("service_detail.feature_design"), value: "Premium Custom", inc: true },
+                    {
+                      name: t("service_detail.feature_domain"),
+                      value: ".com / .id / .co.id",
+                      inc: true,
+                    },
+                    {
+                      name: t("service_detail.feature_hosting"),
+                      value: "Dedicated VPS",
+                      inc: true,
+                    },
+                    {
+                      name: t("service_detail.feature_design"),
+                      value: "Premium Custom",
+                      inc: true,
+                    },
                     { name: t("service_detail.feature_responsive"), value: "", inc: true },
                     { name: t("service_detail.feature_social"), value: "Auto Post", inc: true },
                     { name: t("service_detail.feature_seo"), value: "Advanced", inc: true },
@@ -761,8 +813,8 @@ export const ServiceDetailPage = () => {
                   className={`relative flex flex-col rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 group`}
                   style={{
                     background: "rgba(255,255,255,0.02)",
-                    border: tier.recommended 
-                      ? `1px solid ${tier.color}80` 
+                    border: tier.recommended
+                      ? `1px solid ${tier.color}80`
                       : "1px solid rgba(255,255,255,0.06)",
                     boxShadow: tier.recommended ? `0 10px 40px -10px ${tier.color}30` : "none",
                   }}
@@ -783,7 +835,9 @@ export const ServiceDetailPage = () => {
                     </div>
                   )}
 
-                  <div className={`p-6 md:p-8 ${tier.recommended ? 'pt-10 md:pt-12' : ''} flex flex-col h-full`}>
+                  <div
+                    className={`p-6 md:p-8 ${tier.recommended ? "pt-10 md:pt-12" : ""} flex flex-col h-full`}
+                  >
                     <h3
                       style={{
                         fontSize: 24,
@@ -808,12 +862,32 @@ export const ServiceDetailPage = () => {
                     </p>
 
                     {!tier.isEnterprise && service.packages && (
-                      <div className="mb-6 p-3 rounded-lg" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.03)" }}>
-                        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 2 }}>
-                          {i18n.language === 'en' ? 'Starting from' : 'Mulai dari'}
+                      <div
+                        className="mb-6 p-3 rounded-lg"
+                        style={{
+                          background: "rgba(0,0,0,0.2)",
+                          border: "1px solid rgba(255,255,255,0.03)",
+                        }}
+                      >
+                        <div
+                          style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 2 }}
+                        >
+                          {i18n.language === "en" ? "Starting from" : "Mulai dari"}
                         </div>
-                        <div style={{ fontSize: 22, fontWeight: 800, color: tier.color, fontFamily: "'DM Sans', system-ui, sans-serif", letterSpacing: "-0.02em" }}>
-                          {tier.id === 'basic' ? service.packages.basic.priceLabel : tier.id === 'business' ? service.packages.business.priceLabel : service.packages.premium.priceLabel}
+                        <div
+                          style={{
+                            fontSize: 22,
+                            fontWeight: 800,
+                            color: tier.color,
+                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                            letterSpacing: "-0.02em",
+                          }}
+                        >
+                          {tier.id === "basic"
+                            ? service.packages.basic.priceLabel
+                            : tier.id === "business"
+                              ? service.packages.business.priceLabel
+                              : service.packages.premium.priceLabel}
                         </div>
                       </div>
                     )}
@@ -825,7 +899,11 @@ export const ServiceDetailPage = () => {
                             {f.inc ? (
                               <Check size={16} color={tier.color} className="shrink-0 mt-0.5" />
                             ) : (
-                              <X size={16} color="rgba(255,255,255,0.2)" className="shrink-0 mt-0.5" />
+                              <X
+                                size={16}
+                                color="rgba(255,255,255,0.2)"
+                                className="shrink-0 mt-0.5"
+                              />
                             )}
                             <div className="flex flex-col justify-center">
                               <span
@@ -856,7 +934,9 @@ export const ServiceDetailPage = () => {
                     ) : (
                       <div className="flex-1 flex flex-col items-center justify-center text-center p-6 mb-8 bg-black/20 rounded-lg border border-white/5">
                         <MessageCircle size={32} color={tier.color} className="mb-4 opacity-80" />
-                        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
+                        <p
+                          style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}
+                        >
                           {t("service_detail.enterprise_note")}
                         </p>
                       </div>
@@ -887,7 +967,9 @@ export const ServiceDetailPage = () => {
                         }
                       }}
                     >
-                      {tier.isEnterprise ? t("service_detail.contact_wa") : t("service_detail.choose_plan")}
+                      {tier.isEnterprise
+                        ? t("service_detail.contact_wa")
+                        : t("service_detail.choose_plan")}
                     </a>
                   </div>
                 </div>
