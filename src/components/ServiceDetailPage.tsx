@@ -801,7 +801,7 @@ export const ServiceDetailPage = () => {
                     { name: t("service_detail.feature_responsive"), value: "", inc: true },
                     { name: t("service_detail.feature_social"), value: "", inc: true },
                     { name: t("service_detail.feature_seo"), value: "Optimized", inc: true },
-                    { name: t("service_detail.feature_cms"), value: "Standard", inc: true },
+                    { name: t("service_detail.feature_cms"), value: "Professional", inc: true },
                     { name: t("service_detail.feature_revisions"), value: "5x", inc: true },
                     { name: t("service_detail.feature_articles"), value: "5 Artikel", inc: true },
                   ],
