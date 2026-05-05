@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Highlighter } from "./ui/Highlighter";
-import { CATEGORIES, getWhatsAppLink, getDiscountPercent, type Service } from "@/data/services";
+import { CATEGORIES, getWhatsAppLink, type Service } from "@/data/services";
 import { useServices } from "@/hooks/useServices";
 import { MessageCircle, Star, BadgeCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -195,165 +195,168 @@ const ServiceCard = ({
 }) => {
   const { t, i18n } = useTranslation();
   return (
-  <div
-    className="service-card flex flex-col overflow-hidden cursor-pointer"
-    style={{
-      background: "#111113",
-      border: "1px solid rgba(255,255,255,0.07)",
-      borderRadius: 8,
-      transition: "border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
-    }}
-    onClick={() => onSelect(service)}
-    onMouseEnter={(e) => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.borderColor = "rgba(255,255,255,0.18)";
-      el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.5)";
-      el.style.transform = "translateY(-2px)";
-    }}
-    onMouseLeave={(e) => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.borderColor = "rgba(255,255,255,0.07)";
-      el.style.boxShadow = "none";
-      el.style.transform = "translateY(0)";
-    }}
-  >
-    {/* Preview */}
-    <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", flexShrink: 0 }}>
-      <ServicePreview service={service} />
-
-      {service.popular && (
-        <div
-          className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5"
-          style={{
-            background: "#ee4d2d",
-            borderRadius: 3,
-            fontSize: 9,
-            fontWeight: 700,
-            color: "#fff",
-            fontFamily: "system-ui",
-          }}
-        >
-          <Star size={8} fill="#fff" color="#fff" />
-          {t("services.popular")}
-        </div>
-      )}
-
+    <div
+      className="service-card flex flex-col overflow-hidden cursor-pointer"
+      style={{
+        background: "#111113",
+        border: "1px solid rgba(255,255,255,0.07)",
+        borderRadius: 8,
+        transition: "border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
+      }}
+      onClick={() => onSelect(service)}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = "rgba(255,255,255,0.18)";
+        el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.5)";
+        el.style.transform = "translateY(-2px)";
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = "rgba(255,255,255,0.07)";
+        el.style.boxShadow = "none";
+        el.style.transform = "translateY(0)";
+      }}
+    >
+      {/* Preview */}
       <div
-        className="absolute top-2 right-2 px-2 py-0.5"
-        style={{
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(6px)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 3,
-          fontSize: 8,
-          fontWeight: 600,
-          color: "rgba(255,255,255,0.55)",
-          fontFamily: "system-ui",
-          letterSpacing: "0.04em",
-        }}
+        className="relative w-full overflow-hidden"
+        style={{ aspectRatio: "4/3", flexShrink: 0 }}
       >
-        {i18n.language === "en" ? service.categoryEn : service.category}
-      </div>
-    </div>
+        <ServicePreview service={service} />
 
-    {/* Body */}
-    <div className="flex flex-col flex-1 p-3 gap-2">
-      {/* Title */}
-      <h3
-        style={{
-          fontFamily: "'DM Sans', system-ui, sans-serif",
-          fontSize: 13,
-          fontWeight: 700,
-          color: "#fff",
-          lineHeight: 1.4,
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-        }}
-      >
-        {i18n.language === "en" ? service.nameEn : service.name}
-      </h3>
-
-      {/* ── Packages info section ── */}
-      <div style={{ marginTop: 2 }}>
-        <Highlighter action="underline" color="#ee4d2d">
-          <span
+        {service.popular && (
+          <div
+            className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5"
             style={{
-              fontFamily: "'DM Sans', system-ui, sans-serif",
-              fontSize: 14,
-              fontWeight: 800,
+              background: "#ee4d2d",
+              borderRadius: 3,
+              fontSize: 9,
+              fontWeight: 700,
               color: "#fff",
-              letterSpacing: "-0.01em",
+              fontFamily: "system-ui",
             }}
           >
-            {i18n.language === "en" ? "4 Packages Available" : "4 Paket Tersedia"}
-          </span>
-        </Highlighter>
-        <span
+            <Star size={8} fill="#fff" color="#fff" />
+            {t("services.popular")}
+          </div>
+        )}
+
+        <div
+          className="absolute top-2 right-2 px-2 py-0.5"
           style={{
-            fontSize: 9,
-            color: "rgba(255,255,255,0.25)",
-            display: "block",
-            marginTop: 4,
-            fontWeight: 500,
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(6px)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 3,
+            fontSize: 8,
+            fontWeight: 600,
+            color: "rgba(255,255,255,0.55)",
             fontFamily: "system-ui",
+            letterSpacing: "0.04em",
           }}
         >
-          Basic · Business · Premium · Enterprise
-        </span>
+          {i18n.language === "en" ? service.categoryEn : service.category}
+        </div>
       </div>
 
-      {/* Verified */}
-      <div className="flex items-center gap-1 mt-auto">
-        <BadgeCheck size={10} color="#10b981" />
-        <span style={{ fontSize: 9, color: "#10b981", fontWeight: 600, fontFamily: "system-ui" }}>
-          {t("services.verified")}
-        </span>
-      </div>
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-3 gap-2">
+        {/* Title */}
+        <h3
+          style={{
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontSize: 13,
+            fontWeight: 700,
+            color: "#fff",
+            lineHeight: 1.4,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {i18n.language === "en" ? service.nameEn : service.name}
+        </h3>
 
-      {/* CTA */}
-      <a
-        href={getWhatsAppLink(service)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-1.5 w-full py-2"
-        style={{
-          background: service.popular ? "#ee4d2d" : "transparent",
-          border: service.popular ? "1px solid #ee4d2d" : "1px solid rgba(238,77,45,0.35)",
-          color: service.popular ? "#fff" : "#ee4d2d",
-          borderRadius: 5,
-          fontSize: 11,
-          fontWeight: 700,
-          textDecoration: "none",
-          fontFamily: "'DM Sans', system-ui, sans-serif",
-          transition: "background 0.15s ease, border-color 0.15s ease, color 0.15s ease",
-          letterSpacing: "0.02em",
-        }}
-        onMouseEnter={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.background = "#ee4d2d";
-          el.style.color = "#fff";
-          el.style.borderColor = "#ee4d2d";
-        }}
-        onMouseLeave={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          if (service.popular) {
+        {/* ── Packages info section ── */}
+        <div style={{ marginTop: 2 }}>
+          <Highlighter action="underline" color="#ee4d2d">
+            <span
+              style={{
+                fontFamily: "'DM Sans', system-ui, sans-serif",
+                fontSize: 14,
+                fontWeight: 800,
+                color: "#fff",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {i18n.language === "en" ? "4 Packages Available" : "4 Paket Tersedia"}
+            </span>
+          </Highlighter>
+          <span
+            style={{
+              fontSize: 9,
+              color: "rgba(255,255,255,0.25)",
+              display: "block",
+              marginTop: 4,
+              fontWeight: 500,
+              fontFamily: "system-ui",
+            }}
+          >
+            Basic · Business · Premium · Enterprise
+          </span>
+        </div>
+
+        {/* Verified */}
+        <div className="flex items-center gap-1 mt-auto">
+          <BadgeCheck size={10} color="#10b981" />
+          <span style={{ fontSize: 9, color: "#10b981", fontWeight: 600, fontFamily: "system-ui" }}>
+            {t("services.verified")}
+          </span>
+        </div>
+
+        {/* CTA */}
+        <a
+          href={getWhatsAppLink(service)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-1.5 w-full py-2"
+          style={{
+            background: service.popular ? "#ee4d2d" : "transparent",
+            border: service.popular ? "1px solid #ee4d2d" : "1px solid rgba(238,77,45,0.35)",
+            color: service.popular ? "#fff" : "#ee4d2d",
+            borderRadius: 5,
+            fontSize: 11,
+            fontWeight: 700,
+            textDecoration: "none",
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            transition: "background 0.15s ease, border-color 0.15s ease, color 0.15s ease",
+            letterSpacing: "0.02em",
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget as HTMLElement;
             el.style.background = "#ee4d2d";
             el.style.color = "#fff";
-          } else {
-            el.style.background = "transparent";
-            el.style.color = "#ee4d2d";
-            el.style.borderColor = "rgba(238,77,45,0.35)";
-          }
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <MessageCircle size={12} />
-        {t("services.order_now")}
-      </a>
+            el.style.borderColor = "#ee4d2d";
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget as HTMLElement;
+            if (service.popular) {
+              el.style.background = "#ee4d2d";
+              el.style.color = "#fff";
+            } else {
+              el.style.background = "transparent";
+              el.style.color = "#ee4d2d";
+              el.style.borderColor = "rgba(238,77,45,0.35)";
+            }
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MessageCircle size={12} />
+          {t("services.order_now")}
+        </a>
+      </div>
     </div>
-  </div>
   );
 };
 
@@ -396,16 +399,44 @@ const SkeletonCard = () => (
   >
     <div style={{ aspectRatio: "4/3", background: "rgba(255,255,255,0.04)" }} />
     <div className="flex flex-col flex-1 p-3 gap-3">
-      <div style={{ height: 14, width: "75%", borderRadius: 3, background: "rgba(255,255,255,0.06)" }} />
+      <div
+        style={{ height: 14, width: "75%", borderRadius: 3, background: "rgba(255,255,255,0.06)" }}
+      />
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2">
-          <div style={{ height: 12, width: "40%", borderRadius: 3, background: "rgba(255,255,255,0.05)" }} />
-          <div style={{ height: 16, width: 32, borderRadius: 3, background: "rgba(238,77,45,0.15)" }} />
+          <div
+            style={{
+              height: 12,
+              width: "40%",
+              borderRadius: 3,
+              background: "rgba(255,255,255,0.05)",
+            }}
+          />
+          <div
+            style={{ height: 16, width: 32, borderRadius: 3, background: "rgba(238,77,45,0.15)" }}
+          />
         </div>
-        <div style={{ height: 18, width: "55%", borderRadius: 3, background: "rgba(255,255,255,0.08)" }} />
-        <div style={{ height: 9, width: "30%", borderRadius: 2, background: "rgba(255,255,255,0.04)" }} />
+        <div
+          style={{
+            height: 18,
+            width: "55%",
+            borderRadius: 3,
+            background: "rgba(255,255,255,0.08)",
+          }}
+        />
+        <div
+          style={{ height: 9, width: "30%", borderRadius: 2, background: "rgba(255,255,255,0.04)" }}
+        />
       </div>
-      <div style={{ height: 10, width: "35%", borderRadius: 2, background: "rgba(255,255,255,0.04)", marginTop: "auto" }} />
+      <div
+        style={{
+          height: 10,
+          width: "35%",
+          borderRadius: 2,
+          background: "rgba(255,255,255,0.04)",
+          marginTop: "auto",
+        }}
+      />
       <div style={{ height: 32, borderRadius: 5, background: "rgba(255,255,255,0.04)" }} />
     </div>
   </div>
@@ -420,9 +451,7 @@ export const ServicesPage = () => {
   const { services, loading } = useServices();
 
   const filteredServices =
-    activeFilter === "Semua"
-      ? services
-      : services.filter((s) => s.category === activeFilter);
+    activeFilter === "Semua" ? services : services.filter((s) => s.category === activeFilter);
 
   useGSAP(
     () => {
@@ -486,18 +515,22 @@ export const ServicesPage = () => {
                 marginBottom: 20,
               }}
             >
-              {t("services.title_part1").split("").map((c, i) => (
-                <span key={i} className="inline-block" style={{ color: "#fff" }}>
-                  {c === " " ? "\u00A0" : c}
-                </span>
-              ))}
-              <br />
-              <Highlighter action="underline" color="#ee4d2d">
-                {t("services.title_part2").split("").map((c, i) => (
+              {t("services.title_part1")
+                .split("")
+                .map((c, i) => (
                   <span key={i} className="inline-block" style={{ color: "#fff" }}>
-                    {c}
+                    {c === " " ? "\u00A0" : c}
                   </span>
                 ))}
+              <br />
+              <Highlighter action="underline" color="#ee4d2d">
+                {t("services.title_part2")
+                  .split("")
+                  .map((c, i) => (
+                    <span key={i} className="inline-block" style={{ color: "#fff" }}>
+                      {c}
+                    </span>
+                  ))}
                 <span className="inline-block" style={{ color: "#fff" }}>
                   .
                 </span>
