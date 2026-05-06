@@ -18,12 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
-  Check,
-  X,
-  Clock,
-  Layout,
   Star,
-  Info,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -92,15 +87,31 @@ const ServiceHeroBanner = ({ service }: { service: Service }) => {
 
   const images = service.images?.length ? service.images : [service.image];
 
+  // Auto slide effect
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 4000); // ganti gambar tiap 4 detik
+    return () => clearInterval(timer);
+  }, [images.length]);
+
   if (!imgError) {
     return (
-      <div className="relative w-full h-full group">
-        <img
-          src={images[currentIndex]}
-          alt={`${service.name} preview ${currentIndex + 1}`}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-          onError={() => setImgError(true)}
-        />
+      <div className="relative w-full h-full group overflow-hidden bg-white/5">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex]}
+            alt={`${service.name} preview ${currentIndex + 1}`}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={() => setImgError(true)}
+          />
+        </AnimatePresence>
         {images.length > 1 && (
           <>
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between px-3 md:px-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none">
@@ -255,7 +266,7 @@ export const ServiceDetailPage = () => {
   // Set initial selected plan once service is loaded
   useEffect(() => {
     if (service && !selectedTier) {
-      const recommended = availablePlans.find(p => p.recommended) || availablePlans[0];
+      const recommended = availablePlans.find((p) => p.recommended) || availablePlans[0];
       setSelectedTier(recommended);
     }
   }, [service, availablePlans, selectedTier]);
@@ -512,21 +523,32 @@ export const ServiceDetailPage = () => {
                       {
                         icon: Globe,
                         label: "DOMAIN & HOSTING",
-                        value: selectedTier.features.find(f => f.name.toLowerCase().includes("domain"))?.value || "Included"
+                        value:
+                          selectedTier.features.find((f) => f.name.toLowerCase().includes("domain"))
+                            ?.value || "Included",
                       },
                       {
                         icon: RefreshCw,
                         label: t("service_detail.revisions"),
-                        value: selectedTier.features.find(f => f.name.toLowerCase().includes("revision"))?.value || "2x",
+                        value:
+                          selectedTier.features.find((f) =>
+                            f.name.toLowerCase().includes("revision"),
+                          )?.value || "2x",
                       },
                       {
                         icon: ShieldCheck,
                         label: t("service_detail.warranty"),
-                        value: selectedTier.features.find(f => f.name.toLowerCase().includes("warranty"))?.value || warrantyLabel,
+                        value:
+                          selectedTier.features.find((f) =>
+                            f.name.toLowerCase().includes("warranty"),
+                          )?.value || warrantyLabel,
                       },
                     ].map((stat, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <div className="flex items-center gap-2" style={{ color: selectedTier.color }}>
+                        <div
+                          className="flex items-center gap-2"
+                          style={{ color: selectedTier.color }}
+                        >
                           <stat.icon size={13} strokeWidth={2.5} />
                           <span
                             style={{
@@ -539,7 +561,9 @@ export const ServiceDetailPage = () => {
                             {stat.label}
                           </span>
                         </div>
-                        <div style={{ fontSize: 15, color: "#fff", fontWeight: 500 }}>{stat.value}</div>
+                        <div style={{ fontSize: 15, color: "#fff", fontWeight: 500 }}>
+                          {stat.value}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -568,12 +592,22 @@ export const ServiceDetailPage = () => {
                             />
                             <div className="flex flex-col">
                               <span
-                                style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}
+                                style={{
+                                  fontSize: 14,
+                                  color: "rgba(255,255,255,0.7)",
+                                  lineHeight: 1.5,
+                                }}
                               >
                                 {f.name}
                               </span>
                               {f.value && (
-                                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontWeight: 700 }}>
+                                <span
+                                  style={{
+                                    fontSize: 11,
+                                    color: "rgba(255,255,255,0.3)",
+                                    fontWeight: 700,
+                                  }}
+                                >
                                   {f.value}
                                 </span>
                               )}
@@ -618,7 +652,10 @@ export const ServiceDetailPage = () => {
                           step: "04",
                           title: t("service_detail.workflow_steps.step4_title"),
                           desc: t("service_detail.workflow_steps.step4_desc", {
-                            revisions: selectedTier.features.find(f => f.name.toLowerCase().includes("revision"))?.value || "2x",
+                            revisions:
+                              selectedTier.features.find((f) =>
+                                f.name.toLowerCase().includes("revision"),
+                              )?.value || "2x",
                           }),
                         },
                         {
@@ -630,7 +667,10 @@ export const ServiceDetailPage = () => {
                         <div key={i} className="relative pl-7 group">
                           <div
                             className="absolute w-2 h-2 rounded-full -left-[4px] top-1.5 transition-all duration-300 group-hover:scale-150"
-                            style={{ background: selectedTier.color, boxShadow: `0 0 10px ${selectedTier.color}80` }}
+                            style={{
+                              background: selectedTier.color,
+                              boxShadow: `0 0 10px ${selectedTier.color}80`,
+                            }}
                           />
                           <div
                             style={{
@@ -644,12 +684,21 @@ export const ServiceDetailPage = () => {
                             Tahap {item.step}
                           </div>
                           <div
-                            style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}
+                            style={{
+                              fontSize: 16,
+                              fontWeight: 700,
+                              color: "#fff",
+                              marginBottom: 4,
+                            }}
                           >
                             {item.title}
                           </div>
                           <div
-                            style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}
+                            style={{
+                              fontSize: 14,
+                              color: "rgba(255,255,255,0.45)",
+                              lineHeight: 1.6,
+                            }}
                           >
                             {item.desc}
                           </div>
@@ -662,10 +711,7 @@ export const ServiceDetailPage = () => {
             </div>
 
             <div className="detail-sidebar">
-              <div
-                className="sticky top-24 flex flex-col gap-8"
-                style={{ padding: "8px 0" }}
-              >
+              <div className="sticky top-24 flex flex-col gap-8" style={{ padding: "8px 0" }}>
                 {selectedTier && (
                   <motion.div
                     key={selectedTier.id}
@@ -673,8 +719,11 @@ export const ServiceDetailPage = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="p-8 rounded-[24px] border border-white/10 relative overflow-hidden"
                     style={{
-                      background: "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                      boxShadow: selectedTier.recommended ? `0 20px 40px -20px ${selectedTier.color}40` : "none"
+                      background:
+                        "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                      boxShadow: selectedTier.recommended
+                        ? `0 20px 40px -20px ${selectedTier.color}40`
+                        : "none",
                     }}
                   >
                     {/* Accent glow */}
@@ -687,7 +736,10 @@ export const ServiceDetailPage = () => {
                       <div className="flex items-center gap-2 mb-6">
                         <div
                           className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider"
-                          style={{ background: `${selectedTier.color}20`, color: selectedTier.color }}
+                          style={{
+                            background: `${selectedTier.color}20`,
+                            color: selectedTier.color,
+                          }}
                         >
                           {selectedTier.name}
                         </div>
@@ -740,7 +792,10 @@ export const ServiceDetailPage = () => {
                           className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-black/20"
                           style={{
                             background: selectedTier.color,
-                            color: selectedTier.id === "basic" || selectedTier.id === "enterprise" ? "#000" : "#fff",
+                            color:
+                              selectedTier.id === "basic" || selectedTier.id === "enterprise"
+                                ? "#000"
+                                : "#fff",
                           }}
                         >
                           <MessageCircle size={18} />

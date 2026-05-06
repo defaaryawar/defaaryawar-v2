@@ -108,12 +108,12 @@ export function useService(slug: string | undefined) {
   const [service, setService] = useState<Service | null>(initialService);
   const [loading, setLoading] = useState(!initialService);
   const [error, setError] = useState<string | null>(null);
-  const fetched = useRef(false);
+  const subscriptionRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!slug || initialService || fetched.current) return;
-    fetched.current = true;
+    if (!slug) return;
 
+    // Fetch terbaru tiap kali dibuka (buat nanggulangin cache)
     fetchServiceBySlug(slug)
       .then((data) => {
         if (data) {
@@ -127,7 +127,33 @@ export function useService(slug: string | undefined) {
       .finally(() => {
         setLoading(false);
       });
-  }, [slug, initialService]);
+
+    // Setup listener real-time khusus buat single service ini
+    try {
+      subscriptionRef.current = sanityClient
+        .listen(`*[_type == "service" && id == $slug]`, { slug })
+        .subscribe({
+          next: (update) => {
+            if (update.type === "mutation") {
+              fetchServiceBySlug(slug).then((data) => {
+                if (data) {
+                  cachedSingleService.set(slug, data);
+                  setService(data);
+                }
+              });
+            }
+          },
+        });
+    } catch (err) {
+      // Listener gagal (misal kena block), biarkan pake fetch biasa
+    }
+
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+      }
+    };
+  }, [slug]);
 
   return { service, loading, error };
 }
