@@ -33,7 +33,6 @@ export const projects = [
 - Implementing a complex yet user-friendly tour filtering system.`,
         images: [
             "/projects/travlia-thumbnail.webp",
-            "/projects/travlia-1.webp"
         ],
         technologies: [
             "Next.js",
