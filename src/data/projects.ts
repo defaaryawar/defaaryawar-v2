@@ -1,5 +1,99 @@
 export const projects = [
     {
+        slug: "travlia",
+        title: "Travlia - Premium Travel & Tour Platform",
+        titleId: "Travlia - Platform Travel & Tour Modern",
+        description: "A high-end travel and tour ecosystem featuring an automated booking engine and integrated WhatsApp support. Built with a modern aesthetic, it offers a seamless experience for discovering destinations, managing bookings, and real-time communication. The platform focuses on high conversion rates through a polished UI/UX and efficient data handling.",
+        descriptionId: "Ekosistem travel dan tour kelas atas yang memiliki sistem booking otomatis dan dukungan WhatsApp terintegrasi. Dibangun dengan estetika modern, platform ini menawarkan pengalaman mulus untuk menjelajah destinasi, mengelola pemesanan, dan komunikasi real-time.",
+        detailDescription: `Travlia adalah platform travel & tour modern yang dirancang untuk memberikan pengalaman booking yang tanpa hambatan bagi para pelancong.
+
+**Fitur Utama:**
+- **Automated Booking Engine**: Sistem pemesanan otomatis yang terintegrasi untuk konfirmasi instan.
+- **WhatsApp Integration**: Fitur booking dan konsultasi langsung via WhatsApp untuk fleksibilitas maksimal.
+- **Modern UI/UX**: Desain premium dengan animasi halus menggunakan Framer Motion.
+- **Dynamic Content**: Manajemen destinasi dan paket tour yang dinamis.
+- **Responsive Design**: Pengalaman optimal di semua perangkat, dari mobile hingga desktop.
+
+**Tantangan Teknis:**
+- Sinkronisasi antara sistem booking otomatis dan ketersediaan real-time.
+- Optimasi performa gambar destinasi untuk loading yang cepat.
+- Implementasi sistem filter tour yang kompleks namun tetap user-friendly.`,
+        detailDescriptionEn: `Travlia is a modern travel & tour platform designed to provide a seamless booking experience for travelers.
+
+**Key Features:**
+- **Automated Booking Engine**: Integrated automatic booking system for instant confirmation.
+- **WhatsApp Integration**: Direct booking and consultation features via WhatsApp for maximum flexibility.
+- **Modern UI/UX**: Premium design with smooth animations using Framer Motion.
+- **Dynamic Content**: Dynamic management of destinations and tour packages.
+- **Responsive Design**: Optimal experience across all devices, from mobile to desktop.
+
+**Technical Challenges:**
+- Synchronizing the automated booking system with real-time availability.
+- Optimizing destination image performance for fast loading.
+- Implementing a complex yet user-friendly tour filtering system.`,
+        images: [
+            "/projects/travlia-thumbnail.webp",
+            "/projects/travlia-1.webp"
+        ],
+        technologies: [
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "Framer Motion",
+            "Sanity CMS",
+            "WhatsApp API"
+        ],
+        demoLink: "https://travelinaja.vercel.app/",
+        githubLink: ""
+    },
+    {
+        slug: "maraptur",
+        title: "Maraptur - Adventure & Expedition Agency",
+        titleId: "Maraptur - Agen Petualangan & Ekspedisi",
+        description: "A specialized platform for adventure enthusiasts, focusing on direct communication and personalized planning via WhatsApp. Maraptur provides a clean, high-performance interface for browsing extreme expedition packages, ensuring users can quickly connect with experts for custom adventure itineraries.",
+        descriptionId: "Platform khusus untuk pecinta petualangan, fokus pada komunikasi langsung dan perencanaan personal via WhatsApp. Maraptur menyediakan antarmuka bersih dengan performa tinggi untuk menjelajah paket ekspedisi ekstrem.",
+        detailDescription: `Maraptur adalah platform digital bagi agen perjalanan yang mengkhususkan diri pada paket wisata petualangan dan ekspedisi.
+
+**Fokus Utama:**
+- **WhatsApp-Centric Booking**: Menyederhanakan alur konversi dengan mengarahkan pengguna langsung ke konsultasi WhatsApp.
+- **Adventure Showcase**: Layout galeri yang dirancang khusus untuk menonjolkan visual destinasi alam liar.
+- **Fast Performance**: Loading super cepat untuk memastikan pengguna di area dengan sinyal minim tetap bisa mengakses informasi.
+- **Itinerary Builder**: Struktur konten yang jelas untuk menampilkan detail rencana perjalanan hari demi hari.
+
+**Kelebihan:**
+- Integrasi **Sanity CMS** untuk manajemen konten tour yang mandiri dan fleksibel.
+- Memberikan sentuhan personal melalui komunikasi langsung.
+- Navigasi yang sangat simpel dan to-the-point.
+- Optimasi SEO untuk kata kunci spesifik di bidang adventure travel.`,
+        detailDescriptionEn: `Maraptur is a digital platform for travel agencies specializing in adventure and expedition packages.
+
+**Core Focus:**
+- **WhatsApp-Centric Booking**: Streamlining the conversion flow by directing users directly to WhatsApp consultation.
+- **Adventure Showcase**: Gallery layouts specifically designed to highlight visuals of wilderness destinations.
+- **Fast Performance**: Super-fast loading to ensure users in low-signal areas can still access information.
+- **Itinerary Builder**: Clear content structure to display day-by-day travel plan details.
+
+**Advantages:**
+- **Sanity CMS Integration** for independent and flexible tour content management.
+- Provides a personal touch through direct communication.
+- Extremely simple and to-the-point navigation.
+- SEO optimization for specific keywords in the adventure travel niche.`,
+        images: [
+            "/projects/maraptur-thumbnail.webp"
+        ],
+        technologies: [
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "Sanity CMS",
+            "WhatsApp Integration"
+        ],
+        demoLink: "https://maraptur.vercel.app/",
+        githubLink: ""
+    },
+    {
         slug: "apma",
         title: "APMA - Automated Teaching Module Generator",
         titleId: "APMA - Pembuat Modul Ajar Otomatis",
