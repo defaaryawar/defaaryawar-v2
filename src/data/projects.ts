@@ -43,7 +43,7 @@ export const projects = [
             "Sanity CMS",
             "WhatsApp API"
         ],
-        demoLink: "https://travelinaja.vercel.app/",
+        demoLink: "https://travllia.defanolabs.com/",
         githubLink: ""
     },
     {
@@ -89,7 +89,7 @@ export const projects = [
             "Sanity CMS",
             "WhatsApp Integration"
         ],
-        demoLink: "https://maraptur.vercel.app/",
+        demoLink: "https://maraptur.defanolabs.com/",
         githubLink: ""
     },
     {
