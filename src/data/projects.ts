@@ -1,5 +1,51 @@
 export const projects = [
     {
+        slug: "villazahira",
+        title: "Villa Zahira - Luxury Villa & Resort in Puncak Bogor",
+        titleId: "Villa Zahira - Villa & Resort Luxury di Puncak Bogor",
+        description: "A luxury villa and resort reservation platform nestled in the scenic highlands of Puncak, Bogor. Features an elegant facility showcase, high-definition mountain view gallery, interactive route map, and seamless WhatsApp integration for direct guest bookings.",
+        descriptionId: "Platform reservasi villa & resort luxury di kawasan Puncak, Bogor. Menampilkan showcase fasilitas eksklusif, galeri pemandangan pegunungan, peta lokasi interaktif, serta sistem pemesanan langsung via WhatsApp.",
+        detailDescription: `Villa Zahira adalah platform digital resort dan villa mewah yang berlokasi di kawasan sejuk Puncak, Bogor. Didesain dengan estetika modern-tropis yang elegan untuk memberikan pengalaman reservasi villa secara cepat, eksklusif, dan tanpa hambatan.
+
+**Fitur Utama:**
+- **WhatsApp Direct Booking**: Sistem reservasi cepat yang mengarahkan calon tamu langsung ke layanan customer service WhatsApp.
+- **Exclusive Villa Showcase**: Galeri foto pemandangan pegunungan, kamar, kolam renang private, dan fasilitas outdoor dengan tampilan jernih.
+- **Interactive Facilities List**: Informasi detail fasilitas villa (Kolam renang private, BBQ area, WiFi cepat, kapasitas tamu, & karaoke lounge).
+- **Location & Route Map**: Integrasi petunjuk arah interaktif menuju lokasi villa di Puncak Bogor.
+- **Responsive & Fast Loading**: Performa loading super instan yang nyaman diakses di smartphone maupun desktop.
+
+**Tantangan Teknis:**
+- Optimasi aset gambar galeri villa resolusi tinggi agar tetap ringan di jaringan seluler.
+- Desain antarmuka eksklusif yang menonjolkan keindahan alam Puncak Bogor dan kemewahan villa.
+- Integrasi alur pemesanan langsung tanpa kerumitan form yang panjang.`,
+        detailDescriptionEn: `Villa Zahira is a luxury resort and villa digital platform located in the cool highlands of Puncak, Bogor. Designed with an elegant modern-tropical aesthetic to deliver a fast, exclusive, and seamless booking experience.
+
+**Key Features:**
+- **WhatsApp Direct Booking**: Rapid reservation system linking prospective guests straight to WhatsApp customer service.
+- **Exclusive Villa Showcase**: High-definition photo gallery showcasing mountain views, private rooms, swimming pool, and outdoor amenities.
+- **Interactive Facilities List**: Comprehensive details on villa facilities (Private pool, BBQ area, high-speed WiFi, guest capacity, & karaoke lounge).
+- **Location & Route Map**: Interactive map integration providing turn-by-turn directions to the Puncak location.
+- **Responsive & Fast Loading**: Instant page load performance optimized for both mobile and desktop users.
+
+**Technical Challenges:**
+- Optimizing high-resolution villa gallery assets for fast mobile network loading.
+- Crafting an exclusive UI showcasing Puncak's natural beauty and villa luxury.
+- Streamlining the reservation workflow without tedious multi-step forms.`,
+        images: [
+            "/projects/villazahira-thumbnail.png"
+        ],
+        technologies: [
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "Framer Motion",
+            "WhatsApp API"
+        ],
+        demoLink: "https://villazahira.defanolabs.com/",
+        githubLink: ""
+    },
+    {
         slug: "travlia",
         title: "Travlia - Premium Travel & Tour Platform",
         titleId: "Travlia - Platform Travel & Tour Modern",
