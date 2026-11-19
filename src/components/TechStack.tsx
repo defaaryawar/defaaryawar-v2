@@ -123,7 +123,7 @@ export const TechStack = () => {
                             <span key={p.slug}>
                               {i > 0 && ", "}
                               <Link
-                                to={`/personal-arts/${p.slug}`}
+                                to={`/projects/${p.slug}`}
                                 className="underline decoration-white/15 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60"
                               >
                                 {p.name}

@@ -228,8 +228,7 @@ For the courier tracking feature, I combined WebSockets and Server-Sent Events:
 **Conclusion**
 
 There is no universally "right" architecture. What matters is understanding the tradeoffs of each approach and choosing based on actual needs, not trends.`,
-    coverImage:
-      "https://www.sparkfabrik.com/images/blog/microservices-and-cloud-native-applications-vs-monolithic-applications/monolothic-microservices-image-articles.png",
+    coverImage: "/blogs/monolith-vs-microservices.webp",
     author: "Defaaryawar",
     date: "2025-02-28",
     readTime: "7 min",

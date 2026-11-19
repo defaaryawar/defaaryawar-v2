@@ -171,11 +171,10 @@ const ProjectCard = ({
   );
 };
 
-export const Projects = () => {
+export const Projects = ({ full = false }: { full?: boolean }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>("all");
-  const [expanded, setExpanded] = useState(false);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: allProjects.length };
@@ -187,22 +186,14 @@ export const Projects = () => {
     () => (filter === "all" ? allProjects : allProjects.filter((p) => p.category === filter)),
     [filter],
   );
-  const visible = expanded ? filtered : filtered.slice(0, INITIAL_COUNT);
-  const hasMore = filtered.length > INITIAL_COUNT;
+  const visible = full ? filtered : filtered.slice(0, INITIAL_COUNT);
 
   const filters: { id: Filter; label: string }[] = [
     { id: "all", label: t("projects.filter_all") },
     ...PROJECT_CATEGORIES.map((c) => ({ id: c.id as Filter, label: c.label })),
   ];
 
-  const openProject = (slug: string) => navigate(`/personal-arts/${slug}`);
-
-  const toggleExpanded = () => {
-    if (expanded) {
-      document.getElementById("projects")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setExpanded((v) => !v);
-  };
+  const openProject = (slug: string) => navigate(`/projects/${slug}`);
 
   return (
     <section
@@ -275,7 +266,6 @@ export const Projects = () => {
                   type="button"
                   onClick={() => {
                     setFilter(f.id);
-                    setExpanded(false);
                   }}
                   className={`flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-xs font-semibold transition-colors cursor-pointer ${
                     active
@@ -300,26 +290,18 @@ export const Projects = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Show more / all */}
-        <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          {hasMore && (
+        {!full && (
+          <div className="mt-12 flex justify-center">
             <button
               type="button"
-              onClick={toggleExpanded}
-              className="rounded-full bg-white px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-black transition-colors hover:bg-white/85 cursor-pointer"
+              onClick={() => navigate("/projects")}
+              className="group flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-black transition-colors hover:bg-white/85 cursor-pointer"
             >
-              {expanded ? t("projects.show_less") : t("projects.show_all", { count: filtered.length })}
+              {t("projects.show_all", { count: allProjects.length })}
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={() => navigate("/personal-arts")}
-            className="group flex items-center gap-2 rounded-full border border-white/15 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-white/70 transition-colors hover:border-white/40 hover:text-white cursor-pointer"
-          >
-            {t("projects.view_more")}
-            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

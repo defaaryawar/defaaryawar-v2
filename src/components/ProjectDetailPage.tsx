@@ -47,7 +47,7 @@ export const ProjectDetailPage = () => {
             {t("project_detail.not_found")}
           </h1>
           <button
-            onClick={() => navigate("/personal-arts")}
+            onClick={() => navigate("/projects")}
             className="mt-6 cursor-pointer"
             style={{
               fontSize: "12px",
@@ -208,7 +208,7 @@ export const ProjectDetailPage = () => {
           }}
         >
           <button
-            onClick={() => navigate("/personal-arts")}
+            onClick={() => navigate("/projects")}
             className="group flex items-center gap-2 cursor-pointer"
             style={{
               background: "none",
@@ -550,7 +550,7 @@ export const ProjectDetailPage = () => {
             <div className="flex-1">
               {prevProject && (
                 <button
-                  onClick={() => navigate(`/personal-arts/${prevProject.slug}`)}
+                  onClick={() => navigate(`/projects/${prevProject.slug}`)}
                   className="w-full text-left cursor-pointer group"
                   style={{
                     background: "rgba(255,255,255,0.02)",
@@ -605,7 +605,7 @@ export const ProjectDetailPage = () => {
             <div className="flex-1">
               {nextProject && (
                 <button
-                  onClick={() => navigate(`/personal-arts/${nextProject.slug}`)}
+                  onClick={() => navigate(`/projects/${nextProject.slug}`)}
                   className="w-full text-right cursor-pointer group"
                   style={{
                     background: "rgba(255,255,255,0.02)",

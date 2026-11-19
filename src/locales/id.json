@@ -8,7 +8,11 @@
     "career": "Karir",
     "contact": "Kontak",
     "hire_me": "Rekrut Saya",
-    "start_project": "Mulai Proyek"
+    "start_project": "Mulai Proyek",
+    "home": "Beranda",
+    "projects": "Project",
+    "experience": "Pengalaman",
+    "contact_cta": "Hubungi saya"
   },
   "hero": {
     "status": "Terbuka untuk kerja penuh waktu & freelance",
@@ -159,7 +163,7 @@
     "view_all_suffix": "proyek",
     "view_more": "Lihat Selengkapnya",
     "filter_all": "Semua",
-    "show_all": "Tampilkan semua {{count}} proyek",
+    "show_all": "Lihat semua {{count}} project",
     "show_less": "Tampilkan lebih sedikit",
     "live": "Live · klien",
     "demo": "Demo live",
@@ -167,7 +171,10 @@
     "in_development": "Sedang dikembangkan"
   },
   "experience": {
-    "current": "Sekarang"
+    "current": "Sekarang",
+    "now_badge": "Masih berjalan",
+    "label": "Pengalaman",
+    "title": "Tempat saya bekerja dan apa yang saya kerjakan di sana."
   },
   "services": {
     "popular": "Terlaris",
@@ -196,13 +203,11 @@
     }
   },
   "certificates": {
-    "verify": "Verifikasi",
-    "credential_id": "ID Kredensial",
-    "skills_acquired": "Keahlian yang Diperoleh",
-    "achievements_label": "Pencapaian",
-    "title_part1": "Sertifikat ",
-    "title_part2": "Saya",
-    "description": "Klik baris mana saja untuk melihat detail lengkap sertifikat dan info kredensial."
+    "label": "Sertifikat",
+    "title": "Kursus dan pelatihan yang sudah saya selesaikan.",
+    "hint": "Klik gambar untuk melihat sertifikatnya, atau buka kredensial untuk verifikasi.",
+    "view": "Lihat sertifikat",
+    "credential": "Lihat kredensial"
   },
   "tech_stack": {
     "label": "Teknologi",

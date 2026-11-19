@@ -1,260 +1,177 @@
-import React, { useState, useEffect, useCallback } from "react";
-import ReactDOM from "react-dom";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { cn } from "../lib/utils";
-import { useScroll, useMotionValueEvent } from "framer-motion";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ArrowRight, Menu, X } from "lucide-react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { cn } from "../lib/utils";
+
+const NAV_ITEMS = [
+  { key: "about", to: "/about" },
+  { key: "tech", to: "/tech-stack" },
+  { key: "projects", to: "/projects" },
+  { key: "experience", to: "/experience" },
+  { key: "blog", to: "/blogs" },
+  { key: "services", to: "/services" },
+] as const;
 
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(location.pathname);
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'id' : 'en';
-    i18n.changeLanguage(newLang);
-  };
+  // Close the mobile menu whenever the route changes.
+  if (menuPath !== location.pathname) {
+    setMenuPath(location.pathname);
+    setMenuOpen(false);
+  }
 
   const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-
-    if (latest > 50) {
-      setIsScrolled(true);
-
-      if (latest > previous && latest > 150) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
-    } else {
-      setIsScrolled(false);
-      setIsHidden(false);
-    }
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setScrolled(y > 20);
+    setHidden(y > 160 && y > prev);
   });
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
     };
-  }, [isMobileMenuOpen]);
+  }, [menuOpen]);
 
-  const navLinks = [
-    { name: t("navbar.about"), href: "#about", isRoute: false },
-    { name: t("navbar.tech"), href: "#skills", isRoute: false },
-    { name: t("navbar.work"), href: "/personal-arts", isRoute: true },
-    { name: t("navbar.blog"), href: "/blogs", isRoute: true },
-    { name: t("navbar.services"), href: "/services", isRoute: true },
-    { name: t("navbar.career"), href: "#experience", isRoute: false },
-    { name: t("navbar.contact"), href: "#contact", isRoute: false },
-  ];
-
-  const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string, isRoute?: boolean) => {
-      e.preventDefault();
-      setIsMobileMenuOpen(false);
-
-      if (isRoute) {
-        navigate(href);
-        return;
-      }
-
-      if (location.pathname !== "/") {
-        // If we are on another page and click a hash link, go to home then hash
-        navigate("/" + href);
-      } else {
-        const el = document.querySelector(href);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    [location.pathname, navigate],
-  );
+  const toggleLanguage = () => i18n.changeLanguage(i18n.language === "en" ? "id" : "en");
+  const langLabel = i18n.language === "en" ? "EN" : "ID";
+  const solid = scrolled || location.pathname !== "/";
 
   return (
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b",
-          isScrolled
-            ? "bg-brand-bg/80 backdrop-blur-xl border-white/5 py-4"
-            : "bg-transparent border-transparent py-8",
-          isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100",
+          "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,transform] duration-300",
+          solid ? "border-white/[0.06] bg-[#0a0a0a]/85 backdrop-blur-xl" : "border-transparent bg-transparent",
+          hidden && !menuOpen ? "-translate-y-full" : "translate-y-0",
         )}
       >
-        <div className="container mx-auto px-6 flex items-center justify-between">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/");
-            }}
-            className="text-xl font-black text-gray-100 tracking-tighter uppercase group cursor-pointer"
-          >
-            Defa
-            <span className="text-white/20 group-hover:text-white transition-colors duration-500">
-              aryawar.
-            </span>
-          </a>
+        <div className="container mx-auto flex h-16 items-center justify-between gap-6 px-5 md:h-20 md:px-10 lg:px-16">
+          <Link to="/" className="text-lg font-semibold tracking-tight text-white" aria-label="Home">
+            Defano<span className="text-white/35">.</span>
+          </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-12">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href, link.isRoute)}
-                className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 hover:text-white transition-colors cursor-pointer"
+          {/* Desktop */}
+          <div className="hidden items-center gap-1 lg:flex">
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.key}
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    "rounded-lg px-3 py-2 text-sm transition-colors",
+                    isActive ? "bg-white/[0.08] text-white" : "text-white/55 hover:text-white",
+                  )
+                }
               >
-                {link.name}
-              </a>
+                {t(`navbar.${item.key}`)}
+              </NavLink>
             ))}
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, "#contact")}
-              className="px-8 py-3 bg-white text-black text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all cursor-pointer"
-            >
-              {t("navbar.hire_me")}
-            </a>
-            
-            <button
-              onClick={toggleLanguage}
-              className="text-[12px] font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors border border-white/20 px-3 py-1 rounded"
-            >
-              {i18n.language === 'en' ? 'EN' : 'ID'}
-            </button>
           </div>
 
-          <div className="md:hidden flex items-center gap-4">
+          <div className="hidden items-center gap-3 lg:flex">
             <button
+              type="button"
               onClick={toggleLanguage}
-              className="text-[10px] font-bold uppercase tracking-widest text-white/80 border border-white/20 px-2 py-1 rounded"
+              aria-label="Switch language"
+              className="rounded-lg border border-white/15 px-2.5 py-1.5 font-mono text-xs text-white/60 transition-colors hover:border-white/35 hover:text-white cursor-pointer"
             >
-              {i18n.language === 'en' ? 'EN' : 'ID'}
+              {langLabel}
+            </button>
+            <NavLink
+              to="/contact"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-white/85"
+            >
+              {t("navbar.contact_cta")}
+            </NavLink>
+          </div>
+
+          {/* Mobile toggles */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              aria-label="Switch language"
+              className="rounded-lg border border-white/15 px-2.5 py-1.5 font-mono text-xs text-white/70 cursor-pointer"
+            >
+              {langLabel}
             </button>
             <button
-              className="text-white"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              className="flex h-10 w-10 items-center justify-center rounded-lg text-white cursor-pointer"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay — rendered via Portal to escape stacking context */}
-      {ReactDOM.createPortal(
+      {/* Mobile menu */}
+      {createPortal(
         <div
           className={cn(
-            "fixed inset-0 bg-brand-bg text-white flex flex-col items-center justify-center transition-all duration-500 md:hidden overflow-hidden",
-            isMobileMenuOpen
-              ? "opacity-100 scale-100 visible"
-              : "opacity-0 scale-95 invisible pointer-events-none",
+            "fixed inset-0 z-40 bg-[#0a0a0a] pt-16 transition-opacity duration-200 md:pt-20 lg:hidden",
+            menuOpen ? "opacity-100" : "pointer-events-none invisible opacity-0",
           )}
-          style={{ zIndex: 9998 }}
         >
-          {/* Active state CSS for mobile tap feedback */}
-          <style>{`
-          .mobile-nav-link {
-            -webkit-tap-highlight-color: transparent;
-          }
-          .mobile-nav-link:active {
-            background: rgba(255,255,255,0.05);
-            transform: scale(0.98);
-          }
-          .mobile-nav-link:active .mobile-nav-num {
-            color: #fff;
-          }
-          .mobile-nav-link:active .mobile-nav-name {
-            transform: translateX(12px);
-          }
-          .mobile-nav-link:active .mobile-nav-arrow {
-            opacity: 1;
-            transform: translateX(4px);
-          }
-          .mobile-nav-cta:active {
-            background: #d4d4d8;
-            transform: scale(0.97);
-          }
-        `}</style>
-
-          {/* Background Decorative Text */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-            <span className="text-[20vw] font-black text-white/2 uppercase tracking-tighter leading-none rotate-90 md:rotate-0">
-              Navigation
-            </span>
-          </div>
-
-          {/* Close Button */}
-          <button
-            className="absolute top-8 right-6 text-white p-2 z-50 active:rotate-90 transition-transform duration-500"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X size={32} />
-          </button>
-
-          <div className="relative z-10 flex flex-col items-center w-full px-6 h-full justify-center overflow-y-auto py-24 pb-32">
-            <div className="w-full max-w-sm flex flex-col items-center mx-auto">
-              {navLinks.map((link, i) => (
-                <React.Fragment key={link.name}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href, link.isRoute)}
-                    className={cn(
-                      "mobile-nav-link relative w-full py-3.5 flex items-center justify-between border-b border-white/5 transition-all duration-300",
-                      isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
-                    )}
-                    style={{ transitionDelay: `${i * 50}ms` }}
-                  >
-                    <span className="mobile-nav-num text-[10px] font-mono text-white/30 transition-colors duration-300">
-                      0{i + 1}
-                    </span>
-                    <span className="mobile-nav-name text-2xl font-black uppercase tracking-tighter transition-transform duration-300">
-                      {link.name}
-                    </span>
-                    <span className="mobile-nav-arrow text-white/30 text-sm transition-all duration-300">
-                      →
-                    </span>
-                  </a>
-                </React.Fragment>
-              ))}
-
-              <a
-                href="#contact"
-                onClick={(e) => handleNavClick(e, "#contact")}
-                className={cn(
-                  "mobile-nav-cta mt-8 w-full py-4 bg-white text-black text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-300 rounded-[2px]",
-                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
-                )}
-                style={{ transitionDelay: `${navLinks.length * 50}ms` }}
+          <div className="container mx-auto flex h-full flex-col overflow-y-auto px-5 pb-10 md:px-10">
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center justify-between border-b border-white/[0.07] py-4 text-xl font-semibold",
+                  isActive ? "text-white" : "text-white/60",
+                )
+              }
+            >
+              {t("navbar.home")}
+            </NavLink>
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.key}
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center justify-between border-b border-white/[0.07] py-4 text-xl font-semibold",
+                    isActive ? "text-white" : "text-white/60",
+                  )
+                }
               >
-                {t("navbar.start_project")}
-              </a>
-            </div>
-          </div>
+                {({ isActive }) => (
+                  <>
+                    {t(`navbar.${item.key}`)}
+                    {isActive && <span className="h-2 w-2 rounded-full bg-emerald-400" />}
+                  </>
+                )}
+              </NavLink>
+            ))}
 
-          {/* Bottom Info */}
-          <div
-            className={cn(
-              "absolute bottom-8 left-8 right-8 flex justify-between items-end transition-all duration-1000 delay-500 pointer-events-none",
-              isMobileMenuOpen ? "opacity-30 translate-y-0" : "opacity-0 translate-y-10",
-            )}
-          >
-            <div className="text-[9px] font-bold uppercase tracking-widest text-left max-w-[50%]">
-              Based in<br />Jakarta, ID
-            </div>
-            <div className="text-[9px] font-bold uppercase tracking-widest text-right">
-              © 2026
-            </div>
+            <Link
+              to="/contact"
+              className="mt-8 flex items-center justify-center gap-2 rounded-lg bg-white py-3.5 text-base font-semibold text-black"
+            >
+              {t("navbar.contact_cta")}
+              <ArrowRight size={18} />
+            </Link>
           </div>
         </div>,
         document.body,

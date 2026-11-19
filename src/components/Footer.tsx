@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SOCIAL_LINKS } from "@/config/socials";
@@ -59,11 +60,11 @@ export const Footer = () => {
   );
 
   const navLinks = [
-    { label: t("footer.nav.about"), href: "#about" },
-    { label: t("footer.nav.skills"), href: "#skills" },
-    { label: t("footer.nav.projects"), href: "#projects" },
-    { label: t("footer.nav.experience"), href: "#experience" },
-    { label: t("footer.nav.contact"), href: "#contact" },
+    { label: t("footer.nav.about"), href: "/about" },
+    { label: t("footer.nav.skills"), href: "/tech-stack" },
+    { label: t("footer.nav.projects"), href: "/projects" },
+    { label: t("footer.nav.experience"), href: "/experience" },
+    { label: t("footer.nav.contact"), href: "/contact" },
   ];
 
   return (
@@ -159,17 +160,13 @@ export const Footer = () => {
         {/* Navigation */}
         <nav className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-8">
           {navLinks.map(({ label, href }) => (
-            <a
+            <Link
               key={label}
-              href={href}
-              className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors duration-400"
-              style={{
-                fontFamily: "system-ui",
-                textDecoration: "none",
-              }}
+              to={href}
+              className="text-sm text-white/50 transition-colors hover:text-white"
             >
               {label}
-            </a>
+            </Link>
           ))}
         </nav>
 

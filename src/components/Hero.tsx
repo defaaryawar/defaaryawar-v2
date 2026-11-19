@@ -85,13 +85,13 @@ export const Hero = () => {
               custom={3}
               className="mt-8 flex flex-col gap-3 sm:flex-row"
             >
-              <a
-                href="#projects"
+              <Link
+                to="/projects"
                 className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-white/85"
               >
                 {t("hero.cta_work")}
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-              </a>
+              </Link>
               <a
                 href={whatsapp}
                 target="_blank"
@@ -155,7 +155,7 @@ export const Hero = () => {
         >
           <div className="grid lg:grid-cols-[1.15fr_1fr]">
             <Link
-              to="/personal-arts/jajanim"
+              to="/projects/jajanim"
               className="group block border-b border-white/10 bg-black lg:border-b-0 lg:border-r"
               aria-label={t("hero.featured_cta")}
             >
@@ -192,7 +192,7 @@ export const Hero = () => {
               </dl>
 
               <Link
-                to="/personal-arts/jajanim"
+                to="/projects/jajanim"
                 className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-white"
               >
                 {t("hero.featured_cta")}
@@ -233,7 +233,7 @@ export const Hero = () => {
                 <div>
                   <p className="leading-relaxed text-white/60">{s.desc}</p>
                   <Link
-                    to={`/personal-arts/${s.slug}`}
+                    to={`/projects/${s.slug}`}
                     className="group mt-4 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-sm"
                   >
                     <span className="text-white/40">{t("hero.example")}:</span>

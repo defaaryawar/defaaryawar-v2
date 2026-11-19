@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, Calendar, Tag, ChevronLeft, ChevronRight, Share2, Copy, Check } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Tag, ChevronLeft, ChevronRight, Share2, Copy, Check, Maximize2 } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
 import { blogs } from "@/data/blogs";
+import { ImageLightbox } from "./ui/image-lightbox";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -173,6 +174,7 @@ export const BlogDetailPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const [coverPreview, setCoverPreview] = useState<number | null>(null);
   const { t, i18n } = useTranslation();
 
   const blogIndex = blogs.findIndex((b) => b.slug === slug);
@@ -375,9 +377,10 @@ export const BlogDetailPage = () => {
           </div>
         </div>
 
-        {/* Hero Cover Image */}
+        {/* Hero Cover Image — click to preview */}
         <div
-          className="detail-hero-image relative w-full"
+          className="detail-hero-image group relative w-full cursor-zoom-in"
+          onClick={() => setCoverPreview(0)}
           style={{
             height: "clamp(280px, 50vh, 550px)",
             overflow: "hidden",
@@ -403,6 +406,18 @@ export const BlogDetailPage = () => {
                 "linear-gradient(to top, #09090b 0%, rgba(9,9,11,0.4) 40%, transparent 60%, rgba(9,9,11,0.3) 100%)",
             }}
           />
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setCoverPreview(0);
+            }}
+            className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/15 bg-black/60 px-3.5 py-2 text-xs font-semibold text-white/85 backdrop-blur-sm transition-colors hover:bg-black/80 hover:text-white cursor-pointer md:right-8"
+          >
+            <Maximize2 size={14} />
+            {t("project_detail.view_image")}
+          </button>
 
           {/* Title overlay on hero */}
           <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 md:px-8 lg:px-16 pb-10 md:pb-14">
@@ -885,6 +900,12 @@ export const BlogDetailPage = () => {
           </div>
         </div>
       </div>
+      <ImageLightbox
+        images={[blog.coverImage]}
+        index={coverPreview}
+        onIndexChange={setCoverPreview}
+        alt={blog.title}
+      />
     </main>
   );
 };

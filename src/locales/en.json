@@ -1,14 +1,18 @@
 {
   "navbar": {
     "about": "About",
-    "tech": "Technology",
+    "tech": "Tech stack",
     "work": "Work",
     "blog": "Blog",
     "services": "Services",
     "career": "Career",
     "contact": "Contact",
     "hire_me": "Hire Me",
-    "start_project": "Start Project"
+    "start_project": "Start Project",
+    "home": "Home",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact_cta": "Contact me"
   },
   "hero": {
     "status": "Open to full-time roles & freelance",
@@ -159,7 +163,7 @@
     "view_all_suffix": "projects",
     "view_more": "View More",
     "filter_all": "All",
-    "show_all": "Show all {{count}} projects",
+    "show_all": "See all {{count}} projects",
     "show_less": "Show less",
     "live": "Live · client",
     "demo": "Live demo",
@@ -167,7 +171,10 @@
     "in_development": "In development"
   },
   "experience": {
-    "current": "Present"
+    "current": "Present",
+    "now_badge": "Ongoing",
+    "label": "Experience",
+    "title": "Where I have worked and what I did there."
   },
   "services": {
     "popular": "Popular",
@@ -196,13 +203,11 @@
     }
   },
   "certificates": {
-    "verify": "Verify",
-    "credential_id": "Credential ID",
-    "skills_acquired": "Skills Acquired",
-    "achievements_label": "Achievements",
-    "title_part1": "My ",
-    "title_part2": "Certificates",
-    "description": "Click any row to view full certificate details and credential info."
+    "label": "Certificates",
+    "title": "Courses and training I have completed.",
+    "hint": "Click an image to view the certificate, or open the credential to verify it.",
+    "view": "View certificate",
+    "credential": "View credential"
   },
   "tech_stack": {
     "label": "Tech stack",

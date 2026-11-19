@@ -15,6 +15,7 @@ export const certificatesData = [
     },
     {
         id: 2,
+        image: "Certificate_frontend_html.webp",
         title: "Frontend HTML",
         titleId: "Pengembang HTML",
         issuer: "MySkill",
@@ -29,6 +30,7 @@ export const certificatesData = [
     },
     {
         id: 3,
+        image: "certificate_data_analyst.webp",
         title: "Data Analyst",
         titleId: "Analis Data",
         issuer: "MySkill",
@@ -36,13 +38,14 @@ export const certificatesData = [
         date: "2024",
         credentialId: "MS-4/11/2024-M5L4Qm9KNEfBPGGOKRy6",
         credentialUrl: "https://storage.googleapis.com/myskill-v2-certificates/topic-qtKMZ78xyd6TPzUQOESu/STS9OTKP3HU9mTnzkBi4qzBrY4l2-M5L4Qm9KNEfBPGGOKRy6.pdf",
-        description: "Certificate program focused on fund analysis, financial planning, and fund allocation strategies.",
-        descriptionId: "Program sertifikasi yang berfokus pada analisis dana, perencanaan keuangan, dan strategi alokasi dana.",
-        skills: ["Fund Analysis", "Financial Planning", "Budget Allocation"],
+        description: "Skill specialization in data analysis (16 hours, 16 courses) on the Data Science & Data Analysis learning path.",
+        descriptionId: "Spesialisasi keahlian analisis data (16 jam, 16 materi) di jalur belajar Data Science & Data Analysis.",
+        skills: ["Data Analysis", "Data Cleaning", "Data Visualization"],
         logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ50JWhyL_6EPXYH3Cw16x0JAI7IlmposX74Q&s"
     },
     {
         id: 4,
+        image: "certificate_mahir_microsoft_excel.webp",
         title: "Mahir Microsoft Excel",
         titleId: "Mahir Microsoft Excel",
         issuer: "Fasz Edu",
@@ -57,10 +60,11 @@ export const certificatesData = [
     },
     {
         id: 5,
-        title: "Generative AI For Information Systems",
-        titleId: "Kecerdasan Buatan Generatif untuk Sistem Informasi",
-        issuer: "Budi Luhur University",
-        issuerId: "Universitas Budi Luhur",
+        image: "certificate_google_cloud_genai.webp",
+        title: "Generative AI for Information Systems (Google Cloud Career Launchpad)",
+        titleId: "Generative AI untuk Sistem Informasi (Google Cloud Career Launchpad)",
+        issuer: "Google Cloud × Budi Luhur University",
+        issuerId: "Google Cloud × Universitas Budi Luhur",
         date: "2024",
         credentialId: "F/UBL/FTI/000/023/06/24",
         credentialUrl: "https://drive.google.com/file/d/12-BBQ9UGD5eTnTl05FrM4FZZIBDReTQ2/view?usp=sharing",
@@ -71,6 +75,7 @@ export const certificatesData = [
     },
     {
         id: 6,
+        image: "certificate_intro_data_analyst_revou.webp",
         title: "Intro to Data Analysis",
         titleId: "Pengantar Analisis Data",
         issuer: "RevoU",
@@ -85,6 +90,7 @@ export const certificatesData = [
     },
     {
         id: 7,
+        image: "Certificate_Data_Analyst_Fundamental.webp",
         title: "Data Analyst Fundamental",
         titleId: "Dasar-dasar Analis Data",
         issuer: "MySkill",
@@ -96,5 +102,20 @@ export const certificatesData = [
         descriptionId: "Program dasar untuk calon analis data mencakup tipe data, teknik analisis, dan visualisasi.",
         skills: ["Data Fundamentals", "Data Visualization", "Analytical Thinking"],
         logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ50JWhyL_6EPXYH3Cw16x0JAI7IlmposX74Q&s"
+    },
+    {
+        id: 8,
+        image: "Certificiate_Excel_Basic.webp",
+        title: "Microsoft Excel Basic",
+        titleId: "Microsoft Excel Dasar",
+        issuer: "MySkill",
+        issuerId: "MySkill",
+        date: "2024",
+        credentialId: "",
+        credentialUrl: "/certificates/Certificiate%20Excel%20Basic.pdf",
+        description: "Skill specialization covering Microsoft Excel, Word, and PowerPoint basics (8 hours, 8 courses).",
+        descriptionId: "Spesialisasi keahlian dasar Microsoft Excel, Word, dan PowerPoint (8 jam, 8 materi).",
+        skills: ["Microsoft Excel", "Microsoft Word", "Microsoft PowerPoint"],
+        logo: ""
     },
 ];
