@@ -110,18 +110,41 @@
     ]
   },
   "about": {
-    "background_label": "Latar Belakang",
-    "title_part1": "Menjembatani Kode",
-    "title_part2": "& Jaringan.",
-    "desc1": "Saya adalah lulusan Teknik Informatika dari Universitas Budi Luhur dengan latar belakang Teknik Komputer Jaringan dari SMK Bina Informatika.",
-    "desc2": "Sebagai profesional TI yang serbabisa, saya membangun aplikasi web modern yang skalabel sembari aktif memperluas keahlian saya di infrastruktur jaringan dan pemecahan masalah.",
-    "stat1_label": "Tahun Pengalaman",
-    "stat2_label": "Proyek Diselesaikan",
-    "stat3_label": "Teknologi Dikuasai",
-    "float1_title": "Fokus Utama",
-    "float1_desc": "Pengembang FullStack",
-    "float2_title": "Keahlian",
-    "float2_desc": "TI & Jaringan"
+    "label": "Tentang saya",
+    "title": "Saya mulai dari jaringan komputer, sekarang membangun aplikasi web dari server sampai tampilan.",
+    "paragraphs": [
+      "Waktu SMK saya belajar Teknik Komputer dan Jaringan: memasang jaringan LAN, mengatur server Debian, dan troubleshooting perangkat Cisco. Dari situ saya terbiasa memikirkan apa yang terjadi di balik layar, bukan cuma yang kelihatan di layar.",
+      "Setelah lulus Teknik Informatika di Universitas Budi Luhur, saya fokus ke pengembangan web. Sekarang saya bekerja sebagai Frontend Web Developer di Zegen Solusi Mandiri untuk proyek Rumah Murah / Bale Lelang milik BTN, mengerjakan Single Sign-On, panel admin, dan halaman publik.",
+      "Di luar pekerjaan, saya membuat website untuk klien dan membangun Jajanim untuk mendalami backend: microservices, event-driven, sampai deploy sendiri di VPS."
+    ],
+    "steps_title": "Perjalanan singkat",
+    "steps": [
+      {
+        "when": "2016 – 2019",
+        "title": "SMK Bina Informatika",
+        "desc": "Teknik Komputer dan Jaringan: LAN, server Debian, dan Cisco."
+      },
+      {
+        "when": "2019 – 2023",
+        "title": "Universitas Budi Luhur",
+        "desc": "Sarjana Teknik Informatika, fokus pengembangan web."
+      },
+      {
+        "when": "2024 – sekarang",
+        "title": "Freelance web developer",
+        "desc": "Website dan sistem untuk klien seperti Nion Coffee dan Jaya Mandiri."
+      },
+      {
+        "when": "Jun 2025 – sekarang",
+        "title": "Frontend Web Developer, Zegen Solusi Mandiri",
+        "desc": "Proyek Rumah Murah / Bale Lelang (BTN): SSO, panel admin, dan halaman publik."
+      },
+      {
+        "when": "Sekarang",
+        "title": "Membangun Jajanim",
+        "desc": "E-commerce dengan 7 microservice Go, Kafka, gRPC, dan PostgreSQL."
+      }
+    ]
   },
   "projects": {
     "no_preview": "Tak Ada Pratinjau",
@@ -182,22 +205,30 @@
     "description": "Klik baris mana saja untuk melihat detail lengkap sertifikat dan info kredensial."
   },
   "tech_stack": {
-    "capabilities": "Kemampuan",
-    "title_part1": "Keahlian ",
-    "title_part2": "Teknis",
-    "description": "Teknologi yang saya andalkan untuk membangun produk digital yang cepat dan skalabel.",
-    "full_stack_dev": "Pengembang Full-Stack",
-    "stack_label": "Stack",
-    "technologies_count": "8 teknologi",
-    "tech_desc": {
-      "React": "UI Berbasis Komponen",
-      "Next.js": "Aplikasi React Full-stack",
-      "TypeScript": "JavaScript Type-safe",
-      "Tailwind": "CSS Berbasis Utilitas",
-      "NestJS": "Kerangka Kerja Node.js",
-      "Golang": "Backend Terkompilasi",
-      "Docker": "Penyebaran Kontainer",
-      "PostgreSQL": "Penyimpanan Data Relasional"
+    "label": "Teknologi",
+    "title": "Alat yang saya pakai, dan di project mana saya memakainya.",
+    "hint": "Setiap teknologi di bawah terhubung ke project yang memakainya, jadi bisa dicek langsung.",
+    "groups": {
+      "backend": {
+        "title": "Backend",
+        "desc": "Logika di sisi server: menerima request, mengolah data, dan menyambungkan antar layanan."
+      },
+      "frontend": {
+        "title": "Frontend",
+        "desc": "Tampilan yang dibuka pengguna di browser: cepat, responsif, dan ramah SEO."
+      },
+      "data": {
+        "title": "Data & Messaging",
+        "desc": "Tempat data disimpan dan cara layanan saling bertukar kabar, termasuk update real-time."
+      },
+      "infra": {
+        "title": "Infrastruktur & Deploy",
+        "desc": "Cara aplikasi dibungkus, dijalankan di server, dan dirilis otomatis."
+      },
+      "quality": {
+        "title": "Monitoring & Testing",
+        "desc": "Memastikan sistem jalan benar: melacak request, memantau metrik, dan menguji kode."
+      }
     }
   },
   "blogs_section": {
@@ -252,7 +283,8 @@
     "gallery": "Galeri",
     "previous": "Sebelumnya",
     "next": "Selanjutnya",
-    "private_repo": "Repositori Privat — Tautan tidak tersedia"
+    "private_repo": "Repositori Privat — Tautan tidak tersedia",
+    "view_image": "Lihat gambar"
   },
   "blogs_page": {
     "editorial": "Editorial",

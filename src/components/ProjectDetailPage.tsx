@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -7,8 +7,10 @@ import {
   Github as GithubIcon,
   ChevronLeft,
   ChevronRight,
+  Maximize2,
 } from "lucide-react";
 import { projects as projectsData } from "@/data/projects";
+import { ImageLightbox } from "./ui/image-lightbox";
 
 // ─── Project Detail Page ────────────────────────────────────────────────────
 export const ProjectDetailPage = () => {
@@ -24,6 +26,8 @@ export const ProjectDetailPage = () => {
     projectIndex < projectsData.length - 1
       ? projectsData[projectIndex + 1]
       : null;
+
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -244,9 +248,10 @@ export const ProjectDetailPage = () => {
           </span>
         </div>
 
-        {/* Hero Image */}
+        {/* Hero Image — click to preview */}
         <div
-          className="relative w-full"
+          className="group relative w-full cursor-zoom-in"
+          onClick={() => setPreviewIndex(0)}
           style={{
             height: "clamp(300px, 55vh, 600px)",
             overflow: "hidden",
@@ -272,6 +277,18 @@ export const ProjectDetailPage = () => {
                 "linear-gradient(to top, #09090b 0%, transparent 40%, transparent 60%, rgba(9,9,11,0.5) 100%)",
             }}
           />
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setPreviewIndex(0);
+            }}
+            className="absolute right-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/15 bg-black/60 px-3.5 py-2 text-xs font-semibold text-white/85 backdrop-blur-sm transition-colors hover:bg-black/80 hover:text-white cursor-pointer md:right-8"
+          >
+            <Maximize2 size={14} />
+            {t("project_detail.view_image")}
+          </button>
 
           {/* Title overlay */}
           <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 md:px-8 lg:px-16 pb-8">
@@ -494,24 +511,24 @@ export const ProjectDetailPage = () => {
                   </h4>
                   <div className="flex flex-col gap-3">
                     {project.images.slice(1).map((img, i) => (
-                      <div
-                        key={i}
-                        className="relative overflow-hidden"
-                        style={{
-                          borderRadius: 4,
-                          border: "1px solid rgba(255,255,255,0.08)",
-                        }}
+                      <button
+                        key={img}
+                        type="button"
+                        onClick={() => setPreviewIndex(i + 1)}
+                        aria-label={`${t("project_detail.view_image")} ${i + 2}`}
+                        className="group relative block overflow-hidden rounded border border-white/10 transition-colors hover:border-white/30 cursor-zoom-in"
                       >
                         <img
                           src={img}
                           alt={`${project.title} - ${i + 2}`}
                           referrerPolicy="no-referrer"
-                          className="w-full h-auto object-cover"
-                          style={{
-                            filter: "brightness(0.85) contrast(1.05)",
-                          }}
+                          loading="lazy"
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         />
-                      </div>
+                        <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white/85 opacity-100 transition-opacity md:opacity-0 md:group-hover:opacity-100">
+                          <Maximize2 size={14} />
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -641,6 +658,13 @@ export const ProjectDetailPage = () => {
           </div>
         </div>
       </div>
+
+      <ImageLightbox
+        images={project.images}
+        index={previewIndex}
+        onIndexChange={setPreviewIndex}
+        alt={displayTitle}
+      />
     </main>
   );
 };

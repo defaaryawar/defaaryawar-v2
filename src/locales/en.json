@@ -110,18 +110,41 @@
     ]
   },
   "about": {
-    "background_label": "Background",
-    "title_part1": "Bridging Code",
-    "title_part2": "& Networks.",
-    "desc1": "I am an Informatics Engineering graduate from Budi Luhur University with a background in Computer Network Engineering from SMK Bina Informatika.",
-    "desc2": "As a versatile IT professional, I build modern scalable web applications while actively expanding my expertise in network infrastructure and troubleshooting.",
-    "stat1_label": "Years Experience",
-    "stat2_label": "Projects Completed",
-    "stat3_label": "Tech Stack",
-    "float1_title": "Main Focus",
-    "float1_desc": "FullStack Developer",
-    "float2_title": "Expertise",
-    "float2_desc": "IT & Networking"
+    "label": "About me",
+    "title": "I started with computer networks. Now I build web apps from the server to the screen.",
+    "paragraphs": [
+      "In vocational school I studied Computer and Network Engineering: setting up LANs, configuring Debian servers, and troubleshooting Cisco gear. That taught me to think about what happens behind the scenes, not just what shows up on screen.",
+      "After earning my Informatics degree at Universitas Budi Luhur, I focused on web development. I now work as a Frontend Web Developer at Zegen Solusi Mandiri on BTN's Rumah Murah / Bale Lelang project, building Single Sign-On, the admin panel, and public pages.",
+      "Outside work, I build websites for clients and I'm building Jajanim to go deeper into backend work: microservices, event-driven design, and deploying to my own VPS."
+    ],
+    "steps_title": "The short version",
+    "steps": [
+      {
+        "when": "2016 – 2019",
+        "title": "SMK Bina Informatika",
+        "desc": "Computer and Network Engineering: LANs, Debian servers, and Cisco."
+      },
+      {
+        "when": "2019 – 2023",
+        "title": "Universitas Budi Luhur",
+        "desc": "Bachelor of Informatics Engineering, focused on web development."
+      },
+      {
+        "when": "2024 – now",
+        "title": "Freelance web developer",
+        "desc": "Websites and systems for clients such as Nion Coffee and Jaya Mandiri."
+      },
+      {
+        "when": "Jun 2025 – now",
+        "title": "Frontend Web Developer, Zegen Solusi Mandiri",
+        "desc": "Rumah Murah / Bale Lelang project (BTN): SSO, admin panel, and public pages."
+      },
+      {
+        "when": "Now",
+        "title": "Building Jajanim",
+        "desc": "E-commerce on 7 Go microservices with Kafka, gRPC, and PostgreSQL."
+      }
+    ]
   },
   "projects": {
     "no_preview": "No Preview",
@@ -182,22 +205,30 @@
     "description": "Click any row to view full certificate details and credential info."
   },
   "tech_stack": {
-    "capabilities": "Capabilities",
-    "title_part1": "Technical ",
-    "title_part2": "Expertise",
-    "description": "Technologies I rely on to build fast and scalable digital products.",
-    "full_stack_dev": "Full-Stack Developer",
-    "stack_label": "Stack",
-    "technologies_count": "8 technologies",
-    "tech_desc": {
-      "React": "Component-based UI",
-      "Next.js": "Full-stack React apps",
-      "TypeScript": "Type-safe JavaScript",
-      "Tailwind": "Utility-first CSS",
-      "NestJS": "Node.js Framework",
-      "Golang": "Compiled Backend",
-      "Docker": "Container Deployment",
-      "PostgreSQL": "Relational Data Store"
+    "label": "Tech stack",
+    "title": "The tools I use, and the projects I used them in.",
+    "hint": "Every technology below links to the projects that use it, so you can check for yourself.",
+    "groups": {
+      "backend": {
+        "title": "Backend",
+        "desc": "Server-side logic: handling requests, processing data, and connecting services."
+      },
+      "frontend": {
+        "title": "Frontend",
+        "desc": "What people open in the browser: fast, responsive, and SEO-friendly."
+      },
+      "data": {
+        "title": "Data & Messaging",
+        "desc": "Where data lives and how services pass updates to each other, including real-time."
+      },
+      "infra": {
+        "title": "Infrastructure & Deploy",
+        "desc": "How apps are packaged, run on servers, and shipped automatically."
+      },
+      "quality": {
+        "title": "Monitoring & Testing",
+        "desc": "Making sure things work: tracing requests, watching metrics, and testing code."
+      }
     }
   },
   "blogs_section": {
@@ -252,7 +283,8 @@
     "gallery": "Gallery",
     "previous": "Previous",
     "next": "Next",
-    "private_repo": "Private Repository — Link unavailable"
+    "private_repo": "Private Repository — Link unavailable",
+    "view_image": "View image"
   },
   "blogs_page": {
     "editorial": "Editorial",
