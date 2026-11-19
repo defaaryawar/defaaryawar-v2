@@ -14,23 +14,29 @@ export const Footer = () => {
 
   useGSAP(
     () => {
-      // Parallax background shift as footer scrolls into view
-      if (bgRef.current) {
-        gsap.fromTo(
-          bgRef.current,
-          { y: -60 },
-          {
-            y: 60,
-            ease: "none",
-            scrollTrigger: {
-              trigger: container.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5,
+      // Parallax background shift as footer scrolls into view (desktop only;
+      // scrubbing on touch devices makes scrolling stutter)
+      const mm = gsap.matchMedia();
+      mm.add(
+        "(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+        () => {
+          if (!bgRef.current) return;
+          gsap.fromTo(
+            bgRef.current,
+            { y: -60 },
+            {
+              y: 60,
+              ease: "none",
+              scrollTrigger: {
+                trigger: container.current,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.6,
+              },
             },
-          },
-        );
-      }
+          );
+        },
+      );
 
       // Fade in content
       gsap.fromTo(

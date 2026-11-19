@@ -1,456 +1,257 @@
-import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { SOCIAL_LINKS } from "@/config/socials";
 
-gsap.registerPlugin(ScrollTrigger);
+const PHOTO_SRC = "/images/photo-profil/defaaryawar.png";
 
-const PHOTO_SRC = "/images/photo-profil/defaaryawar-landscape.png";
+type Proof = { value: string; label: string };
+type Skill = {
+  term: string;
+  title: string;
+  desc: string;
+  project: string;
+  slug: string;
+  note: string;
+};
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+const whatsapp = SOCIAL_LINKS.find((l) => l.label === "WhatsApp")?.href ?? "#contact";
 
 export const Hero = () => {
   const { t } = useTranslation();
-  const container = useRef<HTMLDivElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const bgPhotoRef = useRef<HTMLDivElement>(null);
-  const titleFirstRef = useRef<HTMLDivElement>(null);
-  const titleSecondRef = useRef<HTMLDivElement>(null);
-  const watermarkLeftRef = useRef<HTMLDivElement>(null);
-  const watermarkRightRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-      tl.fromTo(
-        bgPhotoRef.current,
-        { opacity: 0, scale: 1.08, filter: "brightness(0)" },
-        { opacity: 1, scale: 1, filter: "brightness(1)", duration: 2.8, ease: "power3.out" },
-      )
-        .from(
-          ".hero-char",
-          { y: 180, opacity: 0, duration: 1.3, stagger: 0.025, ease: "power4.out" },
-          "-=2",
-        )
-        .from(
-          ".subtitle-char",
-          { y: 30, opacity: 0, duration: 0.8, stagger: 0.015, ease: "power4.out" },
-          "-=0.9",
-        )
-        .from(
-          ".cta-char",
-          {
-            y: 24,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.01,
-            ease: "power4.out",
-            clearProps: "opacity,transform",
-          },
-          "-=0.6",
-        )
-        .from(".side-label", { opacity: 0, duration: 1 }, "-=0.6")
-        .from(".scroll-hint", { opacity: 0, y: 10, duration: 0.8 }, "-=0.4");
-
-      const st = {
-        trigger: container.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1.2,
-      };
-
-      gsap.to(bgPhotoRef.current, { y: 160, ease: "none", scrollTrigger: st });
-      gsap.to(titleFirstRef.current, { x: -120, ease: "none", scrollTrigger: st });
-      gsap.to(titleSecondRef.current, { x: 120, ease: "none", scrollTrigger: st });
-      gsap.to(watermarkLeftRef.current, { x: -280, ease: "none", scrollTrigger: st });
-      gsap.to(watermarkRightRef.current, { x: 280, ease: "none", scrollTrigger: st });
-
-      gsap.fromTo(
-        [subtitleRef.current, ctaRef.current],
-        { y: 0, opacity: 1 },
-        {
-          y: -40,
-          opacity: 0,
-          ease: "none",
-          scrollTrigger: {
-            ...st,
-            end: "35% top",
-            scrub: true,
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      return () => {
-        tl.kill();
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    },
-    { scope: container },
-  );
-
-  const firstName = "DEFANO";
-  const restName = "ARYA WARDHANA";
+  const proof = t("hero.proof", { returnObjects: true }) as Proof[];
+  const skills = t("hero.skills", { returnObjects: true }) as Skill[];
+  const featuredPoints = t("hero.featured_points", { returnObjects: true }) as {
+    term: string;
+    desc: string;
+  }[];
 
   return (
-    <section
-      ref={container}
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#080808]"
-      style={{ fontFamily: "'Bebas Neue', 'Anton', Impact, sans-serif" }}
-    >
-      {/* Noise Grain */}
-      <div
-        className="absolute inset-0 z-1 pointer-events-none opacity-[0.035]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundSize: "180px",
-        }}
-      />
-
-      {/* Top accent line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px z-30"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.15) 60%, transparent)",
-        }}
-      />
-
-      {/* Background Photo */}
-      <div
-        ref={bgPhotoRef}
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{ opacity: 0, willChange: "transform, opacity" }}
-      >
-        <img
-          src={PHOTO_SRC}
-          alt=""
-          className="w-full h-full object-cover"
-          style={{
-            objectPosition: "72% center",
-            filter: "grayscale(10%) brightness(0.99) contrast(1.1) saturate(0.9)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              linear-gradient(105deg, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 28%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.12) 100%),
-              linear-gradient(to top, rgba(8,8,8,0.88) 0%, transparent 38%),
-              linear-gradient(to bottom, rgba(8,8,8,0.6) 0%, transparent 18%)
-            `,
-          }}
-        />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 4px)",
-          }}
-        />
-      </div>
-
-      {/* ── Watermarks ──────────────────────────────────────────────────────
-          Mobile  : font lebih besar (28vw), posisi vertikal tengah layar
-          Desktop : font 16vw, posisi atas & bawah
-      ─────────────────────────────────────────────────────────────────── */}
-      <style>{`
-        .wm-top {
-          top: 8%;
-          left: -1%;
-          font-size: 28vw;
-        }
-        .wm-bottom {
-          bottom: -4%;
-          right: -1%;
-          font-size: 28vw;
-        }
-        @media (min-width: 768px) {
-          .wm-top {
-            top: -2%;
-            font-size: 16vw;
-          }
-          .wm-bottom {
-            bottom: -4%;
-            font-size: 16vw;
-          }
-        }
-      `}</style>
-
-      <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-        <div ref={watermarkLeftRef} className="wm-top absolute" style={{ willChange: "transform" }}>
-          <span
-            style={{
-              fontWeight: 900,
-              letterSpacing: "-0.04em",
-              color: "rgba(255,255,255,0.04)",
-              lineHeight: 1,
-              whiteSpace: "nowrap",
-              userSelect: "none",
-              fontFamily: "'Bebas Neue', Impact, sans-serif",
-            }}
-          >
-            {t("hero.watermark_top")}
-          </span>
-        </div>
-        <div
-          ref={watermarkRightRef}
-          className="wm-bottom absolute"
-          style={{ willChange: "transform" }}
-        >
-          <span
-            style={{
-              fontWeight: 900,
-              letterSpacing: "-0.04em",
-              color: "rgba(255,255,255,0.04)",
-              lineHeight: 1,
-              whiteSpace: "nowrap",
-              userSelect: "none",
-              fontFamily: "'Bebas Neue', Impact, sans-serif",
-            }}
-          >
-            {t("hero.watermark_bottom")}
-          </span>
-        </div>
-      </div>
-
-      {/* Side label right */}
-      <div className="side-label hidden md:flex absolute right-7 inset-y-0 z-30 pointer-events-none flex-col justify-center items-center">
-        <div className="flex flex-col items-center gap-5">
-          <div
-            className="w-px h-20"
-            style={{
-              background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.12))",
-            }}
-          />
-          <span
-            className="text-[9px] font-bold uppercase text-white/20 select-none tracking-[0.45em]"
-            style={{
-              writingMode: "vertical-rl",
-              textOrientation: "mixed",
-              transform: "rotate(180deg)",
-              fontFamily: "system-ui",
-            }}
-          >
-            {t("hero.side_label")}
-          </span>
-          <div
-            className="w-px h-20"
-            style={{ background: "linear-gradient(to top, transparent, rgba(255,255,255,0.12))" }}
-          />
-        </div>
-      </div>
-
-      {/* Year label left */}
-      <div className="side-label hidden md:flex absolute left-7 inset-y-0 z-30 pointer-events-none flex-col justify-center items-center">
-        <span
-          className="text-[9px] font-bold uppercase text-white/15 select-none tracking-[0.55em]"
-          style={{ writingMode: "vertical-rl", textOrientation: "mixed", fontFamily: "system-ui" }}
-        >
-          {t("hero.portfolio")}
-        </span>
-      </div>
-
-      {/* Main content */}
-      <div className="container mx-auto px-8 md:px-16 relative z-20 pt-24 pb-16">
-        <div className="max-w-5xl">
-          {/* Badge */}
-          <div className="overflow-hidden mb-10">
-            <div className="flex items-center gap-4">
-              <div className="h-px w-10 bg-white/20" />
-              <span
-                className="text-[10px] uppercase tracking-[0.6em] text-white/35 font-medium"
-                style={{ fontFamily: "system-ui, sans-serif" }}
-              >
-                {t("hero.badge")}
-              </span>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-              </span>
-            </div>
-          </div>
-
-          {/* Name */}
-          <h1
-            className="mb-12 leading-[0.86] uppercase select-none"
-            style={{ fontFamily: "'Bebas Neue', 'Anton', Impact, sans-serif" }}
-          >
-            <div ref={titleFirstRef} className="inline-block" style={{ willChange: "transform" }}>
-              <div
-                style={{
-                  fontSize: "clamp(80px, 14vw, 200px)",
-                  letterSpacing: "-0.02em",
-                  color: "#fff",
-                  lineHeight: 1,
-                }}
-              >
-                {firstName.split("").map((char, i) => (
-                  <span key={i} className="hero-char inline-block">
-                    {char}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <br />
-            <div ref={titleSecondRef} className="inline-block" style={{ willChange: "transform" }}>
-              <div
-                style={{
-                  fontSize: "clamp(36px, 6.2vw, 96px)",
-                  letterSpacing: "0.06em",
-                  color: "rgba(255,255,255,0.18)",
-                  lineHeight: 1,
-                }}
-              >
-                {restName.split("").map((char, i) => (
-                  <span
-                    key={i}
-                    className={`hero-char inline-block${char === " " ? " w-[0.28em]" : ""}`}
-                  >
-                    {char !== " " ? char : ""}
-                  </span>
-                ))}
-                <span className="hero-char inline-block" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  .
-                </span>
-              </div>
-            </div>
-          </h1>
-
-          {/* Divider */}
-          <div className="flex items-center gap-5 mb-10">
-            <div
-              className="h-px flex-1 max-w-20"
-              style={{
-                background: "linear-gradient(to right, rgba(255,255,255,0.25), transparent)",
-              }}
-            />
-            <span
-              className="text-[10px] uppercase tracking-[0.5em] text-white/20"
-              style={{ fontFamily: "system-ui" }}
+    <section className="relative bg-[#0a0a0a] text-white">
+      <div className="container mx-auto px-5 pt-28 pb-16 md:px-10 md:pt-36 md:pb-24 lg:px-16">
+        {/* ── Intro ─────────────────────────────────────────────── */}
+        <div className="grid items-end gap-10 lg:grid-cols-[1fr_340px] lg:gap-16">
+          <div>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={0}
+              className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/55"
             >
-              {t("hero.location")}
-            </span>
-          </div>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                {t("hero.status")}
+              </span>
+              <span className="text-white/25">/</span>
+              <span>{t("hero.location")}</span>
+            </motion.div>
 
-          {/* Subtitle */}
-          <p
-            ref={subtitleRef}
-            className="mb-14 text-white/40 font-light leading-relaxed"
-            style={{
-              fontFamily: "'DM Sans', system-ui, sans-serif",
-              fontSize: "clamp(15px, 1.4vw, 20px)",
-              maxWidth: "480px",
-              letterSpacing: "0.01em",
-            }}
-          >
-            {t("hero.subtitle")
-              .split("")
-              .map((char, i) => (
-                <span
-                  key={i}
-                  className={`subtitle-char inline-block${char === " " ? " w-[0.25em]" : ""}`}
-                >
-                  {char !== " " ? char : ""}
-                </span>
+            <motion.h1
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1}
+              className="max-w-4xl text-[clamp(34px,5.4vw,68px)] font-semibold leading-[1.08] tracking-[-0.03em]"
+            >
+              {t("hero.headline_a")}{" "}
+              <span className="text-white/45">{t("hero.headline_b")}</span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={2}
+              className="mt-6 max-w-2xl text-base leading-relaxed text-white/60 md:text-lg"
+            >
+              {t("hero.intro")}
+            </motion.p>
+
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={3}
+              className="mt-8 flex flex-col gap-3 sm:flex-row"
+            >
+              <a
+                href="#projects"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-black transition-colors hover:bg-white/85"
+              >
+                {t("hero.cta_work")}
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/15 px-6 py-3.5 text-sm font-semibold text-white/80 transition-colors hover:border-white/35 hover:text-white"
+              >
+                {t("hero.cta_chat")}
+                <ArrowUpRight size={16} />
+              </a>
+            </motion.div>
+
+            <motion.dl
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={4}
+              className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-white/10 pt-6"
+            >
+              {proof.map((p) => (
+                <div key={p.label}>
+                  <dt className="sr-only">{p.label}</dt>
+                  <dd className="text-2xl font-semibold tracking-tight md:text-3xl">{p.value}</dd>
+                  <dd className="mt-1 text-xs leading-snug text-white/45 md:text-sm">{p.label}</dd>
+                </div>
               ))}
-          </p>
-
-          {/* CTA */}
-          <div ref={ctaRef} className="flex flex-col sm:flex-row items-start gap-6">
-            <a
-              href="#projects"
-              className="group relative overflow-hidden"
-              style={{
-                padding: "18px 44px",
-                background: "#fff",
-                color: "#080808",
-                fontFamily: "system-ui, sans-serif",
-                fontWeight: 700,
-                fontSize: "11px",
-                letterSpacing: "0.35em",
-                textTransform: "uppercase",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-                textDecoration: "none",
-              }}
-            >
-              <span style={{ position: "relative", zIndex: 1, display: "inline-flex", gap: "2px" }}>
-                {t("hero.cta_primary").split("").map((char, i) => (
-                  <span
-                    key={i}
-                    className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}
-                  >
-                    {char !== " " ? char : ""}
-                  </span>
-                ))}
-              </span>
-              <ArrowRight
-                size={14}
-                style={{ position: "relative", zIndex: 1, transition: "transform 0.3s ease" }}
-              />
-              <span
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "#e5e5e5",
-                  transform: "scaleX(0)",
-                  transformOrigin: "left",
-                  transition: "transform 0.4s ease",
-                }}
-                className="group-hover:scale-x-100"
-              />
-            </a>
-
-            <a
-              href="#contact"
-              style={{
-                padding: "17px 44px",
-                border: "1px solid rgba(255,255,255,0.15)",
-                color: "rgba(255,255,255,0.5)",
-                fontFamily: "system-ui, sans-serif",
-                fontWeight: 600,
-                fontSize: "11px",
-                letterSpacing: "0.35em",
-                textTransform: "uppercase",
-                display: "inline-flex",
-                alignItems: "center",
-                transition: "border-color 0.3s ease, color 0.3s ease",
-                textDecoration: "none",
-                gap: "2px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.9)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.5)";
-              }}
-            >
-              {t("hero.cta_secondary").split("").map((char, i) => (
-                <span
-                  key={i}
-                  className={`cta-char inline-block${char === " " ? " w-[0.3em]" : ""}`}
-                >
-                  {char !== " " ? char : ""}
-                </span>
-              ))}
-            </a>
+            </motion.dl>
           </div>
+
+          {/* Photo */}
+          <motion.figure
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={2}
+            className="order-first mx-auto w-40 sm:w-52 lg:order-none lg:w-full"
+          >
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-black">
+              <img
+                src={PHOTO_SRC}
+                alt="Defano Arya Wardhana"
+                width={1024}
+                height={1536}
+                fetchPriority="high"
+                className="aspect-[4/5] w-full object-cover object-[30%_20%]"
+              />
+            </div>
+            <figcaption className="mt-3 hidden text-sm text-white/45 lg:block">
+              Defano Arya Wardhana
+              <span className="block text-white/30">Software Engineer</span>
+            </figcaption>
+          </motion.figure>
+        </div>
+
+        {/* ── Currently building ────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-20 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] md:mt-28"
+        >
+          <div className="grid lg:grid-cols-[1.15fr_1fr]">
+            <Link
+              to="/personal-arts/jajanim"
+              className="group block border-b border-white/10 bg-black lg:border-b-0 lg:border-r"
+              aria-label={t("hero.featured_cta")}
+            >
+              <img
+                src="/projects/jajanim-architecture.webp"
+                alt="Jajanim architecture: load balancer and Nginx gateway in front of 7 Go services, each with its own PostgreSQL database and replica, connected by gRPC and Kafka"
+                loading="lazy"
+                width={1586}
+                height={992}
+                className="h-full w-full object-contain transition-opacity group-hover:opacity-90"
+              />
+            </Link>
+
+            <div className="p-6 md:p-8">
+              <p className="inline-flex items-center gap-2 text-sm text-amber-300/90">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
+                {t("hero.featured_label")}
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
+                {t("hero.featured_title")}
+              </h2>
+              <p className="mt-3 leading-relaxed text-white/60">{t("hero.featured_desc")}</p>
+              <p className="mt-3 font-mono text-xs text-white/40">{t("hero.featured_stack")}</p>
+
+              <dl className="mt-6 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                {featuredPoints.map((p) => (
+                  <div key={p.term}>
+                    <dt className="font-mono text-xs uppercase tracking-wider text-emerald-400/90">
+                      {p.term}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-snug text-white/55">{p.desc}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <Link
+                to="/personal-arts/jajanim"
+                className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-white"
+              >
+                {t("hero.featured_cta")}
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── What I work on ────────────────────────────────────── */}
+        <div className="mt-20 md:mt-28">
+          <div className="mb-6 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
+            <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
+              {t("hero.skills_title")}
+            </h2>
+            <p className="text-sm text-white/40">{t("hero.skills_hint")}</p>
+          </div>
+
+          <ol className="border-t border-white/10">
+            {skills.map((s, i) => (
+              <motion.li
+                key={s.slug}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                className="grid gap-3 border-b border-white/10 py-7 md:grid-cols-[48px_minmax(0,0.9fr)_minmax(0,1.4fr)] md:gap-8 md:py-9"
+              >
+                <span className="font-mono text-sm text-white/30">0{i + 1}</span>
+
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-wider text-emerald-400/90">
+                    {s.term}
+                  </p>
+                  <h3 className="mt-2 text-lg font-semibold leading-snug md:text-xl">{s.title}</h3>
+                </div>
+
+                <div>
+                  <p className="leading-relaxed text-white/60">{s.desc}</p>
+                  <Link
+                    to={`/personal-arts/${s.slug}`}
+                    className="group mt-4 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-sm"
+                  >
+                    <span className="text-white/40">{t("hero.example")}:</span>
+                    <span className="font-medium text-white underline decoration-white/25 underline-offset-4 transition-colors group-hover:decoration-white">
+                      {s.project}
+                    </span>
+                    <span className="text-white/40">· {s.note}</span>
+                    <ArrowRight
+                      size={14}
+                      className="text-white/50 transition-transform group-hover:translate-x-0.5"
+                    />
+                  </Link>
+                </div>
+              </motion.li>
+            ))}
+          </ol>
         </div>
       </div>
-
-      <style>{`
-        @keyframes scrollLine {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(300%); }
-        }
-        .group:hover .group-hover\\:scale-x-100 { transform: scaleX(1) !important; }
-      `}</style>
     </section>
   );
 };

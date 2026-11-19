@@ -1,6 +1,171 @@
+export type ProjectCategory = "travel" | "saas" | "ecommerce" | "company";
+
+export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
+    { id: "travel", label: "Travel & Hospitality" },
+    { id: "saas", label: "SaaS & Web App" },
+    { id: "ecommerce", label: "E-Commerce" },
+    { id: "company", label: "Company Profile" },
+];
+
 export const projects = [
     {
+        slug: "jajanim",
+        category: "ecommerce" as ProjectCategory,
+        inDevelopment: true,
+        title: "Jajanim - Microservices E-commerce Platform",
+        titleId: "Jajanim - Platform E-commerce Microservices",
+        description: "A marketplace built as 7 Go microservices (catalog, promotion, order, payment, delivery, user, review), each with its own PostgreSQL database and read replicas. Traffic enters through a load balancer and an Nginx API gateway; services talk over gRPC and publish events to Kafka; the Next.js storefront and React (Vite) dashboard get live updates through Server-Sent Events. Traced with Jaeger, monitored with Grafana, emails tested in Mailpit, and every service lives in its own repository. Currently in development.",
+        descriptionId: "Marketplace yang dibangun sebagai 7 microservice Go (catalog, promotion, order, payment, delivery, user, review), masing-masing dengan database PostgreSQL sendiri plus replikasi. Trafik masuk lewat load balancer dan API gateway Nginx; antar layanan bicara lewat gRPC dan mengirim event lewat Kafka; storefront Next.js dan dashboard React (Vite) dapat update live lewat Server-Sent Events. Dilacak dengan Jaeger, dipantau dengan Grafana, email dites di Mailpit, dan tiap layanan punya repo sendiri. Sedang dikembangkan.",
+        detailDescription: `Jajanim adalah platform e-commerce (marketplace) yang sedang saya kembangkan dengan arsitektur microservices penuh. Fokusnya bukan cuma tampilan toko, tapi bagaimana sistemnya tetap jalan saat ramai dan gampang dikembangkan per bagian.
+
+**Arsitektur:**
+- **7 microservice** ditulis dengan Golang, tiap layanan mengurus satu bagian bisnis: Catalog (produk & kategori), Promotion (diskon & voucher), Order, Payment, Delivery (pengiriman & tracking), User (profil & akun), dan Review (rating & ulasan)
+- **Load balancer + API gateway (Nginx)**: satu pintu masuk untuk semua request, membagi beban ke layanan, dan mengurus routing, autentikasi, serta rate limiting
+- **Database per service (PostgreSQL)**: tiap layanan punya database sendiri, jadi masalah di satu bagian tidak menjatuhkan semuanya
+- **Database replication**: tiap database punya replika untuk keamanan data dan membagi beban baca
+- **gRPC** untuk komunikasi langsung antar layanan yang cepat dan bertipe jelas
+- **Kafka** sebagai event bus: layanan mengirim kabar (event) tanpa harus menunggu layanan lain, jadi tetap jalan walau ada yang sedang down
+- **Polyrepo**: setiap layanan punya repository sendiri dan bisa dirilis terpisah
+
+**Frontend:**
+- **Next.js** untuk storefront pembeli: cepat dan ramah SEO
+- **React + Vite** untuk dashboard
+- **Server-Sent Events (SSE)** untuk update status langsung di layar tanpa refresh
+
+**Observability & Tooling:**
+- **Jaeger** untuk distributed tracing: satu request bisa dilacak perjalanannya lintas layanan
+- **Grafana** untuk dashboard metrik kesehatan sistem
+- **Mailpit** untuk menguji email (verifikasi, notifikasi pesanan) sebelum dikirim sungguhan
+- **Docker**: setiap layanan dikemas dalam container
+- **GitHub Actions** untuk CI/CD: build, test, dan deploy otomatis
+- **Deploy di VPS** yang dikelola sendiri
+
+**Status:** sedang dalam pengembangan.`,
+        detailDescriptionEn: `Jajanim is an e-commerce marketplace I'm building on a full microservices architecture. The focus isn't only the storefront, but keeping the system running under load and easy to grow one piece at a time.
+
+**Architecture:**
+- **7 microservices** written in Golang, each owning one part of the business: Catalog (products & categories), Promotion (discounts & vouchers), Order, Payment, Delivery (shipping & tracking), User (profile & account), and Review (ratings & reviews)
+- **Load balancer + API gateway (Nginx)**: a single entry point for every request that spreads load across services and handles routing, authentication, and rate limiting
+- **Database per service (PostgreSQL)**: every service has its own database, so a problem in one part doesn't take everything down
+- **Database replication**: each database has replicas for data safety and to spread read load
+- **gRPC** for fast, strongly typed service-to-service calls
+- **Kafka** as the event bus: services publish events without waiting on each other, so the system keeps working even when one service is down
+- **Polyrepo**: every service has its own repository and ships independently
+
+**Frontend:**
+- **Next.js** storefront: fast and SEO-friendly
+- **React + Vite** dashboard
+- **Server-Sent Events (SSE)** for live status updates without refreshing
+
+**Observability & Tooling:**
+- **Jaeger** for distributed tracing: follow a single request across services
+- **Grafana** dashboards for system health metrics
+- **Mailpit** to test emails (verification, order notifications) before they go out for real
+- **Docker**: every service is packaged as a container
+- **GitHub Actions** for CI/CD: automated build, test, and deploy
+- **Deployed on a self-managed VPS**
+
+**Status:** in development.`,
+        images: ["/projects/jajanim.webp", "/projects/jajanim-architecture.webp"],
+        technologies: ["Golang", "gRPC", "Kafka", "PostgreSQL", "Nginx (API Gateway)", "Load Balancer", "Next.js", "React (Vite)", "SSE", "Jaeger", "Grafana", "Mailpit", "DB Replication", "Polyrepo", "Docker", "GitHub Actions", "VPS"],
+        demoLink: "",
+        githubLink: ""
+    },
+    {
+        slug: "traveljauh",
+        category: "travel" as ProjectCategory,
+        live: true,
+        title: "Travel Jauh - Open & Private Trip Agency",
+        titleId: "Travel Jauh - Agensi Open & Private Trip",
+        description: "Official website for the Travel Jauh travel agency: open trip and private trip packages across East Java (Bromo, Kawah Ijen, Tumpak Sewu, Malang), event packages like Jember Fashion Carnaval, a travel blog, order tracking, and WhatsApp booking. Live and used by the client.",
+        descriptionId: "Website resmi agensi liburan Travel Jauh: katalog paket open trip & private trip Jawa Timur (Bromo, Kawah Ijen, Tumpak Sewu, Malang), paket event, blog, lacak pesanan, dan booking via WhatsApp. Live dan dipakai klien.",
+        detailDescription: `Travel Jauh adalah website resmi agensi liburan open trip & private trip di Jawa Timur. Live dan dipakai langsung oleh klien.
+
+**Fitur Utama:**
+- Katalog paket tour dengan durasi, harga DP, dan halaman detail
+- Pencarian destinasi dan filter kategori trip
+- Lacak pesanan: pelanggan bisa cek status booking sendiri
+- Blog untuk konten wisata dan SEO
+- Tombol chat WhatsApp di setiap halaman untuk konversi cepat
+- Bilingual: Bahasa Indonesia & English
+
+**Untuk Pemilik Bisnis:**
+- Paket tour, promo, dan artikel dikelola sendiri lewat Sanity CMS
+- Popup promo untuk campaign seperti open trip musiman
+- Metadata & Open Graph yang rapi saat link dibagikan ke media sosial`,
+        detailDescriptionEn: `Travel Jauh is the official website of an open trip & private trip agency in East Java. It is live and used by the client.
+
+**Key Features:**
+- Tour package catalog with duration, down-payment price, and detail pages
+- Destination search and trip category filters
+- Order tracking: customers can check their booking status themselves
+- Blog for travel content and SEO
+- WhatsApp chat button on every page for fast conversion
+- Bilingual: Indonesian & English
+
+**For the Business Owner:**
+- Tour packages, promos, and articles managed independently via Sanity CMS
+- Promo popups for campaigns such as seasonal open trips
+- Clean metadata & Open Graph previews when links are shared on social media`,
+        images: ["/projects/traveljauh.webp"],
+        technologies: ["Next.js", "Sanity CMS", "TypeScript", "Tailwind CSS", "Shadcn UI", "WhatsApp", "i18n"],
+        demoLink: "https://www.traveljauh.com/",
+        githubLink: ""
+    },
+    {
+        slug: "kisahframe",
+        category: "saas" as ProjectCategory,
+        live: true,
+        title: "KisahFrame - Virtual Photobooth & Wedding Album SaaS",
+        titleId: "KisahFrame - SaaS Photobooth Virtual & Album Pernikahan",
+        description: "A SaaS for weddings and events: guests scan one QR code to shoot with a virtual photobooth, upload to a shared digital album, and sign the guestbook, with no app to install. Used at 89+ events.",
+        descriptionId: "SaaS untuk pernikahan dan acara: tamu cukup scan satu QR untuk memotret dengan photobooth virtual, mengunggah ke album digital, dan mengisi buku tamu, tanpa unduh aplikasi. Sudah dipakai di 89+ acara.",
+        detailDescription: `KisahFrame adalah platform SaaS untuk pernikahan dan acara. Tamu cukup scan satu QR untuk memotret dengan photobooth virtual, mengunggah ke album digital, dan mengisi buku tamu, tanpa unduh aplikasi.
+
+**Dampak:**
+- 89+ acara sudah menggunakan KisahFrame
+
+**Fitur Utama:**
+- Host membuat acara dalam ±1 menit dan langsung dapat QR code unik
+- Tamu scan QR, ketik nama, lalu memotret langsung dari browser HP
+- Photobooth virtual dengan 50+ bingkai (1 foto, 2 foto, strip 3 foto)
+- Preset kamera film analog dan galeri live
+- Template kartu QR meja siap cetak yang terisi otomatis
+- Dashboard host untuk mengunduh seluruh album HD sekaligus
+
+**Bisnis & Teknis:**
+- Model SaaS berbayar per acara dengan halaman harga dan akun pengguna
+- Backend API Hono di Cloudflare Workers, ringan dan cepat di edge
+- Database Cloudflare D1, foto HD tersimpan di Cloudflare R2
+- Galeri live real-time lewat Pusher: foto tamu langsung muncul tanpa refresh
+- Bilingual (ID / EN) dan blog untuk SEO`,
+        detailDescriptionEn: `KisahFrame is a SaaS platform for weddings and events. Guests scan a single QR code to shoot with a virtual photobooth, upload to a digital album, and sign the guestbook, with no app download.
+
+**Impact:**
+- Used at 89+ events
+
+**Key Features:**
+- Hosts create an event in about a minute and instantly get a unique QR code
+- Guests scan the QR, type their name, and shoot straight from their phone browser
+- Virtual photobooth with 50+ frames (single, double, 3-photo strip)
+- Analog film camera presets and a live gallery
+- Print-ready table QR card templates filled in automatically
+- Host dashboard to download the whole HD album at once
+
+**Business & Technical:**
+- Paid-per-event SaaS model with pricing page and user accounts
+- Hono API backend on Cloudflare Workers, lightweight and fast at the edge
+- Cloudflare D1 database, HD photos stored on Cloudflare R2
+- Real-time live gallery via Pusher: guest photos appear without refreshing
+- Bilingual (ID / EN) with a blog for SEO`,
+        images: ["/projects/kisahframe.webp"],
+        technologies: ["Next.js", "Hono", "Cloudflare Workers", "Pusher", "Cloudflare D1", "Cloudflare R2", "TypeScript", "Tailwind CSS"],
+        demoLink: "https://kisahframe.com/",
+        githubLink: ""
+    },
+    {
         slug: "villazahira",
+        category: "travel" as ProjectCategory,
         title: "Villa Zahira - Luxury Villa & Resort in Puncak Bogor",
         titleId: "Villa Zahira - Villa & Resort Luxury di Puncak Bogor",
         description: "A luxury villa and resort reservation platform nestled in the scenic highlands of Puncak, Bogor. Features an elegant facility showcase, high-definition mountain view gallery, interactive route map, and seamless WhatsApp integration for direct guest bookings.",
@@ -47,6 +212,7 @@ export const projects = [
     },
     {
         slug: "travlia",
+        category: "travel" as ProjectCategory,
         title: "Travlia - Premium Travel & Tour Platform",
         titleId: "Travlia - Platform Travel & Tour Modern",
         description: "A high-end travel and tour ecosystem featuring an automated booking engine and integrated WhatsApp support. Built with a modern aesthetic, it offers a seamless experience for discovering destinations, managing bookings, and real-time communication. The platform focuses on high conversion rates through a polished UI/UX and efficient data handling.",
@@ -94,6 +260,7 @@ export const projects = [
     },
     {
         slug: "maraptur",
+        category: "travel" as ProjectCategory,
         title: "Maraptur - Adventure & Expedition Agency",
         titleId: "Maraptur - Agen Petualangan & Ekspedisi",
         description: "A specialized platform for adventure enthusiasts, focusing on direct communication and personalized planning via WhatsApp. Maraptur provides a clean, high-performance interface for browsing extreme expedition packages, ensuring users can quickly connect with experts for custom adventure itineraries.",
@@ -139,7 +306,98 @@ export const projects = [
         githubLink: ""
     },
     {
+        slug: "travelo",
+        category: "travel" as ProjectCategory,
+        title: "Travelo - Southeast Asia Travel Booking",
+        titleId: "Travelo - Reservasi Travel Asia Tenggara",
+        description: "A travel reservation platform for Southeast Asian destinations: destination catalog with prices and ratings, flights, stays and attractions in one place, testimonials, and user accounts for booking.",
+        descriptionId: "Platform reservasi travel untuk destinasi Asia Tenggara: katalog destinasi dengan harga dan rating, testimoni, serta akun pengguna untuk booking.",
+        detailDescription: `Travelo adalah platform reservasi travel untuk destinasi Asia Tenggara.
+
+**Fitur Utama:**
+- Katalog destinasi dengan harga, rating, dan jumlah ulasan
+- Section layanan: flight, stay, dan atraksi dalam satu tempat
+- Login & registrasi akun pengguna
+- Testimoni pelanggan dan logo partner
+- Pilihan bahasa (ID / EN)
+
+**Highlight Teknis:**
+- Metadata SEO per halaman untuk kata kunci travel
+- Layout responsif dengan menu mobile khusus`,
+        detailDescriptionEn: `Travelo is a travel reservation platform for Southeast Asian destinations.
+
+**Key Features:**
+- Destination catalog with prices, ratings, and review counts
+- Services section: flights, stays, and attractions in one place
+- User login & registration
+- Customer testimonials and partner logos
+- Language switcher (ID / EN)
+
+**Technical Highlights:**
+- Per-page SEO metadata for travel keywords
+- Responsive layout with a dedicated mobile menu`,
+        images: ["/projects/travelo.webp"],
+        technologies: ["Next.js", "React", "Tailwind CSS", "i18n"],
+        demoLink: "https://travelo.defanolabs.com/",
+        githubLink: ""
+    },
+    {
+        slug: "travelworld",
+        category: "travel" as ProjectCategory,
+        title: "Travel World - Global Tour & Travel",
+        titleId: "Travel World - Website Tour & Travel Global",
+        description: "A tour agency website with a tour package catalog, luxury and adventure destinations, travel guides, and user accounts for booking tours.",
+        descriptionId: "Website agen tour dengan katalog paket wisata, destinasi luxury dan petualangan, panduan perjalanan, serta akun pengguna untuk memesan tour.",
+        detailDescription: `Travel World adalah website agen tour & travel global.
+
+**Fitur Utama:**
+- Katalog tour dengan halaman detail paket
+- Section "Know Before You Go" untuk informasi perjalanan
+- Login & registrasi pengguna
+- Navigasi desktop dan mobile yang terpisah dan dioptimasi`,
+        detailDescriptionEn: `Travel World is a global tour & travel agency website.
+
+**Key Features:**
+- Tour catalog with package detail pages
+- "Know Before You Go" section with travel information
+- User login & registration
+- Separate, optimized desktop and mobile navigation`,
+        images: ["/projects/travelworld.webp"],
+        technologies: ["Next.js", "React", "Tailwind CSS"],
+        demoLink: "https://travelworld.defanolabs.com/",
+        githubLink: ""
+    },
+    {
+        slug: "dorent",
+        category: "travel" as ProjectCategory,
+        title: "Dorent - Luxury VIP Car Rental Jakarta",
+        titleId: "Dorent - Sewa Mobil Mewah VIP Jakarta",
+        description: "A luxury car rental website: fleet catalog by brand, self-drive or VIP-with-driver options, transparent pricing, and direct booking to customer service via WhatsApp.",
+        descriptionId: "Website rental mobil mewah: katalog armada, pilihan sewa lepas kunci atau dengan sopir VIP, halaman harga, dan pemesanan langsung ke CS via WhatsApp.",
+        detailDescription: `Dorent adalah website rental mobil mewah VIP di Jakarta.
+
+**Fitur Utama:**
+- Katalog armada mobil mewah per brand
+- Pilihan sewa lepas kunci atau dengan sopir
+- Halaman harga yang transparan
+- Pemesanan langsung via WhatsApp CS
+- Login & registrasi pelanggan`,
+        detailDescriptionEn: `Dorent is a VIP luxury car rental website in Jakarta.
+
+**Key Features:**
+- Luxury fleet catalog by brand
+- Self-drive or chauffeured rental options
+- Transparent pricing page
+- Direct booking via WhatsApp customer service
+- Customer login & registration`,
+        images: ["/projects/dorent.webp"],
+        technologies: ["Next.js", "React", "Tailwind CSS", "Shadcn UI", "WhatsApp"],
+        demoLink: "https://dorent.defanolabs.com/",
+        githubLink: ""
+    },
+    {
         slug: "apma",
+        category: "saas" as ProjectCategory,
         title: "APMA - Automated Teaching Module Generator",
         titleId: "APMA - Pembuat Modul Ajar Otomatis",
         description: "An AI-powered SaaS platform designed to help Indonesian teachers create complete, professional teaching modules (Modul Ajar) and exam questions in just minutes. Fully compliant with both Kurikulum Merdeka and K13 standards, it supports all education levels from PAUD to SMA/SMK. Features include flexible export to Word (.docx) and PDF formats, deep customization of module structure, and AI-generated content covering core materials, learning activities, assessments, remedial plans, and reflections. Built to cut administrative workload by up to 90%, letting educators focus on actual teaching.",
@@ -195,6 +453,7 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
     },
     {
         slug: "softshop",
+        category: "ecommerce" as ProjectCategory,
         title: "SoftShop - Mini Ecommerce System",
         titleId: "SoftShop - Sistem Ecommerce Mini",
         description: "A comprehensive ecommerce ecosystem built with a multi-service monolithic architecture using Golang and NestJS on the backend. The project spans 3 independent backend services and 3 separate frontend applications: a customer-facing storefront with product browsing, cart management, and checkout flow; an internal admin panel for inventory management, order processing, and analytics; and a dedicated courier system featuring real-time delivery tracking via WebSocket and Server-Sent Events (SSE). Utilizes PostgreSQL with Supabase, RabbitMQ for message queuing, Redis for caching, and Cloudinary for media management.",
@@ -266,7 +525,64 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
         githubLink: ""
     },
     {
+        slug: "shopco",
+        category: "ecommerce" as ProjectCategory,
+        title: "Shop.co - Fashion & Streetwear Store",
+        titleId: "Shop.co - Toko Online Fashion & Streetwear",
+        description: "A fashion e-commerce platform with New Arrivals, Top Selling and On Sale collections, product ratings, discount labels, customer accounts, and checkout.",
+        descriptionId: "Platform e-commerce fashion dengan katalog New Arrivals, Top Selling, dan On Sale, rating produk, label diskon, akun pelanggan, sampai checkout.",
+        detailDescription: `Shop.co adalah toko online fashion & streetwear.
+
+**Fitur Utama:**
+- Koleksi New Arrivals, Top Selling, On Sale, dan Brands
+- Kartu produk dengan rating dan harga diskon
+- Akun pelanggan dan alur checkout
+- Banner promo pendaftaran untuk akuisisi pelanggan baru`,
+        detailDescriptionEn: `Shop.co is a fashion & streetwear online store.
+
+**Key Features:**
+- New Arrivals, Top Selling, On Sale, and Brands collections
+- Product cards with ratings and discounted prices
+- Customer accounts and checkout flow
+- Sign-up promo banner for new customer acquisition`,
+        images: ["/projects/shopco.webp"],
+        technologies: ["Next.js", "React", "Tailwind CSS"],
+        demoLink: "https://shopco.defanolabs.com/",
+        githubLink: ""
+    },
+    {
+        slug: "exclusive",
+        category: "ecommerce" as ProjectCategory,
+        title: "Exclusive - Multi-Category Marketplace",
+        titleId: "Exclusive - Marketplace Multi-Kategori",
+        description: "A marketplace for electronics, fashion and lifestyle: full product categories, promo codes, wishlist, cart, customer accounts, and an admin dashboard.",
+        descriptionId: "Marketplace untuk elektronik, fashion, dan lifestyle: kategori lengkap, kode promo, favorit, keranjang, akun pelanggan, dan dashboard admin.",
+        detailDescription: `Exclusive adalah marketplace multi-kategori.
+
+**Fitur Utama:**
+- Kategori produk lengkap, dari elektronik sampai kebutuhan rumah
+- Banner promo dan kode voucher untuk pengguna baru
+- Wishlist / favorit dan keranjang belanja
+- Login & registrasi pelanggan
+- Dashboard admin untuk kelola toko
+- Pilihan bahasa (ID / EN)`,
+        detailDescriptionEn: `Exclusive is a multi-category marketplace.
+
+**Key Features:**
+- Full product categories, from electronics to home goods
+- Promo banners and voucher codes for new users
+- Wishlist / favorites and shopping cart
+- Customer login & registration
+- Admin dashboard for store management
+- Language switcher (ID / EN)`,
+        images: ["/projects/exclusive.webp"],
+        technologies: ["Next.js", "React", "Tailwind CSS", "i18n"],
+        demoLink: "https://exclusive.defanolabs.com/",
+        githubLink: ""
+    },
+    {
         slug: "spillthethings",
+        category: "ecommerce" as ProjectCategory,
         title: "SpillTheThings - Fashion Online Store",
         titleId: "SpillTheThings - Toko Fashion Online",
         description: "A modern and stylish fashion e-commerce platform for browsing and purchasing a wide range of fashion products including bags, clothing, pants, and accessories. Built with Next.js for blazing-fast performance and SEO, Sanity CMS as the headless content management backend for easy product management, styled with Tailwind CSS and Shadcn UI for a clean, premium aesthetic. Features include product catalog with category filtering, product detail pages, shopping cart, and a smooth checkout experience.",
@@ -329,6 +645,7 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
     },
     {
         slug: "deflix",
+        category: "saas" as ProjectCategory,
         title: "Deflix - Movie Trailer App",
         titleId: "Deflix - Aplikasi Trailer Film",
         description: "A Netflix-inspired movie discovery platform for browsing, searching, and watching trailers powered by the TMDB API. Features include trending movies, genre-based filtering, detailed movie information pages with cast and crew data, and embedded trailer playback. Built as a full-stack application with Next.js on the frontend and NestJS as the backend API layer, using PostgreSQL for persistent data storage, Redux for state management, and Docker for containerized deployment. Designed as a learning project to master modern full-stack development patterns.",
@@ -382,6 +699,7 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
     },
     {
         slug: "jaya-mandiri-dashboard",
+        category: "saas" as ProjectCategory,
         title: "Jaya Mandiri - Admin Dashboard",
         titleId: "Jaya Mandiri - Dashboard Admin",
         description: "A modern, responsive admin dashboard application for managing delivery operations at Jaya Mandiri. Features include comprehensive CRUD operations for shipment tracking, driver management, and route optimization. Built with a React (Vite) frontend providing a fast, interactive UI with reusable component architecture, and a NestJS backend with RESTful API endpoints. Uses PostgreSQL for relational data storage and includes extensive unit testing with Jest to ensure code reliability. Implements custom React hooks for data fetching and state management patterns.",
@@ -434,6 +752,7 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
     },
     {
         slug: "jaya-mandiri-profile",
+        category: "company" as ProjectCategory,
         title: "Jaya Mandiri - Company Profile",
         titleId: "Jaya Mandiri - Profil Perusahaan",
         description: "A clean and professionally designed company profile website for Jaya Mandiri logistics services. Features a polished landing page with smooth scroll animations, service showcases, company history timeline, team profiles, and a contact section. Built with React and styled using TailwindCSS and Shadcn UI for a consistent, premium design system. Implements a modular component architecture with reusable UI elements, responsive layouts optimized for all screen sizes, and performant asset loading for a seamless browsing experience.",
@@ -489,6 +808,7 @@ This platform can reduce teachers' administrative workload by up to 90%, allowin
     },
     {
         slug: "nion-coffee",
+        category: "company" as ProjectCategory,
         title: "Nion Coffee - Company Profile",
         titleId: "Nion Coffee - Profil Perusahaan",
         description: "A fully-featured and scalable company profile application for Nion Coffee, one of the most complete and polished projects in the portfolio. Built with React and Vite for blazing-fast performance, styled with TailwindCSS and DaisyUI for a rich, café-inspired aesthetic. Implements proper OOP design patterns and Redux for predictable state management. Features include dynamic product catalogs fetched from REST APIs, an interactive menu system, store locator, customer testimonials, and a comprehensive about section. Architected with scalability in mind using clean code principles and separation of concerns.",

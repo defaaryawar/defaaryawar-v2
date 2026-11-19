@@ -57,7 +57,7 @@ export const ProjectDetailPage = () => {
               borderRadius: 4,
             }}
           >
-            ← {t("project_detail.back_to_projects")}
+            ← {t("project_detail.back")}
           </button>
         </div>
       </main>
@@ -228,7 +228,7 @@ export const ProjectDetailPage = () => {
               size={16}
               className="transition-transform duration-300 group-hover:-translate-x-1"
             />
-            {t("project_detail.back_to_projects")}
+            {t("project_detail.back")}
           </button>
 
           <span

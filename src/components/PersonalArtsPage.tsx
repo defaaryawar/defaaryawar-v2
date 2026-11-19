@@ -277,7 +277,7 @@ export const PersonalArtsPage = () => {
               className="uppercase text-[10px] font-bold tracking-[0.55em]"
               style={{ color: "rgba(255,255,255,0.4)" }}
             >
-              {t("personal_arts_page.all_projects")}
+              {t("personal_arts_page.all_projects_label")}
             </span>
           </div>
           <h1
@@ -287,7 +287,7 @@ export const PersonalArtsPage = () => {
               fontSize: "clamp(42px, 7vw, 100px)",
             }}
           >
-            {t("personal_arts_page.title_personal")
+            {t("personal_arts_page.title_part1")
               .split("")
               .map((c, i) => (
                 <span key={i} className={`inline-block${c === " " ? " w-[0.25em]" : ""}`}>
@@ -296,7 +296,7 @@ export const PersonalArtsPage = () => {
               ))}
             <br />
             <Highlighter action="underline" color="#10b981">
-              {t("personal_arts_page.title_arts")
+              {t("personal_arts_page.title_part2")
                 .split("")
                 .map((c, i) => (
                   <span key={i} className="inline-block">
@@ -310,7 +310,7 @@ export const PersonalArtsPage = () => {
             className="mt-6 max-w-md"
             style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)", lineHeight: 1.75 }}
           >
-            {t("personal_arts_page.subtitle")}
+            {t("personal_arts_page.description")}
           </p>
         </div>
 

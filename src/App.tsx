@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
@@ -21,14 +21,11 @@ import { SOCIAL_LINKS } from "./config/socials";
 import { motion, useScroll, useSpring } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { ParallaxProvider } from "react-scroll-parallax";
 
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 function HomePage() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -36,34 +33,20 @@ function HomePage() {
     restDelta: 0.001,
   });
 
-  useGSAP(
-    () => {
-      const sections = gsap.utils.toArray("section[id]") as HTMLElement[];
-      if (sections.length === 0) return;
-      sections.forEach((section) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: () => {
-            const offsetHeight = section.offsetHeight;
-            return offsetHeight <= window.innerHeight ? "top top" : "bottom bottom";
-          },
-          pin: true,
-          pinSpacing: false,
-          invalidateOnRefresh: true,
-        });
-      });
-      return () => {
-        ScrollTrigger.getAll().forEach((st) => st.kill());
-      };
-    },
-    { scope: containerRef },
-  );
+  // Images and fonts load after first layout; recompute trigger positions once
+  // everything is in so reveal animations fire at the right scroll offset.
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("load", refresh);
+    const id = window.setTimeout(refresh, 600);
+    return () => {
+      window.removeEventListener("load", refresh);
+      window.clearTimeout(id);
+    };
+  }, []);
 
   return (
-    <main
-      ref={containerRef}
-      className="relative bg-brand-bg text-white selection:bg-white selection:text-black"
-    >
+    <main className="relative bg-brand-bg text-white selection:bg-white selection:text-black">
       <motion.div
         className="fixed top-0 left-0 right-0 h-0.5 bg-white z-110 origin-left"
         style={{ scaleX }}
@@ -107,7 +90,7 @@ export default function App() {
     location.pathname === "/services";
 
   return (
-    <ParallaxProvider>
+    <>
       {showNavbar && <Navbar />}
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomePage />} />
@@ -120,6 +103,6 @@ export default function App() {
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/services/:slug" element={<ServiceDetailPage />} />
       </Routes>
-    </ParallaxProvider>
+    </>
   );
 }

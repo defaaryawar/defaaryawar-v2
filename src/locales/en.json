@@ -11,15 +11,103 @@
     "start_project": "Start Project"
   },
   "hero": {
-    "watermark_top": "FULLSTACK",
-    "watermark_bottom": "DEVELOPER",
-    "side_label": "FullStack Developer",
-    "portfolio": "Portfolio ©2025",
-    "badge": "Available for Hire",
-    "location": "Based in Indonesia",
-    "subtitle": "Building robust full-stack applications and trusted networks with precision and technical excellence.",
-    "cta_primary": "Explore Work",
-    "cta_secondary": "Contact Me"
+    "status": "Open to full-time roles & freelance",
+    "location": "Jakarta, Indonesia",
+    "headline_a": "I'm Defano.",
+    "headline_b": "I build applications from the server all the way to the screen people use.",
+    "intro": "Software engineer with an Informatics degree from Universitas Budi Luhur. Day to day I write backends in Golang and NestJS and frontends in Next.js. 18 projects so far, some of them live and used by clients.",
+    "cta_work": "See projects",
+    "cta_chat": "Chat on WhatsApp",
+    "proof": [
+      {
+        "value": "18",
+        "label": "projects shipped"
+      },
+      {
+        "value": "89+",
+        "label": "events run on KisahFrame"
+      },
+      {
+        "value": "2",
+        "label": "client sites live now"
+      }
+    ],
+    "skills_title": "What I work on",
+    "skills_hint": "The technical term on the left, what it means on the right.",
+    "example": "Example",
+    "skills": [
+      {
+        "term": "Microservices · Event-driven",
+        "title": "Backends split into separate services",
+        "desc": "One big app is split into small services that talk through Kafka and gRPC. If one part is busy, the rest keeps working.",
+        "project": "Jajanim",
+        "slug": "jajanim",
+        "note": "7 Go services, in development"
+      },
+      {
+        "term": "Clean Architecture · Testing",
+        "title": "Code that stays tidy and safe to change",
+        "desc": "Business logic is kept apart from the database and framework, so new features don't mean tearing up what already works. Checked with Jest unit tests.",
+        "project": "Jaya Mandiri Dashboard",
+        "slug": "jaya-mandiri-dashboard",
+        "note": "NestJS + PostgreSQL, tested with Jest"
+      },
+      {
+        "term": "Next.js · SEO · Headless CMS",
+        "title": "Websites that load fast and show up on Google",
+        "desc": "Pages open quickly on phones, look right in search results, and business owners can edit the content themselves without a developer.",
+        "project": "Travel Jauh",
+        "slug": "traveljauh",
+        "note": "live and used by the client"
+      },
+      {
+        "term": "Edge · Real-time",
+        "title": "Features that update without refreshing",
+        "desc": "The server runs on Cloudflare, close to users. Guest photos appear in the event gallery the moment they're uploaded.",
+        "project": "KisahFrame",
+        "slug": "kisahframe",
+        "note": "used at 89+ events"
+      }
+    ],
+    "featured_label": "What I'm building now",
+    "featured_title": "Jajanim, a marketplace on 7 microservices",
+    "featured_desc": "From the outside it looks like any online store. The difference is inside: the system is split into 7 independent Go services, so it keeps running under load and each part can grow on its own.",
+    "featured_stack": "Golang · PostgreSQL · Next.js · React + Vite · Docker · VPS",
+    "featured_cta": "See the full architecture",
+    "featured_points": [
+      {
+        "term": "Load balancer + Nginx gateway",
+        "desc": "One front door for every request: load is spread evenly and access is checked before it reaches a service."
+      },
+      {
+        "term": "PostgreSQL per service + replicas",
+        "desc": "Each part of the store has its own database plus a copy. One fails, the rest keep going and data stays safe."
+      },
+      {
+        "term": "Kafka",
+        "desc": "Services send each other updates without waiting on one another."
+      },
+      {
+        "term": "gRPC",
+        "desc": "Services call each other directly and fast."
+      },
+      {
+        "term": "SSE",
+        "desc": "Order status changes on the shopper's screen without refreshing."
+      },
+      {
+        "term": "Jaeger + Grafana",
+        "desc": "Every request can be traced and system health shows up on dashboards."
+      },
+      {
+        "term": "Mailpit",
+        "desc": "Emails get tested before they reach real users."
+      },
+      {
+        "term": "Polyrepo + GitHub Actions",
+        "desc": "Each service has its own repo and is tested and shipped automatically with GitHub Actions."
+      }
+    ]
   },
   "about": {
     "background_label": "Background",
@@ -41,12 +129,19 @@
     "portfolio_label": "Portfolio",
     "title_part1": "Personal ",
     "title_part2": "Work",
-    "description": "A showcase of technical implementations where performance meets aesthetic precision.",
+    "description": "From client websites that are live and in use to SaaS products and full-stack systems. Every project here was designed and built end to end.",
     "prev": "Prev.",
     "next": "Next",
     "view_all_prefix": "View all",
     "view_all_suffix": "projects",
-    "view_more": "View More"
+    "view_more": "View More",
+    "filter_all": "All",
+    "show_all": "Show all {{count}} projects",
+    "show_less": "Show less",
+    "live": "Live · client",
+    "demo": "Live demo",
+    "count_label": "projects",
+    "in_development": "In development"
   },
   "experience": {
     "current": "Present"

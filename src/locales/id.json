@@ -11,15 +11,103 @@
     "start_project": "Mulai Proyek"
   },
   "hero": {
-    "watermark_top": "FULLSTACK",
-    "watermark_bottom": "DEVELOPER",
-    "side_label": "Pengembang FullStack",
-    "portfolio": "Portofolio ©2025",
-    "badge": "Tersedia untuk Dipekerjakan",
-    "location": "Berbasis di Indonesia",
-    "subtitle": "Membangun aplikasi full-stack yang tangguh dan jaringan tepercaya dengan presisi dan keunggulan teknis.",
-    "cta_primary": "Eksplorasi Karya",
-    "cta_secondary": "Hubungi Saya"
+    "status": "Terbuka untuk kerja penuh waktu & freelance",
+    "location": "Jakarta, Indonesia",
+    "headline_a": "Saya Defano.",
+    "headline_b": "Saya membangun aplikasi dari server sampai tampilan yang dipakai orang.",
+    "intro": "Software engineer lulusan Teknik Informatika Universitas Budi Luhur. Sehari-hari saya mengerjakan backend dengan Golang dan NestJS, lalu frontend dengan Next.js. Sudah 18 project, beberapa di antaranya live dan dipakai klien.",
+    "cta_work": "Lihat project",
+    "cta_chat": "Ngobrol via WhatsApp",
+    "proof": [
+      {
+        "value": "18",
+        "label": "project selesai"
+      },
+      {
+        "value": "89+",
+        "label": "acara pakai KisahFrame"
+      },
+      {
+        "value": "2",
+        "label": "website klien sedang live"
+      }
+    ],
+    "skills_title": "Yang saya kerjakan",
+    "skills_hint": "Istilah teknisnya di kiri, artinya di kanan.",
+    "example": "Contoh",
+    "skills": [
+      {
+        "term": "Microservices · Event-driven",
+        "title": "Backend yang dipecah jadi beberapa layanan",
+        "desc": "Satu aplikasi besar dipecah jadi layanan kecil yang saling kirim pesan lewat Kafka dan gRPC. Kalau satu bagian sedang sibuk, bagian lain tetap jalan.",
+        "project": "Jajanim",
+        "slug": "jajanim",
+        "note": "7 layanan Go, sedang dikembangkan"
+      },
+      {
+        "term": "Clean Architecture · Testing",
+        "title": "Kode yang rapi dan aman diubah",
+        "desc": "Logika bisnis dipisah dari database dan framework, jadi fitur baru bisa ditambah tanpa membongkar yang sudah ada. Dicek dengan unit test Jest.",
+        "project": "Jaya Mandiri Dashboard",
+        "slug": "jaya-mandiri-dashboard",
+        "note": "NestJS + PostgreSQL, diuji dengan Jest"
+      },
+      {
+        "term": "Next.js · SEO · Headless CMS",
+        "title": "Website yang cepat dan muncul di Google",
+        "desc": "Halaman cepat dibuka di HP, rapi di hasil pencarian, dan isinya bisa diubah sendiri oleh pemilik bisnis tanpa perlu developer.",
+        "project": "Travel Jauh",
+        "slug": "traveljauh",
+        "note": "live dan dipakai klien"
+      },
+      {
+        "term": "Edge · Real-time",
+        "title": "Fitur yang langsung update tanpa refresh",
+        "desc": "Server berjalan di Cloudflare yang dekat dengan pengguna. Foto tamu langsung muncul di galeri acara begitu diunggah.",
+        "project": "KisahFrame",
+        "slug": "kisahframe",
+        "note": "sudah dipakai di 89+ acara"
+      }
+    ],
+    "featured_label": "Sedang saya bangun",
+    "featured_title": "Jajanim, marketplace dengan 7 microservice",
+    "featured_desc": "Dari luar terlihat seperti toko online biasa. Bedanya ada di dalam: sistemnya dipecah jadi 7 layanan Go yang berdiri sendiri, supaya tetap jalan saat ramai dan bisa dikembangkan per bagian.",
+    "featured_stack": "Golang · PostgreSQL · Next.js · React + Vite · Docker · VPS",
+    "featured_cta": "Lihat arsitektur lengkap",
+    "featured_points": [
+      {
+        "term": "Load balancer + Nginx gateway",
+        "desc": "Satu pintu masuk untuk semua request: beban dibagi rata dan akses dicek sebelum sampai ke layanan."
+      },
+      {
+        "term": "PostgreSQL per service + replika",
+        "desc": "Tiap bagian toko punya database sendiri plus salinannya. Satu bermasalah, yang lain tetap jalan dan data tetap aman."
+      },
+      {
+        "term": "Kafka",
+        "desc": "Layanan saling kirim kabar tanpa harus saling menunggu."
+      },
+      {
+        "term": "gRPC",
+        "desc": "Layanan saling panggil langsung dengan cepat."
+      },
+      {
+        "term": "SSE",
+        "desc": "Status di layar pembeli berubah langsung tanpa refresh."
+      },
+      {
+        "term": "Jaeger + Grafana",
+        "desc": "Tiap request bisa dilacak dan kesehatan sistem terlihat di dashboard."
+      },
+      {
+        "term": "Mailpit",
+        "desc": "Email dites dulu sebelum sampai ke pengguna."
+      },
+      {
+        "term": "Polyrepo + GitHub Actions",
+        "desc": "Tiap layanan punya repo sendiri, lalu dites dan dirilis otomatis lewat GitHub Actions."
+      }
+    ]
   },
   "about": {
     "background_label": "Latar Belakang",
@@ -41,12 +129,19 @@
     "portfolio_label": "Portofolio",
     "title_part1": "Karya ",
     "title_part2": "Pribadi",
-    "description": "Pameran implementasi teknis di mana performa bertemu dengan presisi estetika.",
+    "description": "Dari website klien yang sudah live dan dipakai, produk SaaS, sampai sistem full-stack. Semua proyek di sini dirancang dan dibangun dari nol.",
     "prev": "Sebel.",
     "next": "Lanjut",
     "view_all_prefix": "Lihat semua",
     "view_all_suffix": "proyek",
-    "view_more": "Lihat Selengkapnya"
+    "view_more": "Lihat Selengkapnya",
+    "filter_all": "Semua",
+    "show_all": "Tampilkan semua {{count}} proyek",
+    "show_less": "Tampilkan lebih sedikit",
+    "live": "Live · klien",
+    "demo": "Demo live",
+    "count_label": "proyek",
+    "in_development": "Sedang dikembangkan"
   },
   "experience": {
     "current": "Sekarang"
